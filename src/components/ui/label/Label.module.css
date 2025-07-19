@@ -1,0 +1,23 @@
+.container {
+    position: absolute;
+    padding: 6px 8px;
+    border-radius: 50px;
+    background-image: url("/images/repeat-white.png");
+    width: auto;
+    font-size: 16px;
+    white-space: nowrap;
+    transition: .7s;
+    pointer-events: none;
+}
+
+.container2 {
+    position: absolute;
+    padding: 6px 8px;
+    border-radius: 50px;
+    background-image: url("/images/green-texture.png");
+    width: auto;
+    font-size: 16px;
+    white-space: nowrap;
+    transition: .7s;
+    pointer-events: none;
+}

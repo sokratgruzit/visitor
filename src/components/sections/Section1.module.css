@@ -1,0 +1,89 @@
+.container {
+    font-family: "Bloc";
+    position: fixed;
+    width: 100vw;
+    z-index: 8000;
+    padding: 251px 150px 150px 120px;
+    height: 100dvh;
+    padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.title {
+    text-align: center;
+    position: absolute;
+    left: 110px;
+    top: 0px;
+    font-size: 10rem;
+}
+
+.scrollable {
+    position: relative;
+    width: 70%;
+    height: auto;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;      
+    -ms-overflow-style: none; 
+    padding: 12px;
+    border: 4px dotted white;
+    border-radius: 10px;
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none;              
+}
+
+.descr1 {
+    width: 100%;
+    color: #787878;
+    word-break: break-all;
+}
+
+.descr2 {
+    width: 100%;
+    color: rgb(211, 47, 47);
+    word-break: break-all;
+}
+
+@media (max-width: 1440px) {
+    .container {
+        padding: 180px 150px 150px 120px;
+    }
+
+    .title {
+        font-size: 8rem;
+    }
+}
+
+@media (max-width: 1150px) {
+    .title {
+        font-size: 5rem;
+    }
+
+    .container {
+        padding: 150px 140px 30px 120px;
+        padding-bottom: calc(30px + env(safe-area-inset-bottom)) !important;
+    }
+
+    .scrollable {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+        top: 16px;
+        left: 70px;
+    }
+
+    .container {
+        padding: 100px 69px 30px 69px;
+    }
+}

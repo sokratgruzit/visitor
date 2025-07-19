@@ -1,0 +1,31 @@
+.container {
+    position: fixed;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    height: 100dvh;
+}
+
+.img {
+    width: 700px;
+    height: 700px;
+    left: calc(50% - 350px);
+    top: calc(50% - 350px);
+    position: absolute;
+}
+
+.circle1 {
+    position: absolute;
+    background: rgba(0,0,0,.2);
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+}
+
+.circle2 {
+    position: absolute;
+    background: #00000033;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+}

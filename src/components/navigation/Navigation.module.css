@@ -1,0 +1,98 @@
+.container {
+    position: absolute;
+    z-index: 10000;
+    width: 300px;
+    height: 100px;
+}
+
+.right {
+    top: calc(50% - 50px) !important;
+    left: calc(100% - 230px) !important;
+    transform: translate(0) rotate(90deg) !important;
+}
+
+.bottom {
+    top: calc(100% - 130px) !important;
+    left: calc(50% - 150px) !important;
+    transform: translate(0) rotate(0deg) !important;
+}
+
+.top {
+    top: 30px !important;
+    left: calc(50% - 150px) !important;
+    transform: translate(0) rotate(0deg) !important;
+}
+
+.slideNumber {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background-image: url("/images/repeat-white.png");
+    font-size: 72px;
+    position: absolute;
+    left: calc(50% - 50px);
+    top: 0;
+    transition: .7s;
+}
+
+.slideNumber2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background-image: url("/images/green-texture.png");
+    font-size: 72px;
+    position: absolute;
+    left: calc(50% - 50px);
+    top: 0;
+    transition: .7s;
+}
+
+.icon {
+    width: 45px;
+    height: 45px;
+}
+
+@media (max-width: 768px) {
+    .icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .container {
+        width: 200px;
+        height: 40px;
+    }
+
+    .slideNumber,
+    .slideNumber2 {
+        width: 40px;
+        height: 40px;
+        font-size: 32px;
+        left: calc(50% - 20px);
+        top: 0;
+    }
+
+    .top {
+        top: 30px !important;
+        left: calc(50% - 100px) !important;
+        transform: translate(0) rotate(0deg) !important;
+    }
+
+    .right {
+        top: calc(50% - 20px) !important;
+        left: calc(100% - 140px) !important;
+        transform: translate(0) rotate(90deg) !important;
+    }
+
+    .bottom {
+        top: calc(100% - 60px) !important;
+        left: calc(50% - 100px) !important;
+        transform: translate(0) rotate(0deg) !important;
+    }
+}

@@ -1,0 +1,15 @@
+.typingWrapper {
+    display: inline-block;
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: 2px;
+}
+
+.cursor {
+    display: inline-block;
+    margin-left: 1px;
+    color: currentColor;
+    font-weight: bold;
+}

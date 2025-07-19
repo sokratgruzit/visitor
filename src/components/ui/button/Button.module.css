@@ -1,0 +1,93 @@
+.button {
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  background: none;
+  border-radius: 50px;
+  display: flex;
+  top: 0;
+  left: 0;
+  color: white;
+  padding: 0;
+  font-family: "Bloc";
+  letter-spacing: 2px;
+  touch-action: manipulation; 
+  pointer-events: auto;
+}
+
+.layer {
+  border-radius: 50px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: box-shadow 0.2s ease;
+  position: relative;
+  border: 6px solid white;
+  margin: auto;
+  z-index: 10;
+  touch-action: manipulation; 
+  pointer-events: auto;
+}
+
+.layer2 {
+  border-radius: 50px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: box-shadow 0.2s ease;
+  position: relative;
+  border: 6px solid transparent;
+  margin: auto;
+  z-index: 10;
+  touch-action: manipulation; 
+  pointer-events: auto;
+  background-image: url("/images/green-texture.png");
+}
+
+.disabled {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, .7);
+  border-radius: 50px;
+  z-index: 10000;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Размеры */
+.small {
+  width: 60px;
+  height: 60px;
+  font-size: 14px;
+}
+
+.medium {
+  width: 200px;
+  height: 50px;
+  font-size: 16px;
+}
+
+.large {
+  width: 240px;
+  height: 60px;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .small {
+    width: 40px;
+    height: 40px;
+  }
+
+  .layer,
+  .layer2 {
+    border-width: 3px;
+  }
+}

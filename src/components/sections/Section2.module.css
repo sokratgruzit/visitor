@@ -1,0 +1,293 @@
+.container {
+    font-family: "Bloc";
+    position: fixed;
+    width: 100vw;
+    z-index: 8000;
+    padding: 150px 150px 150px 120px;
+    height: 100dvh;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    font-size: 10rem;
+}
+
+.labels {
+    position: absolute;
+    z-index: 8500;
+    width: 400px;
+    height: 400px;
+    left: calc(50% - 200px);
+    top: calc(48% - 200px);
+    border: 5px solid white;
+    border-radius: 200px;
+    border-style: dotted;
+}
+
+.labelWrap {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+}
+
+.label1 {
+    bottom: 15px;
+    left: 15px;
+}
+
+.label2 {
+    bottom: -40px;
+    left: calc(50% - 40px);
+}
+
+.label3 {
+    bottom: 15px;
+    right: 15px;
+}
+
+.label4 {
+    top: calc(50% - 40px);
+    right: -40px;
+}
+
+.label5 {
+    top: 15px;
+    right: 15px;
+}
+
+.label6 {
+    top: -40px;
+    left: calc(50% - 40px);
+}
+
+.label7 {
+    top: 15px;
+    left: 15px;
+}
+
+.label8 {
+    top: calc(50% - 40px);
+    left: -40px;
+}
+
+.labelBg {
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    background-image: url("/images/repeat-white.png");
+    color: #63C5AB;
+    font-size: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.popup {
+    position: absolute;
+    max-width: 30%;
+    height: auto;
+    padding: 12px;
+    background-image: url("/images/repeat-white.png");
+    color: #63C5AB;
+    font-size: 1.5rem;
+    top: 35px;
+    right: 40px;
+    text-align: center;
+}
+
+.icon1 {
+    width: 70px;
+    height: 70px;
+}
+
+.icon2 {
+    width: 70px;
+    height: 70px;
+    left: 6px;
+    top: 0;
+    position: absolute;
+}
+
+.icon3 {
+    width: 60px;
+    height: 60px;
+}
+
+.icon4 {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    left: 0;
+    top: 8px;
+}
+
+.active {
+    box-shadow: 0px -1px 54px -16px rgba(0,0,0,0.9);
+    -webkit-box-shadow: 0px -1px 54px -16px rgba(0,0,0,0.9);
+    -moz-box-shadow: 0px -1px 54px -16px rgba(0,0,0,0.9);
+}
+
+.descr1 {
+    font-size: 16px;
+    width: 30%;
+    color: #787878;
+    word-break: break-all;
+    position: absolute;
+    left: 40px;
+    top: 40px;
+}
+
+@media (max-width: 1440px) {
+    .container {
+        padding: 92px 150px 150px 120px;
+    }
+
+    .title {
+        font-size: 8rem;
+    }
+}
+
+@media (max-width: 1150px) {
+    .title {
+        font-size: 5rem;
+        bottom: 30px;
+    }
+
+    .container {
+        padding: 150px 140px 30px 120px;
+        padding-bottom: calc(30px + env(safe-area-inset-bottom)) !important;
+    }
+
+    .popup {
+        max-width: 100%;
+        width: 100%;
+        top: 140px;
+        right: 0;
+        padding: 8px;
+    }
+
+    .descr1 {
+        width: 90%;
+        left: 5%;
+        top: calc(100% - 230px);
+        text-align: center;
+    }
+
+    .labels {
+        width: 300px;
+        height: 300px;
+        left: calc(50% - 150px);
+        top: calc(48% - 150px);
+    }
+
+    .labelBg {
+        font-size: 40px;
+    }
+
+    .labelWrap {
+        width: 60px;
+        height: 60px;
+    }
+
+    .label1 {
+        bottom: 12.5px;
+        left: 12.5px;
+    }
+
+    .label2 {
+        bottom: -30px;
+        left: calc(50% - 30px);
+    }
+
+    .label3 {
+        bottom: 12.5px;
+        right: 12.5px;
+    }
+
+    .label4 {
+        top: calc(50% - 30px);
+        right: -30px;
+    }
+
+    .label5 {
+        top: 12.5px;
+        right: 12.5px;
+    }
+
+    .label6 {
+        top: -30px;
+        left: calc(50% - 30px);
+    }
+
+    .label7 {
+        top: 12.5px;
+        left: 12.5px;
+    }
+
+    .label8 {
+        top: calc(50% - 30px);
+        left: -30px;
+    }
+
+    .icon1 {
+        width: 50px;
+        height: 50px;
+    }
+
+    .icon2 {
+        width: 50px;
+        height: 50px;
+    }
+
+    .icon3 {
+        width: 40px;
+        height: 40px;
+    }
+
+    .icon4 {
+        width: 50px;
+        height: 50px;
+        left: 2px;
+        top: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    .container {
+        padding: 242px 69px 30px 69px;
+    }
+
+    .popup {
+        top: 15%;
+    }
+
+    .descr1 {
+        top: calc(100% - 180px);
+        text-align: center;
+    }
+
+    .icon2 {
+        left: 10px;
+        top: 8px;
+    }
+
+    .icon4 {
+        top: 12px;
+        left: 9px;
+    }
+}

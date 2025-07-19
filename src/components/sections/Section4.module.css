@@ -1,0 +1,56 @@
+.container {
+    font-family: "Bloc";
+    position: fixed;
+    width: 100vw;
+    z-index: 8000;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.title {
+    text-align: center;
+    position: absolute;
+    left: 50px;
+    top: 0px;
+    font-size: 10rem;
+}
+
+.blockWrap {
+    position: relative;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.descr1 {
+    width: 100%;
+    color: white;
+    word-break: break-all;
+    text-align: center;
+}
+
+@media (max-width: 1440px) {
+    .title {
+        font-size: 8rem;
+    }
+}
+
+@media (max-width: 1150px) {
+    .title {
+        font-size: 5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+        top: 16px;
+    }
+}
