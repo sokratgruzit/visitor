@@ -81,7 +81,7 @@
     }
 
     .container {
-        padding: 150px 140px 30px 120px;
+        padding: 300px 140px 30px 120px;
         justify-content: flex-end;
         padding-bottom: calc(30px + env(safe-area-inset-bottom)) !important;
     }

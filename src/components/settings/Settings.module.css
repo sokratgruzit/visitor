@@ -1,10 +1,19 @@
 .container {
     position: absolute;
-    z-index: 10000;
+    z-index: 3000;
     width: 50px;
     height: 150px;
     left: 30px;
     top: calc(50% - 75px);
+}
+
+.containerPreview {
+    position: absolute;
+    z-index: 3000;
+    width: 50px;
+    height: 100px;
+    left: 20px;
+    top: calc(50% - 50px);
 }
 
 .icon {
@@ -12,9 +21,19 @@
     height: 35px;
 }
 
+.iconPreview {
+    width: 27px;
+    height: 27px;
+}
+
 .icon2 {
     width: 30px;
     height: 30px;
+}
+
+.icon2Preview {
+    width: 22px;
+    height: 22px;
 }
 
 .soundIconWrap {
@@ -42,6 +61,13 @@
     height: 25px;
     border: 3.5px solid white;
     border-radius: 3px;
+}
+
+.squarePreview {
+    width: 18px;
+    height: 18px;
+    border: 3.5px solid white;
+    border-width: 3px;
 }
 
 @media (max-width: 768px) {

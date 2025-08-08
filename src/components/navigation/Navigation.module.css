@@ -1,8 +1,15 @@
 .container {
     position: absolute;
-    z-index: 10000;
+    z-index: 3000;
     width: 300px;
     height: 100px;
+}
+
+.containerPreview {
+    position: absolute;
+    z-index: 3000;
+    width: 200px;
+    height: 40px;
 }
 
 .right {
@@ -20,6 +27,24 @@
 .top {
     top: 30px !important;
     left: calc(50% - 150px) !important;
+    transform: translate(0) rotate(0deg) !important;
+}
+
+.topPreview {
+    top: 30px !important;
+    left: calc(50% - 100px) !important;
+    transform: translate(0) rotate(0deg) !important;
+}
+
+.rightPreview {
+    top: calc(50% - 20px) !important;
+    left: calc(100% - 140px) !important;
+    transform: translate(0) rotate(90deg) !important;
+}
+
+.bottomPreview {
+    top: calc(100% - 60px) !important;
+    left: calc(50% - 100px) !important;
     transform: translate(0) rotate(0deg) !important;
 }
 
@@ -53,9 +78,44 @@
     transition: .7s;
 }
 
+.slideNumberPreview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    font-size: 32px;
+    left: calc(50% - 20px);
+    top: 0;
+    border-radius: 50px;
+    background-image: url("/images/repeat-white.png");
+    position: absolute;
+    transition: .7s;
+}
+
+.slideNumber2Preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    font-size: 32px;
+    left: calc(50% - 20px);
+    top: 0;
+    border-radius: 50px;
+    background-image: url("/images/green-texture.png");
+    position: absolute;
+    transition: .7s;
+}
+
 .icon {
     width: 45px;
     height: 45px;
+}
+
+.iconPreview {
+    width: 30px;
+    height: 30px;
 }
 
 @media (max-width: 768px) {

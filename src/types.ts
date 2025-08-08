@@ -34,12 +34,30 @@ export interface TypingTextProps {
   showCursor?: boolean;
 }
 
-interface Circle {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-  rotate: number;
+export interface Circle {
+  left?: number | string;
+  top?: number | string;
+  width?: number | string;
+  height?: number | string;
+  rotate?: number | string;
+}
+
+export interface LandingComponent {
+	id: string;
+	type: string;
+  color?: string;
+  canvas?: string;
+  btn?: string;
+  navPosition?: "right" | "top" | "bottom";
+  title?: string;
+  text1?: string;
+  text2?: string;
+  showCircles?: boolean;
+  circle1?: Circle;
+  circle2?: Circle;
+  positionConfig?: any;
+  showSettings?: boolean;
+  showNav?: boolean;
 }
 
 export interface ConfProps {
@@ -50,7 +68,7 @@ export interface ConfProps {
 export interface ButtonProps {
   text?: string;
   onClick?: () => void;
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large' | 'regular' | 'preview';
   className?: string;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
@@ -81,4 +99,22 @@ export interface LabelProps {
   direction?: string;
   isHovered?: boolean;
   section?: number;
+}
+
+export interface RegisterData {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export interface SlugResponse {
+    success: boolean;
+    message?: string;
+    id?: string;
+    available?: boolean;
 }

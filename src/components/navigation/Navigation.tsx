@@ -2,46 +2,33 @@ import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 
 import { useAppStore } from "../../store/useAppStore";
+import { useConstructorStore } from "../../store/constructorStore";
 
 import Button from "../ui/button/Button";
 
 import styles from "./Navigation.module.css";
 
 export function Navigation() {
-  const colors = ["#98BFF6", "#EDB948", "#63C5AB", "#EF9F64", "#F4696B", "#64d6e2", "#FFFFF0"];
-  const titles = [
-    "Кто мы?",
-    "История проекта",
-    "Что такое Sober Man?",
-    "Зачем это нужно?",
-    "Уникальность",
-    "Куда пойдут средства?",
-    "Как поддержать",
-  ];
-
   const [navPosition, setNavPosition] = useState<string>("right");
   const [stylePosition, setStylePosition] = useState<string>("right");
 
-  const { currentSection, setSection, windowWidth, explore } = useAppStore();
+  const { currentSection, setSection, windowWidth, explore, landingData } = useAppStore();
+  const { activePoint } = useConstructorStore();
 
   const navControls = useAnimation();
   const numberControls = useAnimation();
   const prevBtnControls = useAnimation();
   const nextBtnControls = useAnimation();
-
+  const position = landingData.components[currentSection].navPosition;
+  const limiter = window.innerWidth <= 768 || activePoint === 768 || activePoint === 440;
 
   useEffect(() => {
-    let position = "right";
-
-    if (currentSection === 1 || currentSection === 4 || currentSection === 5 || currentSection === 6) position = "bottom";
-    if (currentSection === 2) position = "top";
-
     setNavPosition(position);
     setStylePosition("");
 
     if (position === "right") {
-      let x = window.innerWidth <= 768 ? window.innerWidth - 140 : window.innerWidth - 230;
-      let y = window.innerWidth <= 768 ? window.innerHeight / 2 - 40 / 2 : window.innerHeight / 2 - 100 / 2;
+      let x = limiter ? window.innerWidth - 140 : window.innerWidth - 230;
+      let y = limiter ? window.innerHeight / 2 - 40 / 2 : window.innerHeight / 2 - 100 / 2;
 
       navControls.start({
         x: x,               
@@ -71,8 +58,8 @@ export function Navigation() {
     }
 
     if (position === "bottom") {
-      let x = window.innerWidth <= 768 ? window.innerWidth / 2 - 200 / 2 : window.innerWidth / 2 - 300 / 2;
-      let y = window.innerWidth <= 768 ? window.innerHeight - 60 : window.innerHeight - 130;
+      let x = limiter ? window.innerWidth / 2 - 200 / 2 : window.innerWidth / 2 - 300 / 2;
+      let y = limiter ? window.innerHeight - 60 : window.innerHeight - 130;
 
       navControls.start({
         x: x,               
@@ -102,7 +89,7 @@ export function Navigation() {
     }
 
     if (position === "top") {
-      let x = window.innerWidth <= 768 ? window.innerWidth / 2 - 200 / 2 : window.innerWidth / 2 - 300 / 2;
+      let x = limiter ? window.innerWidth / 2 - 200 / 2 : window.innerWidth / 2 - 300 / 2;
       let y = 30;
 
       navControls.start({
@@ -153,41 +140,47 @@ export function Navigation() {
         delay: .2
       }
     });
-  }, [currentSection, windowWidth]);
+  }, [currentSection, windowWidth, position]);
 
   return (
-    <motion.div animate={navControls} className={`${styles.container} ${styles[stylePosition]}`}>
+    <motion.div animate={navControls} className={`${styles[`container${limiter ? "Preview" : ""}`]} ${styles[`${stylePosition}${limiter ? "Preview" : ""}`]}`}>
       <Button
         onClick={() => explore ? setSection(Math.max(0, currentSection - 1)) : null}
-        size="small"
+        size={limiter ? "preview" : "small"}
         borderColor="#FFF"
         left="0px"
-        top={window.innerWidth <= 768 ? "calc(50% - 20px)" : "calc(50% - 30px)"}
-        icon={<motion.img animate={prevBtnControls} src="/images/arrow.svg" alt="arrow" className={styles.icon} />}
-        bg={colors[currentSection]}
-        labelColor={colors[currentSection]}
-        labelText={titles[currentSection - 1]}
+        top={limiter ? "calc(50% - 20px)" : "calc(50% - 30px)"}
+        icon={<motion.img animate={prevBtnControls} src="/images/arrow.svg" alt="arrow" className={styles[`icon${limiter ? "Preview" : ""}`]} />}
+        bg={landingData.components[currentSection].color}
+        labelColor={landingData.components[currentSection].color}
+        labelText={landingData.components[currentSection - 1 === -1 ? 0 : currentSection - 1].title}
         direction={navPosition !== "right" ? "right" : "right-rotate"}
         disabled={currentSection === 0}
         section={currentSection}
       />
-      <div style={{ color: colors[currentSection] }} className={currentSection < 6 ? styles.slideNumber : styles.slideNumber2}>
+      <div 
+        style={{ color: landingData.components[currentSection].color }} 
+        className={landingData.components[currentSection].btn === "light" ? 
+          styles[`slideNumber${limiter ? "Preview" : ""}`] : 
+          styles[`slideNumber2${limiter ? "Preview" : ""}`]
+        }
+      >
         <motion.span animate={numberControls}>
-          {currentSection + 1}  
+          {currentSection}  
         </motion.span>
       </div>
       <Button
-        onClick={() => explore ? setSection(Math.min(6, currentSection + 1)) : null}
-        size="small"
+        onClick={() => explore ? setSection(Math.min(landingData.components.length, currentSection + 1)) : null}
+        size={limiter ? "preview" : "small"}
         borderColor="#FFF"
-        left={window.innerWidth <= 768 ? "160px" : "240px"}
-        top={window.innerWidth <= 768 ? "calc(50% - 20px)" : "calc(50% - 30px)"}
-        icon={<motion.img animate={nextBtnControls} src="/images/arrow.svg" alt="arrow" className={styles.icon} />}
-        bg={colors[currentSection]}
-        labelColor={colors[currentSection]}
-        labelText={titles[currentSection + 1]}
+        left={limiter ? "160px" : "240px"}
+        top={limiter ? "calc(50% - 20px)" : "calc(50% - 30px)"}
+        icon={<motion.img animate={nextBtnControls} src="/images/arrow.svg" alt="arrow" className={styles[`icon${limiter ? "Preview" : ""}`]} />}
+        bg={landingData.components[currentSection].color}
+        labelColor={landingData.components[currentSection].color}
+        labelText={landingData.components[currentSection + 1]?.title}
         direction={navPosition !== "right" ? "left" : "right-rotate"}
-        disabled={currentSection === 6}
+        disabled={currentSection === landingData.components.length - 1}
         section={currentSection}
       />
     </motion.div>

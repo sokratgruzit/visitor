@@ -2,10 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useTransform, useAnimationFrame, animate  } from "framer-motion";
 
 import Typing from "../typing/Typing";
+import { Svg } from "../svgs/Svg.module";
 
 import styles from "./Section2.module.css";
 
-export default function Section2() {
+export default function Section2({ data }: any) {
   const STEP = 45;
   const LABELS = [
     "AI", 
@@ -112,15 +113,15 @@ export default function Section2() {
   return (
     <div className={styles.container}>
       <Typing
-        text="Что такое Sober Man?"
+        text={data.title}
         className={`${styles.title} texturedType`}
         showCursor={false}
       />
       <Typing
-        text="Sober Man — это не просто трекер трезвости. Это мобильное приложение, которое превращает путь отказа от алкоголя в геймифицированное приключение, где каждый день — это миссия, а каждая неделя — новый уровень."
+        text={data.text1}
         className={`${styles.descr1} descr-l`}
       />
-      {isHovered && activeIndex !== null && <div className={`${styles.popup} descr-l`}>{TEXTS[activeIndex]}</div>}
+      {isHovered && activeIndex !== null && <div className={`${styles.popup} descr-l`}>{data.labels[activeIndex].text}</div>}
       <motion.div 
         style={{ rotate }}
         initial={{ scale: 0 }}
@@ -130,7 +131,7 @@ export default function Section2() {
         }} 
         className={styles.labels}
       >
-        {LABELS.map((label, i) => {
+        {data.labels.map((label: any, i: number) => {
           return (
             <motion.div
               key={i}
@@ -141,7 +142,7 @@ export default function Section2() {
               onTouchEnd={() => handleHover(false, null)}
               style={{ rotate: reversedLabelRotates[i] }}
             >
-              <div className={`${styles.labelBg} ${activeIndex === i ? styles.active : null}`}>{label}</div>
+              <div className={`${styles.labelBg} ${activeIndex === i ? styles.active : null}`}>{label.type === "text" ? label.content : <Svg classId={label.classId} svgName={label.content} />}</div>
             </motion.div>
           )
         })}

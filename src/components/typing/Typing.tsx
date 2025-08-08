@@ -15,6 +15,8 @@ export default function Typing({
     const [visibleText, setVisibleText] = useState("");
 
     useEffect(() => {
+        setVisibleText("");
+        
         let currentIndex = 0;
         let cancelled = false;
 

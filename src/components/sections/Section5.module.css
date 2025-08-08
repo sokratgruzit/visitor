@@ -37,11 +37,6 @@
     gap: 10px;
 }
 
-.icon {
-    width: 50px;
-    height: 50px;
-}
-
 @media (max-width: 1440px) {
     .title {
         font-size: 8rem;
@@ -58,10 +53,5 @@
     .title {
         font-size: 2rem;
         top: 16px;
-    }
-
-    svg {
-        width: 40px !important;
-        height: 40px !important;
     }
 }

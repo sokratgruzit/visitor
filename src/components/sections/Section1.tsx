@@ -4,7 +4,7 @@ import Typing from "../typing/Typing";
 
 import styles from "./Section1.module.css";
 
-export default function Section1() {
+export default function Section1({ data }: any) {
   const scrollableRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,17 +44,17 @@ export default function Section1() {
   return (
     <div className={styles.container}>
       <Typing
-        text="История проекта"
+        text={data.title}
         className={`${styles.title} texturedType`}
         showCursor={false}
       />
       <div ref={scrollableRef} className={styles.scrollable}>
         <Typing
-          text="Идея Sober Man родилась из наблюдения за близкими, которые проходили через сложный путь отказа от алкоголя. После лечения им часто не хватало поддержки, мотивации и ощущение, что они не одни."
+          text={data.text1}
           className={`${styles.descr1} descr-l`}
         />
         <Typing
-          text="Многие срываются, потому что после клиники их встречает пустота — и мы хотим это изменить."
+          text={data.text2}
           className={`${styles.descr2} descr-l`}
         />
       </div>

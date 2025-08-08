@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
+import { useAppStore } from '../../../store/useAppStore';
+import { useConstructorStore } from '../../../store/constructorStore';
 import type { ButtonProps } from '../../../types';
 import Label from '../label/Label';
 
@@ -27,6 +29,10 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
 
+    const { landingData } = useAppStore();
+    const { activePoint } = useConstructorStore();
+    const limiter = activePoint === 768 || activePoint === 440 || window.innerWidth <= 768;
+
     const handleClick = () => {
         let timeout = setTimeout(() => {
             if (onClick) onClick();
@@ -46,7 +52,16 @@ const Button: React.FC<ButtonProps> = ({
 
     let lStyle: any = { background: bg, borderColor: borderColor };
 
-    if (section === 6) {
+    if (size === "regular") {
+        lStyle = { 
+            background: bg, 
+            borderColor: borderColor,
+            borderWidth: 3,
+            padding: 10
+        };
+    }
+
+    if (section === landingData.components.length - 1) {
         lStyle = {};
     }
 
@@ -88,7 +103,7 @@ const Button: React.FC<ButtonProps> = ({
         >
             {disabled && <div className={styles.disabled} />}
             <motion.div
-                className={styles.layer2}
+                className={landingData.components[section].btn === "light" ? styles[`layer${limiter ? "Preview" : ""}`] : styles[`layer2${limiter ? "Preview" : ""}`]}
                 whileHover={{
                     scale: 0.97,
                     boxShadow: 'inset 0 0 5px rgba(0,0,0,1)',
