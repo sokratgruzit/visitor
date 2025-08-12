@@ -138,7 +138,7 @@ export const Constructor = () => {
 							}}>
 								<input
 									type="text"
-									value={landingData.slug ?? ""}
+									value={landingData?.slug ?? ""}
 									onChange={(e) => onChangeInput(e.target.value)}
 									className={styles.input}
 									disabled={slugLocked || checkingSlug}

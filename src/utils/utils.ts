@@ -65,11 +65,16 @@ export function getPositionConfig(width: number, config: any, type: string): {
   let h = config.height || 0;
   let r = config.rotate || 0;
 
+  const bpts = type === "circle" ? config : config.breakpoints;
+
   // Применяем брейкпоинты
-  if (config.breakpoints) {
-    const bp = [...config.breakpoints]
-    .reverse()
-    .find(b => width <= b.minWidth);
+  if (bpts) {
+    let bp = bpts[4];
+
+    if (width <= 440) bp = bpts[0];
+    if (width > 440 && width <= 768) bp = bpts[1];
+    if (width > 768 && width <= 1150) bp = bpts[2];
+    if (width > 1150 && width <= 1280) bp = bpts[3];
 
     if (bp.s !== undefined) s = bp.s;
     if (bp.dist !== undefined) dist = bp.dist;
@@ -94,8 +99,8 @@ export function getPositionConfig(width: number, config: any, type: string): {
   let result: Result = {
     s,
     dist,
-    left: parseValue(left, "left"),
-    top: parseValue(top, "top"),
+    left: left,
+    top: top,
     rotate: rotate || 0
   };
 

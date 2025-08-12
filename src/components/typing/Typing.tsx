@@ -11,6 +11,7 @@ export default function Typing({
     delayPerChar = 0.05,
     delayPerWord = 0.05,
     showCursor = true,
+    color = "#FFFFFF"
 }: TypingTextProps) {
     const [visibleText, setVisibleText] = useState("");
 
@@ -43,11 +44,12 @@ export default function Typing({
     }, [text, delayPerChar, delayPerWord]);
 
     return (
-        <div className={`${styles.typingWrapper} ${className}`}>
+        <div style={{ color }} className={`${styles.typingWrapper} ${className}`}>
             {visibleText}
             {showCursor && (
                 <motion.span
                     className={styles.cursor}
+                    style={{ color }}
                     animate={{ opacity: [1, 0] }}
                     transition={{
                         repeat: Infinity,

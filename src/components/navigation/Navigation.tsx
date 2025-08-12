@@ -5,6 +5,7 @@ import { useAppStore } from "../../store/useAppStore";
 import { useConstructorStore } from "../../store/constructorStore";
 
 import Button from "../ui/button/Button";
+import { Svg } from "../svgs/Svg.module";
 
 import styles from "./Navigation.module.css";
 
@@ -12,7 +13,7 @@ export function Navigation() {
   const [navPosition, setNavPosition] = useState<string>("right");
   const [stylePosition, setStylePosition] = useState<string>("right");
 
-  const { currentSection, setSection, windowWidth, explore, landingData } = useAppStore();
+  const { currentSection, setSection, windowWidth, landingData } = useAppStore();
   const { activePoint } = useConstructorStore();
 
   const navControls = useAnimation();
@@ -145,13 +146,18 @@ export function Navigation() {
   return (
     <motion.div animate={navControls} className={`${styles[`container${limiter ? "Preview" : ""}`]} ${styles[`${stylePosition}${limiter ? "Preview" : ""}`]}`}>
       <Button
-        onClick={() => explore ? setSection(Math.max(0, currentSection - 1)) : null}
+        onClick={() => setSection(Math.max(0, currentSection - 1))}
         size={limiter ? "preview" : "small"}
-        borderColor="#FFF"
         left="0px"
         top={limiter ? "calc(50% - 20px)" : "calc(50% - 30px)"}
-        icon={<motion.img animate={prevBtnControls} src="/images/arrow.svg" alt="arrow" className={styles[`icon${limiter ? "Preview" : ""}`]} />}
-        bg={landingData.components[currentSection].color}
+        icon={
+          <motion.div
+            animate={prevBtnControls} 
+            className={styles.icon}
+          >
+            <Svg svgName="ArrowDropDownOutlined" size={{ xs: 45, sm: 45, md: 45, lg: 45 }} color={landingData.components[currentSection].color} />
+          </motion.div>
+        }
         labelColor={landingData.components[currentSection].color}
         labelText={landingData.components[currentSection - 1 === -1 ? 0 : currentSection - 1].title}
         direction={navPosition !== "right" ? "right" : "right-rotate"}
@@ -159,24 +165,29 @@ export function Navigation() {
         section={currentSection}
       />
       <div 
-        style={{ color: landingData.components[currentSection].color }} 
-        className={landingData.components[currentSection].btn === "light" ? 
-          styles[`slideNumber${limiter ? "Preview" : ""}`] : 
-          styles[`slideNumber2${limiter ? "Preview" : ""}`]
-        }
+        style={{ 
+          color: landingData.components[currentSection].color,
+          backgroundColor: landingData.components[currentSection].btn
+        }} 
+        className={styles[`slideNumber${limiter ? "Preview" : ""}`]}
       >
         <motion.span animate={numberControls}>
           {currentSection}  
         </motion.span>
       </div>
       <Button
-        onClick={() => explore ? setSection(Math.min(landingData.components.length, currentSection + 1)) : null}
+        onClick={() => setSection(Math.min(landingData.components.length, currentSection + 1))}
         size={limiter ? "preview" : "small"}
-        borderColor="#FFF"
         left={limiter ? "160px" : "240px"}
         top={limiter ? "calc(50% - 20px)" : "calc(50% - 30px)"}
-        icon={<motion.img animate={nextBtnControls} src="/images/arrow.svg" alt="arrow" className={styles[`icon${limiter ? "Preview" : ""}`]} />}
-        bg={landingData.components[currentSection].color}
+        icon={
+          <motion.div
+            animate={nextBtnControls} 
+            className={styles.icon}
+          >
+            <Svg svgName="ArrowDropDownOutlined" size={{ xs: 45, sm: 45, md: 45, lg: 45 }} color={landingData.components[currentSection].color} />
+          </motion.div>
+        }
         labelColor={landingData.components[currentSection].color}
         labelText={landingData.components[currentSection + 1]?.title}
         direction={navPosition !== "right" ? "left" : "right-rotate"}

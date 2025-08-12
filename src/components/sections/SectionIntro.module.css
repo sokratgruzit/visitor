@@ -6,12 +6,6 @@
     padding: 30px;
 }
 
-.title {
-    margin: 0;
-    width: 100%;
-    padding: 0;
-}
-
 .subtitle {
     width: 100%;
     color: #787878;
@@ -19,5 +13,8 @@
 
 .endPhrase {
     display: block;
+    width: 100%;
     color: rgb(211, 47, 47);
 }
+
+

@@ -32,6 +32,7 @@ export interface TypingTextProps {
   delayPerChar?: number; 
   delayPerWord?: number; 
   showCursor?: boolean;
+  color?: string;
 }
 
 export interface Circle {
@@ -40,29 +41,46 @@ export interface Circle {
   width?: number | string;
   height?: number | string;
   rotate?: number | string;
+  minWidth?: number;
+}
+
+export interface ListItemProps { 
+  icon?: string; 
+  classId?: string; 
+  text?: string; 
+  type?: string; 
+  content?: string; 
+  id?: number;
+  link?: string;
 }
 
 export interface LandingComponent {
 	id: string;
-	type: string;
+	type: string | null;
   color?: string;
   canvas?: string;
   btn?: string;
+  textColor?: string;
+  titleColor?: string;
   navPosition?: "right" | "top" | "bottom";
+  titlePosition?: string;
   title?: string;
   text1?: string;
   text2?: string;
+  text3?: string;
+  list?: ListItemProps[] | string[];
   showCircles?: boolean;
-  circle1?: Circle;
-  circle2?: Circle;
+  circle1?: Circle[];
+  circle2?: Circle[];
+  textConfig?: Circle[];
   positionConfig?: any;
   showSettings?: boolean;
   showNav?: boolean;
 }
 
 export interface ConfProps {
-  circle1: Circle;
-  circle2: Circle;
+  circle1: Circle[];
+  circle2: Circle[];
 }
 
 export interface ButtonProps {
@@ -72,11 +90,9 @@ export interface ButtonProps {
   className?: string;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
-  borderColor?: string;
   left?: string;
   top?: string;
   icon?: React.ReactNode;
-  bg?: string;
   delay?: number;
   labelText?: string;
   labelColor?: string;
@@ -86,11 +102,12 @@ export interface ButtonProps {
 
 export interface labelStyles {
   color?: string;
-  left?: number;
-  right?: number;
+  left?: number | string;
+  right?: number | string;
   transform?: string;
-  top?: number;
+  top?: number | string;
   opacity?: number;
+  backgroundColor?: string;
 }
 
 export interface LabelProps {

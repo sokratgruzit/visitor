@@ -12,7 +12,7 @@ interface ConstructorState {
 export const useConstructorStore = create<ConstructorState>((set) => ({
 	slug: "",
     selectedComponentId: null,
-	activePoint: 10000,
+	activePoint: 1281,
 	setSlug: (slug) => set({ slug }),
 	setActivePoint: (point) => set({ activePoint: point }),
     setSelectedComponentId: (id) => set({ selectedComponentId: id }),

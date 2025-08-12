@@ -69,19 +69,21 @@ input {
 }
 
 .title-l {
-  font-size: 5rem !important;
+  font-size: 6rem;
+  position: absolute;
 }
 
-.title-l-preview {
-  font-size: 3rem !important;
+.title-lPreview {
+  font-size: 4rem;
+  position: absolute;
 }
 
 .descr-l {
-  font-size: 1.5rem !important;
-  line-height: 3rem !important;
+  font-size: 1.5rem;
+  line-height: 3rem;
 }
 
-.descr-l-preview {
+.descr-lPreview {
   font-size: 1rem !important;
   line-height: 1.2rem !important;
 }
@@ -120,40 +122,98 @@ input {
   }
 }
 
+.title-top-left {
+  left: 30px;
+  top: 30px;
+}
+
+.title-top-center {
+  width: 100%;
+  text-align: center;
+  left: 0;
+  top: 30px;
+}
+
+.title-top-right {
+  right: 30px;
+  top: 30px;
+}
+
+.title-bottom-left {
+  left: 30px;
+  bottom: 30px;
+}
+
+.title-bottom-right {
+  right: 30px;
+  bottom: 30px;
+}
+
+.title-bottom-center {
+  width: 100%;
+  left: 0;
+  text-align: center;
+  bottom: 30px;
+}
+
+.text-container {
+  position: absolute;
+}
+
+.scrollable {
+  height: auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;      
+  -ms-overflow-style: none; 
+  padding: 12px;
+  border: 4px dotted white;
+  border-radius: 10px;
+  white-space: normal; 
+  word-break: break-word;
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none;              
+}
+
 @media (max-width: 1440px) {
   .descr-l {
-    line-height: 2.3rem !important;
+    line-height: 2.3rem;
   }
 }
 
 @media (max-width: 1280px) {
   .title-l {
-    font-size: 4rem !important;
+    font-size: 5.5rem;
   }
 
   .descr-l {
-    font-size: 1.3rem !important;
+    font-size: 1.3rem;
   }
 }
 
 @media (max-width: 768px) {
   .title-l {
-    font-size: 3rem !important;
+    font-size: 4rem;
   }
 
   .descr-l {
-    font-size: 1rem !important;
-    line-height: 1.2rem !important;
+    font-size: 1rem;
+    line-height: 1.2rem;
   }
 }
 
 @media (max-width: 440px) {
   .title-l {
-    font-size: 2.5rem !important;
+    font-size: 2.5rem;
   }
 
   .descr-l {
-    font-size: .8rem !important;
-    line-height: 1.2rem !important;
+    font-size: .8rem;
+    line-height: 1.2rem;
   }
 }

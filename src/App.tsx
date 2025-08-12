@@ -12,12 +12,12 @@ import { UserLanding } from "./components/userLanding/UserLanding";
 import { Login } from "./components/auth/Login";
 import { Register } from "./components/auth/Register";
 import { EmailConfirmed } from "./components/auth/EmailConfirmed";
-import { ProtectedRoute } from "./components/layout/ProtectedRoute";
 import { Dashboard } from "./components/dashboard/Dashboard";
 import { Constructor } from "./components/dashboard/Constructor";
 import { Account } from "./components/dashboard/Account";
 import { Notification } from "./components/ui/notify/Notification";
 import { Preview } from "./components/preview/Preview";
+import { FullyVerifiedRoute } from "./components/layout/FullyVerifiedRoute";
 
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
@@ -87,17 +87,17 @@ export default function App() {
         <Route 
           path="preview/:slug"
           element={
-            <ProtectedRoute>
+            <FullyVerifiedRoute>
               <Preview />
-            </ProtectedRoute>
+            </FullyVerifiedRoute>
           }
         />
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
+            <FullyVerifiedRoute>
               <Dashboard />
-            </ProtectedRoute>
+            </FullyVerifiedRoute>
           }
         >
           <Route path="constructor" element={<Constructor />} />

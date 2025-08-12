@@ -97,7 +97,7 @@
 
 .colorPickerWrapper {
     position: relative;
-    width: 100%;
+    width: 20%;
     height: 100%;
     display: inline-block;
 }
@@ -147,6 +147,16 @@
     transition: .7s;
 }
 
+.tabBtn {
+    border: 2px solid #63c5ab;
+    color: #63c5ab;
+    padding: 0 5px;
+    border-radius: 5px;
+    background: none;
+    cursor: pointer;
+    transition: .7s;
+}
+
 .animationBlock {
     display: flex;
     flex-direction: column;
@@ -160,4 +170,71 @@
 
 .posBtn.active {
     background: rgb(43, 123, 243);
+}
+
+.tabBtn.activeTab {
+    background: #63c5ab;
+    color: #fff;
+}
+
+.labelHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.labelHeader p {
+    color: black;
+}
+
+.labelRow {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.delimiter {
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.iconPopupOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+}
+
+.iconPopup {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    max-height: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.iconGrid {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    overflow-y: auto;
+}
+
+.iconItem {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }

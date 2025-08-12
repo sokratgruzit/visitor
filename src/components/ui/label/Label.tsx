@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, memo } from "react";
 
+import { useAppStore } from "../../../store/useAppStore";
 import type { labelStyles, LabelProps } from "../../../types";
 
 import styles from "./Label.module.css";
@@ -13,6 +14,7 @@ const Label: React.FC<LabelProps> = ({ text, color, direction, isHovered, sectio
     });
 
     const labelRef = useRef<HTMLDivElement>(null);
+    const { landingData } = useAppStore();
 
     useEffect(() => {
         if (labelRef.current) setLabelWidth(labelRef.current.clientWidth);
@@ -20,7 +22,8 @@ const Label: React.FC<LabelProps> = ({ text, color, direction, isHovered, sectio
 
     useEffect(() => {
         let labelStyles: labelStyles = {
-            left: 65, 
+            left: 65,
+            top: "calc(50% - 15px)", 
             color,
             opacity: isHovered ? 1 : 0 
         };
@@ -29,16 +32,17 @@ const Label: React.FC<LabelProps> = ({ text, color, direction, isHovered, sectio
             labelStyles = {
                 right: 65, 
                 color,
+                top: "calc(50% - 15px)", 
                 opacity: isHovered ? 1 : 0 
             };
         }
 
         if (direction === "right-rotate") {
             labelStyles = {
-                top: labelWidth / 2 + 55, 
+                top: `${labelWidth * .9}px`, 
                 color,
                 transform: "rotate(-90deg)",
-                opacity: isHovered ? 1 : 0 
+                opacity: isHovered ? 1 : 1 
             };
         }
 
@@ -48,8 +52,11 @@ const Label: React.FC<LabelProps> = ({ text, color, direction, isHovered, sectio
     return (
         <div 
             ref={labelRef}
-            className={section === 6 ? styles.container2 : styles.container}
-            style={labelStyles}
+            className={styles.container}
+            style={{
+                ...labelStyles,
+                backgroundColor: landingData?.components[section].btn
+            }}
         >
             {text}
         </div>

@@ -2,7 +2,7 @@ import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import { useAppStore } from "../../store/useAppStore";
-import type { ConfProps } from "../../types";
+import type { Circle } from "../../types";
 import { getPositionConfig } from "../../utils/utils";
 
 import { Navigation } from "../navigation/Navigation";
@@ -33,7 +33,7 @@ export const UserLanding = () => {
     const currentSectionRef = useRef(currentSection);
     const circle1 = useAnimation();
     const circle2 = useAnimation();
-    const [conf, setConf] = useState<ConfProps>({
+    const [conf, setConf] = useState<{ circle1: Circle, circle2: Circle }>({
         circle1: {
             left: 0,
             top: 0,

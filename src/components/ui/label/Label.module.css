@@ -2,22 +2,17 @@
     position: absolute;
     padding: 6px 8px;
     border-radius: 50px;
-    background-image: url("/images/repeat-white.png");
+    height: 30px;
     width: auto;
     font-size: 16px;
     white-space: nowrap;
     transition: .7s;
     pointer-events: none;
-}
-
-.container2 {
-    position: absolute;
-    padding: 6px 8px;
-    border-radius: 50px;
-    background-image: url("/images/green-texture.png");
-    width: auto;
-    font-size: 16px;
-    white-space: nowrap;
-    transition: .7s;
-    pointer-events: none;
+    -webkit-mask-image: url("/images/repeat-white.png");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: cover;
+    mask-image: url("/images/repeat-white.png");
+    mask-repeat: no-repeat;
+    mask-size: cover;
+    background-color: red;
 }

@@ -1,11 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useConstructorStore } from "../../../store/constructorStore";
 import { useNotificationStore } from "../../../store/notificationStore";
 import { useAppStore } from "../../../store/useAppStore";
-import { CustomSelect } from "../select/CustomSelect";
 import { saveLanding } from "../../../api/constructor";
+
+import { GeneralTab } from "./GeneralTab";
+import { AnimationTab } from "./AnimationTab";
+import { IconsTab } from "./IconsTab";
 
 import styles from "./ComponentModal.module.css";
 
@@ -15,33 +18,13 @@ interface Props {
 	componentId: string;
 }
 
-const canvasOptions = [
-	{ label: "sober", value: "sober" },
-	{ label: "laptop", value: "laptop" },
-	{ label: "panic", value: "panic" },
-	{ label: "super", value: "super" },
-	{ label: "chain", value: "chain" },
-	{ label: "umbrella", value: "umbrella" },
-	{ label: "ai", value: "ai" },
-];
-
-const navPositionOptions = [
-	{ label: "Сверху", value: "top" },
-	{ label: "Справа", value: "right" },
-	{ label: "Снизу", value: "bottom" },
-];
-
-const btnOptions = [
-	{ label: "Светлая", value: "light" },
-	{ label: "Тёмная", value: "dark" },
-];
-
 export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
     const [saving, setSaving] = useState<boolean>(false);
 	const [leftMode, setLeftMode] = useState<"half" | "full" | null>(null);
 	const [topMode, setTopMode] = useState<"half" | "full" | null>(null);
 	const [leftPos, setLeftPos] = useState<number>(0);
 	const [topPos, setTopPos] = useState<number>(0);
+	const [tab, setTab] = useState<string>("general");
 
 	const {
 		slug,
@@ -64,51 +47,6 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 
 		setLandingData({ ...landingData, components: updated });
 	};
-
-	useEffect(() => {
-		let defaultData = {};
-		const defaultBps = [
-			{ minWidth: 440, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
-			{ minWidth: 768, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
-			{ minWidth: 1150, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
-			{ minWidth: 1440, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
-			{ minWidth: 10000, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 }
-		];
-
-		const defaultCircle = {
-			left: 0,
-            top: 0,
-            width: 400,
-            height: 400,
-            rotate: 0
-		};
-
-		const positionConfig = component?.positionConfig || {};
-		let breakpoints = positionConfig.breakpoints || [];
-		let bp = breakpoints.find((b: any) => b.minWidth === activePoint);
-
-		if (!bp) {
-			const defaultBp = defaultBps.find((b: any) => b.minWidth === activePoint);
-			if (defaultBp) {
-				breakpoints.push(defaultBp);
-				bp = defaultBp;
-			}
-		}
-		
-		const bpIndex = breakpoints.findIndex((b: any) => b.minWidth === activePoint);
-		breakpoints[bpIndex] = bp;
-		
-		defaultData = {
-			circle1: component.circle1 || defaultCircle,
-			circle2: component.circle2 || defaultCircle,
-			positionConfig: {
-				...positionConfig,
-				breakpoints
-			}
-		};
-
-		updateComponent(defaultData);
-	}, [componentId, activePoint]);
 
 	if (!component) return null;
 
@@ -141,28 +79,23 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
         }
     };
 
-	const renderIntroConfig = () => {
-		const defaultBps = [
-			{ minWidth: 440, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
-			{ minWidth: 768, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
-			{ minWidth: 1150, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
-			{ minWidth: 1440, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
-			{ minWidth: 10000, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 }
-		];
+	const renderConfig = () => {
 		const positionConfig = component.positionConfig || {};
 		let breakpoints = positionConfig.breakpoints || [];
 		let bp = breakpoints.find((b: any) => b.minWidth === activePoint);
 
-		if (!bp) {
-			const defaultBp = defaultBps.find((b: any) => b.minWidth === activePoint);
-			if (defaultBp) {
-				breakpoints.push(defaultBp);
-				bp = defaultBp;
-			}
-		}
+		let circle1Breakpoints = component.circle1 || [];
+		let c1bp = circle1Breakpoints.find((b: any) => b.minWidth === activePoint);
+
+		let circle2Breakpoints = component.circle2 || [];
+		let c2bp = circle2Breakpoints.find((b: any) => b.minWidth === activePoint);
+
+		let textConfig = component.textConfig || [];
+		let tbp = textConfig.find((b: any) => b.minWidth === activePoint);
 
 		// получаем индекс уже после этого
 		const bpIndex = breakpoints.findIndex((b: any) => b.minWidth === activePoint);
+
 		const updatePos = (field: "left" | "top", value: number, mode: "half" | "full" | null) => {
 			let result: number | string = value;
 			if (field === "left") setLeftPos(value);
@@ -218,411 +151,102 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 			});
 		};
 
+		const updateList = (index: number, key: string, value: string | null) => {
+			const updatedList = [...component?.list];
+			updatedList[index] = { ...updatedList[index], [key]: value };
+			updateComponent({ list: updatedList });
+		};
+
 		return (
 			<div className={styles.fields}>
-				{/* Основные настройки интро */}
-				<label className={styles.colorPickerWrapper}>
-					Цвет фона:
-					<input
-						type="color"
-						value={component.color || "#111"}
-						onChange={(e) => updateComponent({ color: e.target.value })}
-						className={styles.colorInput}
-					/>
-					<div
-						className={styles.colorPreview}
-						style={{ backgroundColor: component.color || "#111" }}
-					/>
-				</label>
-
-				<label>
-					Анимация:
-					<CustomSelect
-						value={canvasOptions.find((opt) => opt.value === component.canvas) ?? canvasOptions[0]}
-						options={canvasOptions}
-						onChange={(opt) => updateComponent({ canvas: opt.value })}
-					/>
-				</label>
-
-				<label>
-					Кнопка:
-					<CustomSelect
-						value={btnOptions.find((opt) => opt.value === component.btn) ?? btnOptions[0]}
-						options={btnOptions}
-						onChange={(opt) => updateComponent({ btn: opt.value })}
-					/>
-				</label>
-
-				<label>
-					Положение навигации:
-					<CustomSelect
-						value={navPositionOptions.find((opt) => opt.value === component.navPosition) ?? navPositionOptions[0]}
-						options={navPositionOptions}
-						onChange={(opt) => updateComponent({ navPosition: opt.value })}
-					/>
-				</label>
-
-				<label>
-					Заголовок:
-					<input
-						type="text"
-						value={component.title || ""}
-						onChange={(e) => updateComponent({ title: e.target.value })}
-					/>
-				</label>
-
-				<label>
-					Текст 1:
-					<input
-						type="text"
-						value={component.text1 || ""}
-						onChange={(e) => updateComponent({ text1: e.target.value })}
-					/>
-				</label>
-
-				<label>
-					Текст 2:
-					<input
-						type="text"
-						value={component.text2 || ""}
-						onChange={(e) => updateComponent({ text2: e.target.value })}
-					/>
-				</label>
-
-				<label style={{ flexDirection: "row" }}>
-					<input
-						type="checkbox"
-						checked={component?.showCircles || false}
-						onChange={(e) => updateComponent({ showCircles: e.target.checked })}
-					/>
-					Показать круги
-				</label>
-
-				<label style={{ flexDirection: "row" }}>
-					<input
-						type="checkbox"
-						checked={component?.showSettings || false}
-						onChange={(e) => updateComponent({ showSettings: e.target.checked })}
-					/>
-					Показать настройки
-				</label>
-
-				<label style={{ flexDirection: "row" }}>
-					<input
-						type="checkbox"
-						checked={component?.showNav || false}
-						onChange={(e) => updateComponent({ showNav: e.target.checked })}
-					/>
-					Показать навигацию
-				</label>
-
-				{/* Управление анимацией */}
-				<div className={styles.animationBlock}>
-					<h3 className={styles.title}>Управление анимацией</h3>
-
-					<label>
-						Ширина экрана (px): {activePoint || "дефолт"}
-						<div className={styles.toggleButtons}>
-							<button
-								type="button"
-								onClick={() => setActivePoint(440)}
-								className={`${styles.posBtn} ${activePoint === 440 ? styles.active : ""}`}
-							>
-								мобильные
-							</button>
-							<button
-								type="button"
-								onClick={() => setActivePoint(768)}
-								className={`${styles.posBtn} ${activePoint === 768 ? styles.active : ""}`}
-							>
-								планшеты
-							</button>
-							<button
-								type="button"
-								onClick={() => setActivePoint(1150)}
-								className={`${styles.posBtn} ${activePoint === 1150 ? styles.active : ""}`}
-							>
-								м-ноут
-							</button>
-							<button
-								type="button"
-								onClick={() => setActivePoint(1440)}
-								className={`${styles.posBtn} ${activePoint === 1440 ? styles.active : ""}`}
-							>
-								б-ноут
-							</button>
-							<button
-								type="button"
-								onClick={() => setActivePoint(10000)}
-								className={`${styles.posBtn} ${activePoint === 10000 ? styles.active : ""}`}
-							>
-								дефолт
-							</button>
-						</div>
-					</label>
-
-					<label>
-						Масштаб (s): {bp.s ?? 0}
-						<input
-							type="range"
-							min={0}
-							max={3}
-							step={0.1}
-							value={bp.s ?? 0}
-							onChange={(e) => updateScale(parseFloat(e.target.value))
-							}
-						/>
-					</label>
-
-					<label>
-						Дисторшн (dist): {bp.dist ?? 0}
-						<input
-							type="range"
-							min={0}
-							max={10}
-							step={0.1}
-							value={bp.dist ?? 0}
-							onChange={(e) => updateDist(parseFloat(e.target.value))
-							}
-						/>
-					</label>
-
-					<label>
-						По оси Х: {bp.left}
-						<input
-							type="range"
-							min={-1000}
-							max={1000}
-							step={1}
-							value={leftPos}
-							onChange={(e) => updatePos("left", parseInt(e.target.value), leftMode)}
-						/>
-						<div className={styles.toggleButtons}>
-							<button
-								type="button"
-								onClick={() => {
-									setLeftMode("full");
-									updatePos("left", leftPos, "full");
-								}}
-								className={`${styles.posBtn} ${leftMode === "full" ? styles.active : ""}`}
-							>
-								full
-							</button>
-							<button
-								type="button"
-								onClick={() => {
-									setLeftMode("half");
-									updatePos("left", leftPos, "half");
-								}}
-								className={`${styles.posBtn} ${leftMode === "half" ? styles.active : ""}`}
-							>
-								half
-							</button>
-							<button
-								type="button"
-								onClick={() => {
-									setLeftMode(null);
-									updatePos("left", leftPos, null);
-								}}
-								className={styles.posBtn} 
-							>
-								Обнулить
-							</button>
-						</div>
-					</label>
-
-					<label>
-						По оси У: {bp.top}
-						<input
-							type="range"
-							min={-1000}
-							max={1000}
-							step={1}
-							value={topPos}
-							onChange={(e) => updatePos("top", parseInt(e.target.value), topMode)}
-						/>
-						<div className={styles.toggleButtons}>
-							<button
-								type="button"
-								onClick={() => {
-									setTopMode("full");
-									updatePos("top", topPos, "full");
-								}}
-								className={`${styles.posBtn} ${topMode === "full" ? styles.active : ""}`}
-							>
-								full
-							</button>
-							<button
-								type="button"
-								onClick={() => {
-									setTopMode("half");
-									updatePos("top", topPos, "half");
-								}}
-								className={`${styles.posBtn} ${topMode === "half" ? styles.active : ""}`}
-							>
-								half
-							</button>
-							<button
-								type="button"
-								onClick={() => {
-									setTopMode(null);
-									updatePos("top", topPos, null);
-								}}
-								className={styles.posBtn}
-							>
-								Обнулить
-							</button>
-						</div>
-					</label>
-
-					<label>
-						Вращение (deg): {bp.rotate ?? 0}
-						<input
-							type="range"
-							min={0}
-							max={360}
-							step={1}
-							value={bp.rotate ?? 0}
-							onChange={(e) => updateRotate(parseInt(e.target.value))}
-						/>
-					</label>
+				<div className={styles.toggleButtons}>
+					<button
+						type="button"
+						onClick={() => setTab("general")}
+						className={`${styles.tabBtn} ${tab === "general" ? styles.activeTab : ""}`}
+					>
+						общие
+					</button>
+					<button
+						type="button"
+						onClick={() => setTab("animation")}
+						className={`${styles.tabBtn} ${tab === "animation" ? styles.activeTab : ""}`}
+					>
+						анимация
+					</button>
+					{["iconic", "iconiclist", "links"].includes(component.type) && <button
+						type="button"
+						onClick={() => setTab("icons")}
+						className={`${styles.tabBtn} ${tab === "icons" ? styles.activeTab : ""}`}
+					>
+						иконки
+					</button>}
 				</div>
-				{/* Управление кругами */}
-				{component.showCircles && <div className={styles.animationBlock}>
-					<h3 className={styles.title}>Круг 1</h3>
-					<label>
-						По оси У: {component.circle1?.top}
-						<input
-							type="range"
-							min={-1000}
-							max={1000}
-							step={1}
-							value={component.circle1?.top}
-							onChange={(e) =>
-								updateComponent({ circle1: { ...component.circle1, top: parseInt(e.target.value) } })
-							}
-						/>
-					</label>
-					<label>
-						По оси Х: {component.circle1?.left}
-						<input
-							type="range"
-							min={-1000}
-							max={1000}
-							step={1}
-							value={component.circle1?.left}
-							onChange={(e) =>
-								updateComponent({ circle1: { ...component.circle1, left: parseInt(e.target.value) } })
-							}
-						/>
-					</label>
-					<label>
-						Ширина (px): {component.circle1?.width}
-						<input
-							type="range"
-							min={100}
-							max={1000}
-							step={1}
-							value={component.circle1?.width}
-							onChange={(e) =>
-								updateComponent({ circle1: { ...component.circle1, width: parseInt(e.target.value) } })
-							}
-						/>
-					</label>
-					<label>
-						Высота (px): {component.circle1?.height}
-						<input
-							type="range"
-							min={100}
-							max={1000}
-							step={1}
-							value={component.circle1?.height}
-							onChange={(e) =>
-								updateComponent({ circle1: { ...component.circle1, height: parseInt(e.target.value) } })
-							}
-						/>
-					</label>
-					<label>
-						Вращение (deg): {component.circle1?.rotate}
-						<input
-							type="range"
-							min={0}
-							max={360}
-							step={1}
-							value={component.circle1?.rotate}
-							onChange={(e) =>
-								updateComponent({ circle1: { ...component.circle1, rotate: parseInt(e.target.value) } })
-							}
-						/>
-					</label>
 
-					<h3 className={styles.title}>Круг 2</h3>
-					<label>
-						По оси У: {component.circle2?.top}
-						<input
-							type="range"
-							min={-1000}
-							max={1000}
-							step={1}
-							value={component.circle2?.top}
-							onChange={(e) =>
-								updateComponent({ circle2: { ...component.circle2, top: parseInt(e.target.value) } })
-							}
-						/>
-					</label>
-					<label>
-						По оси Х: {component.circle2?.left}
-						<input
-							type="range"
-							min={-1000}
-							max={1000}
-							step={1}
-							value={component.circle2?.left}
-							onChange={(e) =>
-								updateComponent({ circle2: { ...component.circle2, left: parseInt(e.target.value) } })
-							}
-						/>
-					</label>
-					<label>
-						Ширина (px): {component.circle2?.width}
-						<input
-							type="range"
-							min={100}
-							max={1000}
-							step={1}
-							value={component.circle2?.width}
-							onChange={(e) =>
-								updateComponent({ circle2: { ...component.circle2, width: parseInt(e.target.value) } })
-							}
-						/>
-					</label>
-					<label>
-						Высота (px): {component.circle2?.height}
-						<input
-							type="range"
-							min={100}
-							max={1000}
-							step={1}
-							value={component.circle2?.height}
-							onChange={(e) =>
-								updateComponent({ circle2: { ...component.circle2, height: parseInt(e.target.value) } })
-							}
-						/>
-					</label>
-					<label>
-						Вращение (deg): {component.circle2?.rotate}
-						<input
-							type="range"
-							min={0}
-							max={360}
-							step={1}
-							value={component.circle2?.rotate}
-							onChange={(e) =>
-								updateComponent({ circle2: { ...component.circle2, rotate: parseInt(e.target.value) } })
-							}
-						/>
-					</label>
-				</div>}
+				<label>
+                    Ширина экрана (px) {activePoint === 1281 ? "> 1280" : `до ${activePoint}`}
+                    <div className={styles.toggleButtons}>
+                        <button
+                            type="button"
+                            onClick={() => setActivePoint(440)}
+                            className={`${styles.posBtn} ${activePoint === 440 ? styles.active : ""}`}
+                        >
+                            мобильные
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setActivePoint(768)}
+                            className={`${styles.posBtn} ${activePoint === 768 ? styles.active : ""}`}
+                        >
+                            планшеты
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setActivePoint(1150)}
+                            className={`${styles.posBtn} ${activePoint === 1150 ? styles.active : ""}`}
+                        >
+                            м-ноут
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setActivePoint(1280)}
+                            className={`${styles.posBtn} ${activePoint === 1280 ? styles.active : ""}`}
+                        >
+                            б-ноут
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setActivePoint(1281)}
+                            className={`${styles.posBtn} ${activePoint === 1281 ? styles.active : ""}`}
+                        >
+                            дефолт
+                        </button>
+                    </div>
+                </label>
+
+				{tab === "general" && <GeneralTab tbp={tbp} updateComponent={updateComponent} componentId={componentId} />}
+				{tab === "animation" && <AnimationTab 
+					bp={bp}
+					c1bp={c1bp}
+					c2bp={c2bp}
+					updateScale={updateScale}
+					updateDist={updateDist}
+					leftPos={leftPos}
+					updatePos={updatePos}
+					leftMode={leftMode}
+					setLeftMode={setLeftMode}
+					topPos={topPos}
+					topMode={topMode}
+					setTopMode={setTopMode}
+					updateRotate={updateRotate}
+					updateComponent={updateComponent}
+					componentId={componentId}
+				/>}
+				{tab === "icons" && ["iconic", "iconiclist", "links"].includes(component.type) && <IconsTab  
+					componentId={componentId}
+					update={updateList}
+					updateComponent={updateComponent}
+				/>}
 			</div>
 		);
 	};
@@ -678,7 +302,7 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 							</div>
 						</div>
 						<div className={styles.content}>
-							{component.type && renderIntroConfig()}
+							{component.type && renderConfig()}
 						</div>
                         <button
                             type="button"

@@ -16,11 +16,9 @@ const Button: React.FC<ButtonProps> = ({
     className = '',
     disabled = false,
     type = 'button',
-    borderColor = '#ffa600',
     top = "0px",
     left = "0px",
     icon,
-    bg = "rgb(37, 37, 37)",
     delay = 0,
     labelColor,
     labelText,
@@ -50,21 +48,6 @@ const Button: React.FC<ButtonProps> = ({
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
 
-    let lStyle: any = { background: bg, borderColor: borderColor };
-
-    if (size === "regular") {
-        lStyle = { 
-            background: bg, 
-            borderColor: borderColor,
-            borderWidth: 3,
-            padding: 10
-        };
-    }
-
-    if (section === landingData.components.length - 1) {
-        lStyle = {};
-    }
-
     return (
         <motion.button
             className={`${styles.button} ${styles[size]} ${className}`}
@@ -76,7 +59,6 @@ const Button: React.FC<ButtonProps> = ({
             disabled={disabled}
             type={type}
             style={{ 
-                color: borderColor,
                 top: top,
                 left: left
             }}
@@ -103,7 +85,7 @@ const Button: React.FC<ButtonProps> = ({
         >
             {disabled && <div className={styles.disabled} />}
             <motion.div
-                className={landingData.components[section].btn === "light" ? styles[`layer${limiter ? "Preview" : ""}`] : styles[`layer2${limiter ? "Preview" : ""}`]}
+                className={styles[`layer${limiter ? "Preview" : ""}`]}
                 whileHover={{
                     scale: 0.97,
                     boxShadow: 'inset 0 0 5px rgba(0,0,0,1)',
@@ -118,12 +100,16 @@ const Button: React.FC<ButtonProps> = ({
                     damping: 20,
                     duration: .7
                 }}
-                style={lStyle}
+                style={{ 
+                    color: landingData.components[section].color, 
+                    fontSize: "2rem",
+                    backgroundColor: landingData.components[section].btn
+                }}
             >
                 {text && text}
                 {icon && icon}
-                {!disabled && labelText && <Label isHovered={isHovered} direction={direction} text={labelText} color={labelColor} section={section} />}
             </motion.div>
+            {!disabled && labelText && direction !== "right-rotate" && <Label isHovered={isHovered} direction={direction} text={labelText} color={labelColor} section={section} />}
         </motion.button>
     );
 };

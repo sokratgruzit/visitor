@@ -5,6 +5,7 @@ import { useAppStore } from "../../store/useAppStore";
 import { useConstructorStore } from "../../store/constructorStore";
 
 import Button from "../ui/button/Button";
+import { Svg } from "../svgs/Svg.module";
 
 import styles from "./Settings.module.css";
 
@@ -48,14 +49,11 @@ export function Settings() {
       <Button
         onClick={() => setAutoPlayback(!autoPlayback)}
         size={limiter ? "preview" : "small"}
-        borderColor="#FFF"
         left="0px"
         top="0px"
         icon={<>
-          {!autoPlayback && <motion.img 
-            src="/images/reverse.svg" 
-            alt="reverse" 
-            className={styles[`icon2${limiter ? "Preview" : ""}`]} 
+          {!autoPlayback && <motion.div 
+            className={styles.icon} 
             initial={{ rotate: 0, scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             whileHover={{ rotate: 180 }}
@@ -73,9 +71,11 @@ export function Settings() {
                 duration: .3
               }
             }}
-          />}
+          >
+            <Svg svgName="RotateRightTwoTone" size={{ xs: 27, sm: 27, md: 35, lg: 35 }} color={landingData.components[currentSection].color} />
+          </motion.div>}
           {autoPlayback && <motion.div 
-            className={styles[`square${limiter ? "Preview" : ""}`]}
+            className={styles.icon}
             initial={{ rotate: 0, scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             whileHover={{ rotate: 180 }}
@@ -93,9 +93,10 @@ export function Settings() {
                 duration: .3
               }
             }}
-          />}
+          >
+            <Svg svgName="StopOutlined" size={{ xs: 27, sm: 27, md: 35, lg: 35 }} color={landingData.components[currentSection].color} />
+          </motion.div>}
         </>}
-        bg={landingData.components[currentSection].color}
         labelColor={landingData.components[currentSection].color}
         labelText="Прокрутить автоматически"
         disabled={currentSection === landingData.components.length - 1}
@@ -104,7 +105,6 @@ export function Settings() {
       <Button
         onClick={() => setStartMusic(!startMusic)}
         size={limiter ? "preview" : "small"}
-        borderColor="#FFF"
         left="0px"
         top={limiter ? "60px" : "100px"}
         icon={<span 
@@ -112,6 +112,7 @@ export function Settings() {
         >
           <motion.span 
             className={styles.line} 
+            style={{ background: landingData.components[currentSection].color }}
             initial={{ opacity: !startMusic ? 0 : 1, scale: !startMusic ? 0 : 1, rotate: -50 }}
             animate={{ opacity: !startMusic ? 1 : 0, scale: !startMusic ? 1 : 0, rotate: -50 }}
             transition={{
@@ -119,18 +120,17 @@ export function Settings() {
               ease: "easeInOut"
             }}
           />
-          <motion.img 
-            src="/images/sound.svg" 
-            alt="sound" 
-            className={styles[`icon${limiter ? "Preview" : ""}`]} 
+          <motion.div 
+            className={styles.icon} 
             initial={{ rotate: 0 }}
             whileHover={{ rotate: 180 }}
             transition={{
               duration: .3
             }}
-          />
+          >
+            <Svg svgName="VolumeUp" size={{ xs: 27, sm: 27, md: 35, lg: 35 }} color={landingData.components[currentSection].color} />
+          </motion.div>
         </span>}
-        bg={landingData.components[currentSection].color}
         labelColor={landingData.components[currentSection].color}
         labelText="Просмотреть со звуком"
         section={currentSection}

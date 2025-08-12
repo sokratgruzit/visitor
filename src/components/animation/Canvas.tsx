@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppStore } from "../../store/useAppStore";
+import { useConstructorStore } from "../../store/constructorStore";
 import { motion, useAnimation } from "framer-motion";
 
 import { clamp, parseColor, randomPhase } from "../../utils/utils";
@@ -19,11 +20,12 @@ export const Canvas = () => {
   const trianglesRef = useRef<TriangleData[]>([]);
   const canvasControls = useAnimation();
   const { setWindowWidth, currentSection, windowWidth, landingData } = useAppStore();
+  const { activePoint } = useConstructorStore();
 
   const positionCanvas = (width: number, section: number) => {
     const config = landingData.components[section].positionConfig || {};
 
-    const { s, dist, left, top, rotate } = getPositionConfig(width, config, "canvas");
+    const { s, dist, left, top, rotate } = getPositionConfig(activePoint === 1281 ? width : activePoint, config, "canvas");
 
     setScaleFactor(s || 1);
     setDistortion(dist || 3);
@@ -142,7 +144,7 @@ export const Canvas = () => {
       cancelAnimationFrame(frameId);
       window.removeEventListener("resize", resize);
     };
-  }, [scaleFactor, currentSection, distortion, landingData.components[currentSection].positionConfig]);
+  }, [scaleFactor, currentSection, distortion, landingData.components[currentSection].positionConfig, activePoint]);
 
   useEffect(() => {
     const { target } = getTrianglesData(landingData.components[currentSection].canvas);

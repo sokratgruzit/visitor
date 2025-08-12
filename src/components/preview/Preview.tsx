@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { useAppStore } from "../../store/useAppStore";
 import { useConstructorStore } from "../../store/constructorStore";
-import type { ConfProps } from "../../types";
 import { getPositionConfig, invertHexColor } from "../../utils/utils";
 
 import { Navigation } from "../navigation/Navigation";
@@ -35,31 +34,21 @@ export const Preview = () => {
 
     const {
         activePoint,
+        selectedComponentId,
+        setActivePoint,
         setSelectedComponentId
     } = useConstructorStore();
 
     const isThrottledRef = useRef(false);
     const currentSectionRef = useRef(currentSection);
     const showCircles = landingData?.components[currentSection]?.showCircles;
+    const circleConf1 = landingData?.components[currentSection]?.circle1;
+    const circleConf2 = landingData?.components[currentSection]?.circle2;
+    const c1Conf = getPositionConfig(activePoint === 1281 ? windowWidth : activePoint, circleConf1, "circle");
+    const c2Conf = getPositionConfig(activePoint === 1281 ? windowWidth : activePoint, circleConf2, "circle");
     const circle1 = useAnimation();
     const circle2 = useAnimation();
     const controls = useAnimation();
-    const [conf, setConf] = useState<ConfProps>({
-        circle1: {
-            left: 0,
-            top: 0,
-            width: 400,
-            height: 400,
-            rotate: 0
-        },
-        circle2: {
-            left: 0,
-            top: 0,
-            width: 400,
-            height: 400,
-            rotate: 0
-        }
-    });
 
     const renderSection = (section: number) => {
         let compType = landingData?.components[section]?.type;
@@ -74,6 +63,7 @@ export const Preview = () => {
         if (compType === "list") return <Section4 data={compData} key={compKey} />;
         if (compType === "iconiclist") return <Section5 data={compData} key={compKey} />;
         if (compType === "links") return <Section6 data={compData} key={compKey} />;
+        
         return null;
     };
 
@@ -100,7 +90,7 @@ export const Preview = () => {
     useEffect(() => {
         const changeSection = (direction: "up" | "down") => {
             if (isThrottledRef.current) return;
-            if (!explore) return;
+            if (selectedComponentId !== null) return;
 
             isThrottledRef.current = true;
 
@@ -139,32 +129,22 @@ export const Preview = () => {
         };
 
         if (showCircles) {
-            const circleConf1 = landingData?.components[currentSection]?.circle1;
-            const circleOne = getPositionConfig(windowWidth, circleConf1, "circle");
-            const circleConf2 = landingData?.components[currentSection]?.circle2;
-            const circleTwo = getPositionConfig(windowWidth, circleConf2, "circle");
-
             circle1.start({
-                translateX: circleOne?.left,
-                translateY: circleOne?.top,
-                rotate: circleOne?.rotate,
+                translateX: c1Conf?.left,
+                translateY: c1Conf?.top,
+                rotate: c1Conf?.rotate,
                 transition: {
                     duration: .5
                 }
             });
 
             circle2.start({
-                translateX: circleTwo?.left,
-                translateY: circleTwo?.top,
-                rotate: circleTwo?.rotate,
+                translateX: c2Conf?.left,
+                translateY: c2Conf?.top,
+                rotate: c2Conf?.rotate,
                 transition: {
                     duration: .5
                 }
-            });
-
-            setConf({
-                circle1: circleOne,
-                circle2: circleTwo
             });
         }
 
@@ -181,63 +161,78 @@ export const Preview = () => {
         setSection, 
         currentSection, 
         explore,
+        c1Conf.rotate,
+        c1Conf.top,
+        c1Conf.left,
+        c2Conf.rotate,
+        c2Conf.top,
+        c2Conf.left,
         windowWidth, 
-        landingData?.components[currentSection]?.circle1, 
-        landingData?.components[currentSection]?.circle2,
-        showCircles
+        showCircles,
+        selectedComponentId,
+        activePoint
     ]);
+
+    useEffect(() => {
+        let p = 1281;
+
+		if (windowWidth <= 440) p = 440;
+		if (windowWidth > 440 && windowWidth <= 768) p = 768;
+		if (windowWidth > 768 && windowWidth <= 1150) p = 1150;
+		if (windowWidth > 1150 && windowWidth <= 1280) p = 1280;
+
+		setActivePoint(p);
+    }, []);
     
     return (
-        <>
-            {landingData?.audio && <div 
-                className={styles.container} 
-                style={{ 
-                    background: landingData?.components[currentSection]?.color,
-                    width: activePoint || "100%"
-                }}
+        <div 
+            className={styles.container} 
+            style={{ 
+                background: landingData?.components[currentSection]?.color,
+                width: activePoint === 1281 ? "100%" : activePoint
+            }}
+        >
+            {landingData?.components[currentSection]?.showCircles && <motion.div 
+                className={styles.circle1} 
+                style={{ width: c1Conf.width, height: c1Conf.height }}
+                animate={circle1}
+            />}
+            {landingData?.components[currentSection]?.showCircles && <motion.div 
+                className={styles.circle2} 
+                style={{ width: c2Conf.width, height: c2Conf.height }}
+                animate={circle2}
+            />}
+            <motion.div 
+                onClick={() => setSelectedComponentId(landingData?.components[currentSection]?.id)} 
+                className={styles.settingsIcon}
+                onHoverStart={handleHoverStart}
+                onHoverEnd={handleHoverEnd}
+                onTapStart={handleHoverStart}
+                onTapCancel={handleHoverEnd}
+                onTap={() => handleHoverEnd()}
+                animate={controls}
             >
-                {landingData?.components[currentSection]?.showCircles && <motion.div 
-                    className={styles.circle1} 
-                    style={{ width: conf.circle1.width, height: conf.circle1.height }}
-                    animate={circle1}
-                />}
-                {landingData?.components[currentSection]?.showCircles && <motion.div 
-                    className={styles.circle2} 
-                    style={{ width: conf.circle2.width, height: conf.circle2.height }}
-                    animate={circle2}
-                />}
-                <motion.div 
-                    onClick={() => setSelectedComponentId(landingData?.components[currentSection]?.id)} 
-                    className={styles.settingsIcon}
-                    onHoverStart={handleHoverStart}
-                    onHoverEnd={handleHoverEnd}
-                    onTapStart={handleHoverStart}
-                    onTapCancel={handleHoverEnd}
-                    onTap={() => handleHoverEnd()}
-                    animate={controls}
+                <Svg size={{ xs: 50, sm: 50, md: 60, lg: 60 }} svgName="Settings" color={invertHexColor(landingData?.components[currentSection]?.color || "#FFFFFF")} />
+            </motion.div>
+            <BackgroundMusic src={landingData?.audio} />
+            {/* <img src="sober5.webp" alt="proto" className={styles.img} /> */}
+            {landingData?.components[currentSection]?.canvas && <Canvas />}
+            {landingData?.components[currentSection]?.showNav && <Navigation />}
+            {landingData?.components[currentSection]?.showSettings && <Settings />}
+            <AnimatePresence mode="wait">
+                {renderSection(currentSection) && (
+                <motion.div
+                    key={currentSection + (explore ? "-explore" : "-intro") + selectedComponentId} 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                    style={{ width: "100%" }}
                 >
-                    <Svg classId="icon" svgName="cog" color={invertHexColor(landingData?.components[currentSection]?.color || "#FFFFFF")} />
+                    {renderSection(currentSection)}
                 </motion.div>
-                <BackgroundMusic src={landingData?.audio} />
-                {/* <img src="sober5.webp" alt="proto" className={styles.img} /> */}
-                {landingData?.components[currentSection]?.canvas && <Canvas />}
-                {landingData?.components[currentSection]?.showNav && <Navigation />}
-                {landingData?.components[currentSection]?.showSettings && <Settings />}
-                <AnimatePresence mode="wait">
-                    {renderSection(currentSection) && (
-                    <motion.div
-                        key={currentSection + (explore ? "-explore" : "-intro")} 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.4, ease: "easeInOut" }}
-                        style={{ width: "100%" }}
-                    >
-                        {renderSection(currentSection)}
-                    </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>}
-        </>
+                )}
+            </AnimatePresence>
+        </div>
     );
 }

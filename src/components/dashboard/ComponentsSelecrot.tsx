@@ -7,7 +7,12 @@ import { saveLanding } from "../../api/constructor";
 
 import styles from "./ComponentsSelector.module.css";
 
-const availableComponents = [
+interface selectProps {
+    label: string;
+    value: string | null;
+}
+
+const availableComponents: selectProps[] = [
 	{ label: "Intro", value: "intro" },
 	{ label: "Multitext", value: "multitext" },
 	{ label: "Text", value: "text" },
@@ -20,47 +25,70 @@ const availableComponents = [
 
 export const ComponentsSelector = () => {
 	const [isSelectOpen, setIsSelectOpen] = useState(false);
-	const [selected, setSelected] = useState(availableComponents[0]);
+	const [selected, setSelected] = useState<selectProps>(availableComponents[0]);
 	const slug = useConstructorStore((state) => state.slug);
     const { landingData, setLandingData, setSection } = useAppStore();
     const setSelectedComponentId = useConstructorStore((state) => state.setSelectedComponentId);
     const components = landingData.components || [];
 
-	const addComponent = async (option: { label: string; value: string }) => {
+	const addComponent = async (option: { label: string; value: string | null }) => {
 		const newId = slug + components.length;
-        const defaultCircle = {
-			left: 0,
-            top: 0,
-            width: 400,
-            height: 400,
-            rotate: 0
-		};
+        const defaultCircle = [
+            { minWidth: 440, height: 400, width: 400, left: 0, top: 0, rotate: 0 },
+			{ minWidth: 768, height: 400, width: 400, left: 0, top: 0, rotate: 0 },
+			{ minWidth: 1150, height: 400, width: 400, left: 0, top: 0, rotate: 0 },
+			{ minWidth: 1280, height: 400, width: 400, left: 0, top: 0, rotate: 0 },
+			{ minWidth: 1281, height: 400, width: 400, left: 0, top: 0, rotate: 0 }
+        ];
 		const positionConfig = {};
-		let breakpoints = [{ minWidth: 10000, s: 1, dist: 1, left: "half-750", top: "half-750", rotate: 0 }];
+		let breakpoints = [
+            { minWidth: 440, s: .2, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
+			{ minWidth: 768, s: .4, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
+			{ minWidth: 1150, s: .6, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
+			{ minWidth: 1280, s: .7, dist: 1, left: "half-750", top: "half-750", rotate: 0 },
+			{ minWidth: 1281, s: .8, dist: 1, left: "half-750", top: "half-750", rotate: 0 }
+        ];
         let defaultData: LandingComponent = {
             id: newId,
             type: option.value,
-            color: "#111",
+            color: "#000000",
             canvas: "sober",
+            titleColor: "texturedType",
+            textColor: "#FFFFFF",
+            title: "Заголовок",
+            titlePosition: "title-top-left",
+            text1: "Текст",
+            text2: "Текст",
+            text3: "Текст",
             showSettings: true,
             showNav: true,
-            btn: "light",
+            btn: "#FFFFFF",
             navPosition: "right",
             showCircles: false,
             circle1: defaultCircle,
             circle2: defaultCircle,
+            textConfig: defaultCircle,
+            list: [],
             positionConfig: {
                 ...positionConfig,
                 breakpoints
             }
         };
-		
-		if (option.value === "intro") {
+
+        if (option.value === "iconic") {
 			defaultData = {
                 ...defaultData,
-				title: "Заголовок",
-				text1: "Текст",
-				text2: "Текст",
+                canvas: "super",
+                list: [
+                    { id: 0, type: "text", content: "A", classId: "icon24", text: "Текст" },
+                    { id: 1, type: "text", content: "B", classId: "icon24", text: "Текст" },
+                    { id: 2, type: "text", content: "C", classId: "icon24", text: "Текст" },
+                    { id: 3, type: "text", content: "D", classId: "icon24", text: "Текст" },
+                    { id: 4, type: "text", content: "E", classId: "icon24", text: "Текст" },
+                    { id: 5, type: "text", content: "F", classId: "icon24", text: "Текст" },
+                    { id: 6, type: "text", content: "G", classId: "icon24", text: "Текст" },
+                    { id: 7, type: "text", content: "H", classId: "icon24", text: "Текст" },
+                ]
 			};
 		}
 
