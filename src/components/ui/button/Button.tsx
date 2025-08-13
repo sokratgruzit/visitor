@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
+import { useAppStore } from '../../../store/useAppStore';
+import { useConstructorStore } from '../../../store/constructorStore';
 import type { ButtonProps } from '../../../types';
 import Label from '../label/Label';
 
@@ -14,11 +16,9 @@ const Button: React.FC<ButtonProps> = ({
     className = '',
     disabled = false,
     type = 'button',
-    borderColor = '#ffa600',
     top = "0px",
     left = "0px",
     icon,
-    bg = "rgb(37, 37, 37)",
     delay = 0,
     labelColor,
     labelText,
@@ -26,6 +26,10 @@ const Button: React.FC<ButtonProps> = ({
     section = 0
 }) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
+
+    const { landingData } = useAppStore();
+    const { activePoint } = useConstructorStore();
+    const limiter = activePoint === 768 || activePoint === 440 || window.innerWidth <= 768;
 
     const handleClick = () => {
         let timeout = setTimeout(() => {
@@ -44,12 +48,6 @@ const Button: React.FC<ButtonProps> = ({
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
 
-    let lStyle: any = { background: bg, borderColor: borderColor };
-
-    if (section === 6) {
-        lStyle = {};
-    }
-
     return (
         <motion.button
             className={`${styles.button} ${styles[size]} ${className}`}
@@ -61,7 +59,6 @@ const Button: React.FC<ButtonProps> = ({
             disabled={disabled}
             type={type}
             style={{ 
-                color: borderColor,
                 top: top,
                 left: left
             }}
@@ -88,7 +85,7 @@ const Button: React.FC<ButtonProps> = ({
         >
             {disabled && <div className={styles.disabled} />}
             <motion.div
-                className={styles.layer2}
+                className={styles[`layer${limiter ? "Preview" : ""}`]}
                 whileHover={{
                     scale: 0.97,
                     boxShadow: 'inset 0 0 5px rgba(0,0,0,1)',
@@ -103,12 +100,16 @@ const Button: React.FC<ButtonProps> = ({
                     damping: 20,
                     duration: .7
                 }}
-                style={lStyle}
+                style={{ 
+                    color: landingData.components[section].color, 
+                    fontSize: "2rem",
+                    backgroundColor: landingData.components[section].btn
+                }}
             >
                 {text && text}
                 {icon && icon}
-                {!disabled && labelText && <Label isHovered={isHovered} direction={direction} text={labelText} color={labelColor} section={section} />}
             </motion.div>
+            {!disabled && labelText && direction !== "right-rotate" && <Label isHovered={isHovered} direction={direction} text={labelText} color={labelColor} section={section} />}
         </motion.button>
     );
 };

@@ -24,14 +24,19 @@
   align-items: center;
   transition: box-shadow 0.2s ease;
   position: relative;
-  border: 6px solid white;
   margin: auto;
   z-index: 10;
   touch-action: manipulation; 
   pointer-events: auto;
+  -webkit-mask-image: url("/images/repeat-white.png");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: cover;
+  mask-image: url("/images/repeat-white.png");
+  mask-repeat: no-repeat;
+  mask-size: cover;
 }
 
-.layer2 {
+.layerPreview {
   border-radius: 50px;
   width: 100%;
   height: 100%;
@@ -40,12 +45,16 @@
   align-items: center;
   transition: box-shadow 0.2s ease;
   position: relative;
-  border: 6px solid transparent;
   margin: auto;
   z-index: 10;
   touch-action: manipulation; 
   pointer-events: auto;
-  background-image: url("/images/green-texture.png");
+  -webkit-mask-image: url("/images/repeat-white.png");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: cover;
+  mask-image: url("/images/repeat-white.png");
+  mask-repeat: no-repeat;
+  mask-size: cover;
 }
 
 .disabled {
@@ -68,6 +77,17 @@
   font-size: 14px;
 }
 
+.smallSmall {
+  width: 40px;
+  height: 40px;
+}
+
+.regular {
+  width: auto;
+  height: auto;
+  font-size: 14px;
+}
+
 .medium {
   width: 200px;
   height: 50px;
@@ -80,14 +100,14 @@
   font-size: 18px;
 }
 
+.preview {
+  width: 40px;
+  height: 40px;
+}
+
 @media (max-width: 768px) {
   .small {
     width: 40px;
     height: 40px;
-  }
-
-  .layer,
-  .layer2 {
-    border-width: 3px;
   }
 }

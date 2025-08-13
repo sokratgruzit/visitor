@@ -1,26 +1,93 @@
+import { useEffect, useRef } from "react";
+
+import { useConstructorStore } from "../../store/constructorStore";
+import { useAppStore } from "../../store/useAppStore";
+import { getPositionConfig } from "../../utils/utils";
+
 import Typing from "../typing/Typing";
+
+import { Svg } from "../svgs/Svg.module";
 
 import styles from "./Section6.module.css";
 
-export default function Section6() {
+export default function Section6({ data }: any) {
+  const scrollableRef = useRef<HTMLDivElement>(null);
+  const { activePoint } = useConstructorStore();
+  const { landingData, currentSection, windowWidth } = useAppStore();
+
+  const conf = getPositionConfig(
+    activePoint === 1281 ? windowWidth : activePoint,
+    landingData?.components[currentSection]?.textConfig,
+    "circle"
+  );
+
+  const limiter = activePoint === 768 || activePoint === 440 || window.innerWidth <= 768;
+
+  useEffect(() => {
+    const node = scrollableRef.current;
+    if (!node) return;
+
+    const preventGlobalScroll = (e: WheelEvent | TouchEvent) => {
+      const el = node;
+
+      const isAtTop = el.scrollTop === 0;
+      const isAtBottom = el.scrollHeight - el.scrollTop === el.clientHeight;
+
+      if (
+        (e instanceof WheelEvent && (
+          (e.deltaY < 0 && isAtTop) ||
+          (e.deltaY > 0 && isAtBottom)
+        )) ||
+        (e instanceof TouchEvent && el.scrollHeight <= el.clientHeight)
+      ) {
+        // В этих случаях не предотвращаем, дайте перейти секцию
+        return;
+      }
+
+      // Предотвратить глобальный скролл
+      e.stopPropagation();
+    };
+
+    node.addEventListener("wheel", preventGlobalScroll, { passive: false });
+    node.addEventListener("touchmove", preventGlobalScroll, { passive: false });
+
+    return () => {
+      node.removeEventListener("wheel", preventGlobalScroll);
+      node.removeEventListener("touchmove", preventGlobalScroll);
+    };
+  }, []);
+
   return (
     <div className={styles.container}>
       <Typing
-        text="Как поддержать"
-        className={`${styles.title} texturedType2`}
+        text={data.title}
+        className={`${data?.titlePosition} title-l${limiter ? "Preview" : ""} ${data?.titleColor}`}
         showCursor={false}
       />
-      <div className={styles.supportBlock}>
-        <Typing
-          text="Поддержать можно здесь: "
-          className={`${styles.descr1} texturedType2`}
-          showCursor={false}
-        />
-        <a href="https://planeta.ru/account/my-campaigns/231068" target="_blank">
-          <svg className={styles.icon} xmlns="http://www.w3.org/2000/svg" version="1.1" id="Uploaded to svgrepo.com" width="800px" height="800px" viewBox="0 0 32 32">
-            <path fill="#384E4D" d="M12,10c1.657,0,3-1.343,3-3s-1.343-3-3-3S9,5.343,9,7S10.343,10,12,10z M12,5c1.103,0,2,0.897,2,2  s-0.897,2-2,2s-2-0.897-2-2S10.897,5,12,5z M18,6c1.657,0,3-1.343,3-3s-1.343-3-3-3s-3,1.343-3,3S16.343,6,18,6z M18,1  c1.103,0,2,0.897,2,2s-0.897,2-2,2s-2-0.897-2-2S16.897,1,18,1z M29.211,20.106l-1.33-0.665c-0.681-4.849-4.546-7.625-9.526-8.279  C17.805,10.459,16.96,10,16,10c-0.958,0-1.8,0.457-2.35,1.155c-4.182,0.549-7.577,2.596-8.964,6.107l-1.95,0.535  C2.301,17.917,2,18.312,2,18.763v4.475c0,0.45,0.301,0.845,0.735,0.964l1.95,0.535c0.649,1.643,1.735,2.964,3.139,3.962  l-0.515,2.058C7.153,31.389,7.63,32,8.281,32h3.938c0.459,0,0.859-0.312,0.97-0.758l0.112-0.448C14.17,30.926,15.071,31,16,31  c1.275,0,2.503-0.128,3.656-0.377l0.155,0.619C19.922,31.688,20.322,32,20.781,32h3.938c0.651,0,1.128-0.611,0.97-1.243  l-0.681-2.722c1.523-1.361,2.551-3.188,2.872-5.476l1.33-0.665C29.948,21.526,29.948,20.474,29.211,20.106z M18,13  c0,0.411-0.124,0.745-0.277,1h-3.446C14.124,13.745,14,13.411,14,13c0-1.103,0.897-2,2-2S18,11.897,18,13z M26.964,21.9l-0.073,0.52  c-0.276,1.967-1.133,3.605-2.548,4.869l-0.45,0.402L24.719,31h-3.938l-0.39-1.559l-0.946,0.204C18.356,29.881,17.197,30,16,30  c-0.844,0-1.701-0.065-2.548-0.194l-0.9-0.137L12.219,31H8.281l0.68-2.72l-0.556-0.395c-1.292-0.918-2.23-2.1-2.789-3.515  l-0.184-0.465l-0.482-0.132L3,23.237v-4.475l1.951-0.535l0.482-0.132l0.184-0.465c1.114-2.818,3.834-4.707,7.484-5.36  C13.041,12.505,13,12.747,13,13c0,0.353,0.069,0.687,0.183,1H12.5c-0.276,0-0.5,0.224-0.5,0.5v0c0,0.276,0.224,0.5,0.5,0.5h7  c0.276,0,0.5-0.224,0.5-0.5v0c0-0.276-0.224-0.5-0.5-0.5h-0.683C18.931,13.687,19,13.353,19,13c0-0.256-0.042-0.5-0.102-0.737  c3.822,0.691,7.366,2.853,7.993,7.317l0.073,0.52l1.8,0.9L26.964,21.9z"/>
-          </svg>
-        </a>
+      <div
+        className="text-container scrollable"
+        ref={scrollableRef}
+        style={{
+          top: conf.top,
+          left: `${conf.left}%`,
+          width: conf.width,
+          height: conf.height,
+          borderColor: data?.textColor,
+          background: data?.color
+        }}
+      >
+        {data.list.map((item: any) => {
+          return (
+            <a className={styles.link} key={item.text} href={item.link} target="_blank">
+              <Typing
+                text={item.text}
+                className={`${styles.descr1} descr-l${limiter ? "Preview" : ""}`}
+                color={data?.textColor}
+              />
+              <Svg  svgName={item.icon} size={{ xs: 30, sm: 30, md: 40, lg: 50 }} color={data?.textColor} />
+            </a>
+          )
+        })}
       </div>
     </div>
   );

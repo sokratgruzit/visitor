@@ -1,0 +1,98 @@
+.loginPage {
+    min-height: 100vh;
+    background: rgba(99, 197, 171, .5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    width: 100%;
+}
+
+.loginWrapper {
+    background-color: #ffffff;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+}
+
+.backButton {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    color: #000;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.title {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 16px;
+    color: #000;
+}
+
+.input {
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input::placeholder {
+    color: #ccc;
+}
+
+.input:focus {
+    border-color: #63C5AB;
+}
+
+.button {
+    background-color: #63C5AB;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button:disabled {
+    background-color: rgba(99, 197, 171, .5);
+    cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+    background-color: #63C5AB;
+}
+
+.error {
+    color: #F4696B;
+    font-size: 14px;
+    text-align: center;
+}
+
+.switchAuth {
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+}
+
+.switchAuth a {
+    color: #63C5AB;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.switchAuth a:hover {
+    text-decoration: underline;
+}

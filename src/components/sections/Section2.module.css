@@ -1,8 +1,7 @@
 .container {
     font-family: "Bloc";
-    position: fixed;
+    position: relative;
     width: 100vw;
-    z-index: 8000;
     padding: 150px 150px 150px 120px;
     height: 100dvh;
     padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
@@ -12,22 +11,25 @@
     align-items: flex-end;
 }
 
-.title {
-    text-align: center;
-    position: absolute;
-    left: 0;
-    bottom: 0px;
-    width: 100%;
-    font-size: 10rem;
-}
-
 .labels {
     position: absolute;
-    z-index: 8500;
+    z-index: 200;
     width: 400px;
     height: 400px;
     left: calc(50% - 200px);
     top: calc(48% - 200px);
+    border: 5px solid white;
+    border-radius: 200px;
+    border-style: dotted;
+}
+
+.labelsPreview {
+    position: absolute;
+    z-index: 200;
+    width: 300px;
+    height: 300px;
+    left: calc(50% - 150px);
+    top: calc(48% - 150px);
     border: 5px solid white;
     border-radius: 200px;
     border-style: dotted;
@@ -93,6 +95,66 @@
     transition: .5s;
 }
 
+.labelBgPreview {
+    font-size: 40px;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    background-image: url("/images/repeat-white.png");
+    color: #63C5AB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.labelWrapPreview {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+}
+
+.label1Preview {
+    bottom: 12.5px;
+    left: 12.5px;
+}
+
+.label2Preview {
+    bottom: -30px;
+    left: calc(50% - 30px);
+}
+
+.label3Preview {
+    bottom: 12.5px;
+    right: 12.5px;
+}
+
+.label4Preview {
+    top: calc(50% - 30px);
+    right: -30px;
+}
+
+.label5Preview {
+    top: 12.5px;
+    right: 12.5px;
+}
+
+.label6Preview {
+    top: -30px;
+    left: calc(50% - 30px);
+}
+
+.label7Preview {
+    top: 12.5px;
+    left: 12.5px;
+}
+
+.label8Preview {
+    top: calc(50% - 30px);
+    left: -30px;
+}
+
 .popup {
     position: absolute;
     max-width: 30%;
@@ -106,32 +168,6 @@
     text-align: center;
 }
 
-.icon1 {
-    width: 70px;
-    height: 70px;
-}
-
-.icon2 {
-    width: 70px;
-    height: 70px;
-    left: 6px;
-    top: 0;
-    position: absolute;
-}
-
-.icon3 {
-    width: 60px;
-    height: 60px;
-}
-
-.icon4 {
-    width: 70px;
-    height: 70px;
-    position: absolute;
-    left: 0;
-    top: 8px;
-}
-
 .active {
     box-shadow: 0px -1px 54px -16px rgba(0,0,0,0.9);
     -webkit-box-shadow: 0px -1px 54px -16px rgba(0,0,0,0.9);
@@ -139,7 +175,6 @@
 }
 
 .descr1 {
-    font-size: 16px;
     width: 30%;
     color: #787878;
     word-break: break-all;
@@ -152,18 +187,9 @@
     .container {
         padding: 92px 150px 150px 120px;
     }
-
-    .title {
-        font-size: 8rem;
-    }
 }
 
 @media (max-width: 1150px) {
-    .title {
-        font-size: 5rem;
-        bottom: 30px;
-    }
-
     .container {
         padding: 150px 140px 30px 120px;
         padding-bottom: calc(30px + env(safe-area-inset-bottom)) !important;
@@ -264,10 +290,6 @@
 }
 
 @media (max-width: 768px) {
-    .title {
-        font-size: 2rem;
-    }
-
     .container {
         padding: 242px 69px 30px 69px;
     }

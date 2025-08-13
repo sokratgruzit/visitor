@@ -1,8 +1,7 @@
 .container {
     font-family: "Bloc";
-    position: fixed;
+    position: relative;
     width: 100vw;
-    z-index: 8000;
     height: 100dvh;
     display: flex;
     flex-direction: column;
@@ -11,57 +10,10 @@
     gap: 50px;
 }
 
-.title {
-    text-align: center;
-    position: absolute;
-    left: 50px;
-    top: 0px;
-    font-size: 10rem;
-}
-
-.blockWrap {
-    position: relative;
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-}
-
 .descr1 {
     width: 100%;
     color: white;
     word-break: break-all;
     display: flex;
     gap: 10px;
-}
-
-.icon {
-    width: 50px;
-    height: 50px;
-}
-
-@media (max-width: 1440px) {
-    .title {
-        font-size: 8rem;
-    }
-}
-
-@media (max-width: 1150px) {
-    .title {
-        font-size: 5rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .title {
-        font-size: 2rem;
-        top: 16px;
-    }
-
-    svg {
-        width: 40px !important;
-        height: 40px !important;
-    }
 }

@@ -1,11 +1,25 @@
 import { useEffect, useRef } from "react";
 
+import { useConstructorStore } from "../../store/constructorStore";
+import { useAppStore } from "../../store/useAppStore";
+import { getPositionConfig } from "../../utils/utils";
+
 import Typing from "../typing/Typing";
 
 import styles from "./Section1.module.css";
 
-export default function Section1() {
+export default function Section1({ data }: any) {
   const scrollableRef = useRef<HTMLDivElement>(null);
+  const { activePoint } = useConstructorStore();
+  const { landingData, currentSection, windowWidth } = useAppStore();
+
+  const limiter = activePoint === 768 || activePoint === 440 || window.innerWidth <= 768;
+
+  const conf = getPositionConfig(
+    activePoint === 1281 ? windowWidth : activePoint,
+    landingData?.components[currentSection]?.textConfig,
+    "circle"
+  );
 
   useEffect(() => {
     const node = scrollableRef.current;
@@ -44,18 +58,31 @@ export default function Section1() {
   return (
     <div className={styles.container}>
       <Typing
-        text="История проекта"
-        className={`${styles.title} texturedType`}
+        text={data.title}
+        className={`${data?.titlePosition} title-l${limiter ? "Preview" : ""} ${data?.titleColor}`}
         showCursor={false}
       />
-      <div ref={scrollableRef} className={styles.scrollable}>
+      <div
+        className="text-container scrollable"
+        ref={scrollableRef}
+        style={{
+          top: conf.top,
+          left: `${conf.left}%`,
+          width: conf.width,
+          height: conf.height,
+          borderColor: data?.textColor,
+          background: data?.color
+        }}
+      >
         <Typing
-          text="Идея Sober Man родилась из наблюдения за близкими, которые проходили через сложный путь отказа от алкоголя. После лечения им часто не хватало поддержки, мотивации и ощущение, что они не одни."
-          className={`${styles.descr1} descr-l`}
+          text={data.text1}
+          className={`${styles.descr1} descr-l${limiter ? "Preview" : ""}`}
+          color={data?.textColor}
         />
         <Typing
-          text="Многие срываются, потому что после клиники их встречает пустота — и мы хотим это изменить."
-          className={`${styles.descr2} descr-l`}
+          text={data.text2}
+          className={`${styles.descr2} descr-l${limiter ? "Preview" : ""}`}
+          color={data?.textColor}
         />
       </div>
     </div>

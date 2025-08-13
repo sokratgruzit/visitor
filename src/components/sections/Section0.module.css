@@ -1,8 +1,7 @@
 .container {
     font-family: "Bloc";
-    position: fixed;
+    position: relative;
     width: 100vw;
-    z-index: 8000;
     padding: 92px 150px 150px 120px;
     height: 100dvh;
     padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
@@ -12,106 +11,41 @@
     align-items: flex-end;
 }
 
-.title {
-    text-align: center;
-    position: absolute;
-    left: 110px;
-    bottom: 0px;
-    font-size: 10rem;
-}
-
 .descr1 {
-    font-size: 16px;
     width: 100%;
     color: #787878;
     word-break: break-all;
 }
 
 .descr3 {
-    font-size: 16px;
     width: 100%;
     color: #787878;
     word-break: break-all;
 }
 
 .descr2 {
-    font-size: 16px;
     width: 100%;
     color: rgb(211, 47, 47);
     word-break: break-all;
-}
-
-.scrollable {
-    position: relative;
-    width: 50%;
-    height: auto;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;      
-    -ms-overflow-style: none; 
-    padding: 12px;
-    border: 4px dotted white;
-    border-radius: 10px;
-}
-
-.scrollable::-webkit-scrollbar {
-  display: none;              
 }
 
 @media (max-width: 1440px) {
     .container {
         padding: 92px 150px 150px 120px;
     }
-
-    .title {
-        left: 120px;
-        font-size: 8rem;
-    }
 }
 
 @media (max-width: 1150px) {
-    .title {
-        font-size: 5rem;
-        width: 50%;
-        left: 25%;
-        top: 30px;
-    }
-
     .container {
-        padding: 150px 140px 30px 120px;
+        padding: 300px 140px 30px 120px;
         justify-content: flex-end;
         padding-bottom: calc(30px + env(safe-area-inset-bottom)) !important;
-    }
-
-    .descr2,
-    .descr3 {
-        width: 100%;
-    }
-
-    .scrollable {
-        width: 100%;
     }
 }
 
 @media (max-width: 768px) {
-    .title {
-        font-size: 2rem;
-        top: 16px;
-    }
-
-    .descr1 {
-        width: 100%;
-    }
-
     .container {
         padding: 242px 69px 30px 69px;
         justify-content: center;
-    }
-
-    .scrollable {
-        width: 100%;
     }
 }

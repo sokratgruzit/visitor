@@ -1,8 +1,15 @@
 .container {
     position: absolute;
-    z-index: 10000;
+    z-index: 3000;
     width: 300px;
     height: 100px;
+}
+
+.containerPreview {
+    position: absolute;
+    z-index: 3000;
+    width: 200px;
+    height: 40px;
 }
 
 .right {
@@ -23,6 +30,24 @@
     transform: translate(0) rotate(0deg) !important;
 }
 
+.topPreview {
+    top: 30px !important;
+    left: calc(50% - 100px) !important;
+    transform: translate(0) rotate(0deg) !important;
+}
+
+.rightPreview {
+    top: calc(50% - 20px) !important;
+    left: calc(100% - 140px) !important;
+    transform: translate(0) rotate(90deg) !important;
+}
+
+.bottomPreview {
+    top: calc(100% - 60px) !important;
+    left: calc(50% - 100px) !important;
+    transform: translate(0) rotate(0deg) !important;
+}
+
 .slideNumber {
     display: flex;
     justify-content: center;
@@ -30,32 +55,51 @@
     width: 100px;
     height: 100px;
     border-radius: 50px;
-    background-image: url("/images/repeat-white.png");
     font-size: 72px;
     position: absolute;
     left: calc(50% - 50px);
     top: 0;
     transition: .7s;
+    -webkit-mask-image: url("/images/repeat-white.png");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: cover;
+    mask-image: url("/images/repeat-white.png");
+    mask-repeat: no-repeat;
+    mask-size: cover;
 }
 
-.slideNumber2 {
+.slideNumberPreview {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    background-image: url("/images/green-texture.png");
-    font-size: 72px;
-    position: absolute;
-    left: calc(50% - 50px);
+    width: 40px;
+    height: 40px;
+    font-size: 32px;
+    left: calc(50% - 20px);
     top: 0;
+    border-radius: 50px;
+    position: absolute;
     transition: .7s;
+    -webkit-mask-image: url("/images/repeat-white.png");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: cover;
+    mask-image: url("/images/repeat-white.png");
+    mask-repeat: no-repeat;
+    mask-size: cover;
 }
 
 .icon {
     width: 45px;
     height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-origin: center;
+}
+
+.iconPreview {
+    width: 30px;
+    height: 30px;
 }
 
 @media (max-width: 768px) {

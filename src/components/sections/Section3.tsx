@@ -1,11 +1,25 @@
 import { useEffect, useRef } from "react";
 
+import { useConstructorStore } from "../../store/constructorStore";
+import { useAppStore } from "../../store/useAppStore";
+import { getPositionConfig } from "../../utils/utils";
+
 import Typing from "../typing/Typing";
 
 import styles from "./Section3.module.css";
 
-export default function Section3() {
+export default function Section3({ data }: any) {
   const scrollableRef = useRef<HTMLDivElement>(null);
+  const { activePoint } = useConstructorStore();
+  const { landingData, currentSection, windowWidth } = useAppStore();
+
+  const limiter = activePoint === 768 || activePoint === 440 || window.innerWidth <= 768;
+
+  const conf = getPositionConfig(
+    activePoint === 1281 ? windowWidth : activePoint,
+    landingData?.components[currentSection]?.textConfig,
+    "circle"
+  );
 
   useEffect(() => {
     const node = scrollableRef.current;
@@ -44,22 +58,36 @@ export default function Section3() {
   return (
     <div className={styles.container}>
       <Typing
-        text="Зачем это нужно?"
-        className={`${styles.title} texturedType`}
+        text={data.title}
+        className={`${data?.titlePosition} title-l${limiter ? "Preview" : ""} ${data?.titleColor}`}
         showCursor={false}
       />
-      <div ref={scrollableRef} className={styles.scrollable}>
+      <div
+        className="text-container scrollable"
+        ref={scrollableRef}
+        style={{
+          top: conf.top,
+          left: `${conf.left}%`,
+          width: conf.width,
+          height: conf.height,
+          borderColor: data?.textColor,
+          background: data?.color
+        }}
+      >
         <Typing
-          text="Через геймификацию, наставничество, прогресс в фото, подарки от близких и реальные бонусы — мы превращаем трезвость не в страдание, а в приключение с наградой."
-          className={`${styles.descr1} descr-l`}
+          text={data.text1}
+          className={`${styles.descr1} descr-l${limiter ? "Preview" : ""}`}
+          color={data?.textColor}
         />
         <Typing
-          text="Алкоголизм — это не просто вредная привычка. Это системная, разрушительная зависимость, которая ежегодно уносит миллионы жизней и разрушает семьи по всему миру. По оценкам Всемирной организации здравоохранения, каждый третий взрослый сталкивался с проблемами, связанными с алкоголем — лично или через близких."
-          className={`${styles.descr2} descr-l`}
+          text={data.text2}
+          className={`${styles.descr2} descr-l${limiter ? "Preview" : ""}`}
+          color={data?.textColor}
         />
         <Typing
-          text="Многие государства и медицинские учреждения предлагают первичный курс лечения. Это детоксикация, реабилитационные центры, краткосрочные программы. Но вот что происходит потом?"
-          className={`${styles.descr3} descr-l`}
+          text={data.text3}
+          className={`${styles.descr3} descr-l${limiter ? "Preview" : ""}`}
+          color={data?.textColor}
         />
       </div>
     </div>

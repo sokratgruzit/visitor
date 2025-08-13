@@ -1,67 +1,24 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useTransform, useAnimationFrame, animate  } from "framer-motion";
 
+import { useConstructorStore } from "../../store/constructorStore";
+import { useAppStore } from "../../store/useAppStore";
+import { getPositionConfig } from "../../utils/utils";
+
 import Typing from "../typing/Typing";
+import { Svg } from "../svgs/Svg.module";
 
 import styles from "./Section2.module.css";
 
-export default function Section2() {
-  const STEP = 45;
-  const LABELS = [
-    "AI", 
-    "%", 
-    <svg className={styles.icon1} xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 72 72" id="emoji">
-      <g id="color">
-        <path fill="#63C5AB" d="M39.7792,57.8819H52.77V44.851c5.2976,0,11.6314,1.4,11.6314-6.1934,0-6.7613-6.3338-5.8535-11.6314-5.8535V19.5133H39.7792c1.8239-5.8157,1.8239-11.6314-4.9774-11.6314s-6.73,6.3338-6.73,11.6314H14.4016V33.5239c4.2433-1.5715,11.6314-4.4184,11.6314,5.1737s-8.48,6.5814-11.6314,5.1737V57.8819H26.3729c0-5.2976,0-12.383,7.213-12.3112C40.3686,45.6382,39.7792,52.5843,39.7792,57.8819Z"/>
-        <path fill="#63C5AB" d="M39.0542,51.0992c1.7359,1.7359,1.11,4.1339,1.11,6.7827H52.77V43.8713c5.8157,1.0357,10.9968,3.6045,10.9968-5.2137,0-5.2976-4.9743-6.1934-10.2719-6.1934V19.8154H49.3788"/>
-      </g>
-    </svg>, 
-    <svg className={styles.icon2} xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none">
-      <path d="M11.5 9H6C5.44772 9 5 9.44772 5 10V14.5M11.5 9H17C17.5523 9 18 9.44772 18 10V14.5M11.5 9V20M11.5 20H6C5.44772 20 5 19.5523 5 19V14.5M11.5 20H17C17.5523 20 18 19.5523 18 19V14.5M5 14.5H18" stroke="#63C5AB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M11.75 7.25C11.75 8.07843 11.0784 8.75 10.25 8.75C9.42157 8.75 8.75 8.07843 8.75 7.25C8.75 6.42157 9.42157 5.75 10.25 5.75C11.0784 5.75 11.75 6.42157 11.75 7.25Z" stroke="#63C5AB" strokeWidth="1.5"/>
-      <circle cx="13.5" cy="6.5" r="1.75" stroke="#63C5AB" strokeWidth="1.5"/>
-    </svg>, 
-    "$", 
-    <div className={styles.labelBg}>
-      <svg className={styles.icon3} xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none">
-        <path fillRule="evenodd" clipRule="evenodd" d="M8 3C8 1.89543 8.89543 1 10 1H14C15.1046 1 16 1.89543 16 3V5.02297L18.8108 3.89864C19.7457 3.52467 20.8129 3.90408 21.3019 4.78431L22.8508 7.57234C23.4158 8.58931 22.9969 9.87203 21.9406 10.3595L18.3863 12L21.9406 13.6405C22.9969 14.128 23.4158 15.4107 22.8508 16.4277L21.3019 19.2157C20.8129 20.0959 19.7457 20.4753 18.8108 20.1014L16 18.977V21C16 22.1046 15.1046 23 14 23H10C8.89543 23 8 22.1046 8 21V18.977L5.18918 20.1014C4.25426 20.4753 3.1871 20.0959 2.69809 19.2157L1.14918 16.4277C0.584198 15.4107 1.00309 14.128 2.05938 13.6405L5.61369 12L2.05938 10.3595C1.00309 9.87203 0.584197 8.58931 1.14918 7.57234L2.69809 4.78431C3.1871 3.90409 4.25426 3.52467 5.18918 3.89864L8 5.02297V3ZM14 3H10V6.5C10 6.83182 9.8354 7.14204 9.56062 7.32807C9.28585 7.5141 8.9367 7.55171 8.6286 7.42848L4.4464 5.7556L2.89749 8.54363L8.41905 11.092C8.7732 11.2555 9 11.6099 9 12C9 12.3901 8.7732 12.7445 8.41905 12.908L2.89749 15.4564L4.4464 18.2444L8.6286 16.5715C8.9367 16.4483 9.28585 16.4859 9.56062 16.6719C9.8354 16.858 10 17.1682 10 17.5V21H14V17.5C14 17.1682 14.1646 16.858 14.4394 16.6719C14.7141 16.4859 15.0633 16.4483 15.3714 16.5715L19.5536 18.2444L21.1025 15.4564L15.5809 12.908C15.2268 12.7445 15 12.3901 15 12C15 11.6099 15.2268 11.2555 15.5809 11.092L21.1025 8.54363L19.5536 5.7556L15.3714 7.42848C15.0633 7.55171 14.7141 7.5141 14.4394 7.32807C14.1646 7.14204 14 6.83182 14 6.5V3Z" fill="#63C5AB"/>
-      </svg>
-    </div>, 
-    <svg className={styles.icon4} xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 192 192" fill="none">
-      <g transform="translate(-71.217 -81.133) scale(1.79263)">
-        <path strokeDasharray="none" d="M108 109s31-22 26-51c-29-4-50 26-50 26l-19 1-13 21 4 5 16-4 14 14-5 14 5 5 21.173-11.946z" fill="none" stroke="#63C5AB" strokeWidth="6.69408" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="1" />
-        <circle stroke="none" strokeWidth="1.30539" fill="#63C5AB" fillOpacity="1" cx="118.676" cy="73.434" r="6.527" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="5" strokeDasharray="none" strokeOpacity="1" />
-      </g>
-    </svg>, 
-    <svg className={styles.icon3} xmlns="http://www.w3.org/2000/svg" fill="#63C5AB" version="1.1" id="Capa_1" width="800px" height="800px" viewBox="0 0 461.497 461.497">
-      <g>
-        <g id="Layer_2_17_">
-          <g>
-            <path d="M268.616,409.893c-3.622,0.977-7.318,1.848-10.986,2.602c-9.596,1.955-15.789,11.32-13.829,20.917     c0.11,0.548,0.247,1.069,0.404,1.593c2.618,8.674,11.466,14.086,20.518,12.239c4.378-0.896,8.79-1.939,13.115-3.103     c9.46-2.544,15.062-12.277,12.517-21.737C287.807,412.932,278.076,407.346,268.616,409.893z"/>
-            <path d="M144.994,400.018c-3.425-1.524-6.842-3.174-10.157-4.908c-8.687-4.529-19.396-1.163-23.926,7.523     c-2.236,4.272-2.55,9.039-1.258,13.317c1.334,4.412,4.369,8.307,8.772,10.605c3.957,2.061,8.024,4.032,12.104,5.851     c8.941,3.992,19.43-0.016,23.425-8.956C157.949,414.502,153.936,404.02,144.994,400.018z"/>
-            <path d="M205.979,415.609c-3.73-0.3-7.514-0.723-11.228-1.245c-9.699-1.382-18.673,5.367-20.051,15.065     c-0.374,2.636-0.145,5.213,0.575,7.602c1.933,6.405,7.433,11.441,14.496,12.449c4.419,0.624,8.917,1.125,13.362,1.479     c9.766,0.791,18.317-6.487,19.103-16.247C223.021,424.946,215.747,416.395,205.979,415.609z"/>
-            <path d="M325.738,383.44c-3.081,2.12-6.277,4.178-9.494,6.12c-7.089,4.271-10.115,12.719-7.833,20.294     c0.42,1.388,1.02,2.748,1.802,4.051c5.052,8.389,15.953,11.083,24.343,6.033c3.825-2.307,7.625-4.761,11.288-7.28     c8.066-5.553,10.11-16.596,4.556-24.661C344.849,379.924,333.803,377.888,325.738,383.44z"/>
-            <path d="M395.453,335.48c-7.944-5.728-19.028-3.931-24.757,4.008c-2.188,3.037-4.504,6.05-6.875,8.941     c-3.89,4.75-4.9,10.908-3.255,16.375c0.985,3.254,2.911,6.269,5.736,8.585c7.577,6.205,18.75,5.091,24.955-2.487     c2.831-3.45,5.595-7.043,8.202-10.664C405.189,352.294,403.396,341.213,395.453,335.48z"/>
-            <path d="M420.276,270.883c-9.4-2.746-19.247,2.654-21.989,12.056c-1.054,3.601-2.228,7.217-3.485,10.745     c-1.334,3.713-1.354,7.585-0.292,11.092c1.568,5.203,5.495,9.614,10.994,11.584c9.222,3.307,19.371-1.483,22.683-10.7     c1.504-4.204,2.901-8.508,4.146-12.792C435.074,283.471,429.676,273.62,420.276,270.883z"/>
-            <path d="M453.552,155.337l-23.307,7.242c-17.688-54.204-54.93-98.746-105.337-125.798c-5.074-2.725-10.221-5.229-15.431-7.53     c-0.038-0.018-0.068-0.033-0.103-0.056c-0.218-0.092-0.447-0.178-0.659-0.272C262.758,8.814,211.901,5.002,163.15,18.204     c-0.383,0.075-0.766,0.147-1.144,0.254c-1.628,0.444-3.271,0.925-4.892,1.409c-2.661,0.804-5.338,1.67-7.964,2.571     c-0.311,0.107-0.604,0.24-0.906,0.36c-43.518,15.075-80.577,42.869-107.015,80.005c-0.094,0.128-0.2,0.238-0.289,0.365     c-2.584,3.629-5.087,7.392-7.451,11.188c-0.148,0.243-0.271,0.496-0.412,0.747c-2.358,3.824-4.624,7.736-6.77,11.726     C4.395,167.665-3.964,213.292,1.739,258.362c0.013,0.103,0.025,0.199,0.034,0.301c0.009,0.072,0.025,0.147,0.042,0.222     c1.55,12.04,4.096,24.041,7.671,35.895c9.388,31.125,25.053,59.112,46.557,83.188c6.523,7.302,17.735,7.932,25.041,1.409     c7.302-6.525,7.939-17.74,1.411-25.04c-10.735-12.013-19.719-25.208-26.91-39.424c-0.077-0.175-0.145-0.354-0.229-0.522     c-1.691-3.354-3.298-6.792-4.786-10.233c-0.008-0.027-0.017-0.043-0.029-0.065c-2.708-6.334-5.069-12.854-7.093-19.553     c-23.243-77.066,6.399-157.708,67.912-202.796c0.91-0.662,1.819-1.33,2.738-1.972c15.792-11.138,33.604-19.97,53.098-25.848     c19.618-5.914,39.457-8.398,58.887-7.816c0.314,0.014,0.619,0.023,0.93,0.032c1.186,0.036,2.368,0.099,3.548,0.165     c0.477,0.025,0.952,0.051,1.428,0.081c60.587,3.79,116.456,37.44,147.82,90.305c0.017,0.03,0.029,0.064,0.05,0.094     c0.465,0.785,0.919,1.569,1.375,2.363c0.054,0.089,0.113,0.168,0.165,0.259c6.001,10.523,11.05,21.784,14.977,33.701     l-23.306,7.246c-6.473,2.011-7.11,6.668-1.429,10.35l50.719,32.852c5.686,3.685,12.468,1.575,15.061-4.676l23.171-55.82     C463.182,156.804,460.02,153.327,453.552,155.337z"/>
-            <path d="M155.288,231.23c-17.092,12.662-28.75,23.646-34.964,32.95c-6.208,9.303-9.932,19.235-11.155,29.796h106.935v-29.053     h-55.657c3.268-3.213,6.111-5.805,8.533-7.785c2.423-1.991,7.217-5.457,14.395-10.418c12.074-8.517,20.404-16.335,24.985-23.455     c4.577-7.114,6.868-14.582,6.868-22.4c0-7.349-1.997-13.987-5.993-19.912c-3.999-5.919-9.486-10.311-16.456-13.17     c-6.969-2.855-16.728-4.288-29.273-4.288c-12.014,0-21.419,1.505-28.219,4.514c-6.792,3.004-12.061,7.319-15.792,12.944     c-3.735,5.636-6.299,13.467-7.702,23.497l35.704,2.887c0.991-7.229,2.933-12.278,5.818-15.135     c2.891-2.859,6.604-4.29,11.161-4.29c4.373,0,8.006,1.388,10.892,4.16c2.886,2.766,4.332,6.109,4.332,10.02     c0,3.619-1.458,7.438-4.377,11.466C172.406,217.582,165.726,223.476,155.288,231.23z"/>
-            <path d="M323.651,293.977v-23.979h16.099V242.34h-16.099v-78.844h-31.066l-64.93,77.187v29.315h64.93v23.979H323.651     L323.651,293.977z M258.28,242.34l34.305-40.366v40.366H258.28z"/>
-          </g>
-        </g>
-      </g>
-    </svg>
-  ];
+export default function Section2({ data }: any) {
+  const scrollableRef = useRef<HTMLDivElement>(null);
+  const listLength = data?.list?.length ?? 0;
+  const STEP = 360 / listLength;
 
-  const TEXTS = [
-    "ИИ-наставник помогает советом и поддержкой",
-    "Прогресс в фотографиях — видно, как меняется лицо, тело и взгляд",
-    "Ежедневные задания: от медитации до 'трезвых' рецептов",
-    "Семья может следить за успехами и дарить подарки",
-    "Фонд вознаграждения — мотивация в виде реальных бонусов",
-    "В будущем планируется интегрировать приложение в профильные клиники",
-    "Улучшение ментального и физического здоровья",
-    "Помощь осуществляется 24/7",
-  ];
+  const { activePoint } = useConstructorStore();
+  const { landingData, currentSection, windowWidth } = useAppStore();
+  const limiter = activePoint === 768 || activePoint === 440 || window.innerWidth <= 768;
+  const labelLimiter = activePoint === 1150 || window.innerWidth <= 1150;
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -69,7 +26,7 @@ export default function Section2() {
   const rotate = useMotionValue(0);
   let prevStep = useRef(-1);
   
-  const labelRotates = Array.from({ length: LABELS.length }, () => useMotionValue(0));
+  const labelRotates = Array.from({ length: listLength }, () => useMotionValue(0));
 
   const reversedLabelRotates = labelRotates.map(val => useTransform(val, v => v));
 
@@ -77,6 +34,46 @@ export default function Section2() {
     setIsHovered(hover);
     setActiveIndex(index);
   };
+
+  const conf = getPositionConfig(
+    activePoint === 1281 ? windowWidth : activePoint,
+    landingData?.components[currentSection]?.textConfig,
+    "circle"
+  );
+
+  useEffect(() => {
+    const node = scrollableRef.current;
+    if (!node) return;
+
+    const preventGlobalScroll = (e: WheelEvent | TouchEvent) => {
+      const el = node;
+
+      const isAtTop = el.scrollTop === 0;
+      const isAtBottom = el.scrollHeight - el.scrollTop === el.clientHeight;
+
+      if (
+        (e instanceof WheelEvent && (
+          (e.deltaY < 0 && isAtTop) ||
+          (e.deltaY > 0 && isAtBottom)
+        )) ||
+        (e instanceof TouchEvent && el.scrollHeight <= el.clientHeight)
+      ) {
+        // В этих случаях не предотвращаем, дайте перейти секцию
+        return;
+      }
+
+      // Предотвратить глобальный скролл
+      e.stopPropagation();
+    };
+
+    node.addEventListener("wheel", preventGlobalScroll, { passive: false });
+    node.addEventListener("touchmove", preventGlobalScroll, { passive: false });
+
+    return () => {
+      node.removeEventListener("wheel", preventGlobalScroll);
+      node.removeEventListener("touchmove", preventGlobalScroll);
+    };
+  }, []);
 
   useAnimationFrame((_, delta) => {
     if (!isHovered && !initialLoad) {
@@ -112,15 +109,29 @@ export default function Section2() {
   return (
     <div className={styles.container}>
       <Typing
-        text="Что такое Sober Man?"
-        className={`${styles.title} texturedType`}
+        text={data.title}
+        className={`${data?.titlePosition} title-l${limiter ? "Preview" : ""} ${data?.titleColor}`}
         showCursor={false}
       />
-      <Typing
-        text="Sober Man — это не просто трекер трезвости. Это мобильное приложение, которое превращает путь отказа от алкоголя в геймифицированное приключение, где каждый день — это миссия, а каждая неделя — новый уровень."
-        className={`${styles.descr1} descr-l`}
-      />
-      {isHovered && activeIndex !== null && <div className={`${styles.popup} descr-l`}>{TEXTS[activeIndex]}</div>}
+      <div
+        className="text-container scrollable"
+        ref={scrollableRef}
+        style={{
+          top: conf.top,
+          left: `${conf.left}%`,
+          width: conf.width,
+          height: conf.height,
+          borderColor: data?.textColor,
+          background: data?.color
+        }}
+      >
+        <Typing
+          text={data.text1}
+          className={`${styles.descr1} descr-l${limiter ? "Preview" : ""}`}
+          color={data?.textColor}
+        />
+      </div>
+      {isHovered && activeIndex !== null && <div style={{ color: data.color }} className={`${styles.popup} descr-l${limiter ? "Preview" : ""}`}>{data.list[activeIndex].text}</div>}
       <motion.div 
         style={{ rotate }}
         initial={{ scale: 0 }}
@@ -128,20 +139,20 @@ export default function Section2() {
         transition={{
           scale: { duration: 0.5, type: "spring", stiffness: 200, damping: 18 },
         }} 
-        className={styles.labels}
+        className={styles[!labelLimiter ? "labels" : "labelsPreview"]} 
       >
-        {LABELS.map((label, i) => {
+        {listLength > 0 && data?.list?.map((label: any, i: number) => {
           return (
             <motion.div
               key={i}
-              className={`${styles.labelWrap} ${styles[`label${i + 1}`]}`}
+              className={`${styles[!labelLimiter ? "labelWrap" : "labelWrapPreview"]} ${styles[`label${i + 1}${!labelLimiter ? "Preview" : ""}`]}`}
               onMouseEnter={() => handleHover(true, i)}
               onMouseLeave={() => handleHover(false, null)}
               onTouchStart={() => handleHover(true, i)}
               onTouchEnd={() => handleHover(false, null)}
               style={{ rotate: reversedLabelRotates[i] }}
             >
-              <div className={`${styles.labelBg} ${activeIndex === i ? styles.active : null}`}>{label}</div>
+              <div style={{ color: data.color }} className={`${styles[!labelLimiter ? "labelBg" : "labelBgPreview"]} ${activeIndex === i ? styles.active : null}`}>{label.type === "text" ? label.content : <Svg size={{ xs: 40, sm: 40, md: 40, lg: 50 }} svgName={label.content} color={data.color} />}</div>
             </motion.div>
           )
         })}

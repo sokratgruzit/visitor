@@ -10,7 +10,7 @@ import { micro, addSolidRingToMicro } from "./micro";
 
 let initializedMicro = false;
 
-export function getTrianglesData(section: number, explore: boolean): {
+export function getTrianglesData(canvasType: string): {
   mutated: Omit<TriangleData, "phase">[];
   target: Omit<TriangleData, "phase">[];
 } {
@@ -24,27 +24,31 @@ export function getTrianglesData(section: number, explore: boolean): {
   const distance = 1500;
   let base = soberWord;
 
-  if (explore && section === 0) {
+  if (canvasType === "sober") {
+    base = soberWord;
+  }
+
+  if (canvasType === "laptop") {
     base = laptop;
   }
 
-  if (explore && section === 1) {
+  if (canvasType === "panic") {
     base = panic;
   }
 
-  if (explore && section === 2) {
+  if (canvasType === "super") {
     base = superMan;
   }
 
-  if (explore && section === 3) {
+  if (canvasType === "chain") {
     base = bridge;
   }
 
-  if (explore && section === 4) {
+  if (canvasType === "umbrella") {
     base = umbrella;
   }
 
-  if (explore && section === 5) {
+  if (canvasType === "ai") {
     if (!initializedMicro) {
       initializedMicro = true;
       addSolidRingToMicro(4, 4, 114, 8, "#03A9F4", 0.7, 3, -3, 16);

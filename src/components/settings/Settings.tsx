@@ -2,29 +2,33 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 
 import { useAppStore } from "../../store/useAppStore";
+import { useConstructorStore } from "../../store/constructorStore";
 
 import Button from "../ui/button/Button";
+import { Svg } from "../svgs/Svg.module";
 
 import styles from "./Settings.module.css";
 
 export function Settings() {
-  const colors = ["#98BFF6", "#EDB948", "#63C5AB", "#EF9F64", "#F4696B", "#64d6e2", "#FFFFF0"];
-
   const { 
     currentSection, 
     startMusic, 
     autoPlayback, 
+    landingData,
     setAutoPlayback, 
     setStartMusic,
     setSection
   } = useAppStore();
 
+  const { activePoint } = useConstructorStore();
+  const limiter = window.innerWidth <= 768 || activePoint === 768 || activePoint === 440;
+
   useEffect(() => {
-    const timeouts = [2000, 2000, 2000, 2000, 2000, 2000, 2000];
+    const timeouts = Array(landingData.components.length).fill(2000);
     let timeout: ReturnType<typeof setTimeout>;
 
     const switchToNextSection = () => {
-      if (currentSection < 7) {
+      if (currentSection < landingData.components.length) {
         timeout = setTimeout(() => {
           setSection(currentSection + 1);
           switchToNextSection();
@@ -41,18 +45,15 @@ export function Settings() {
   }, [currentSection, autoPlayback]);
 
   return (
-    <div className={styles.container}>
+    <div className={styles[`container${limiter ? "Preview" : ""}`]}>
       <Button
         onClick={() => setAutoPlayback(!autoPlayback)}
-        size="small"
-        borderColor="#FFF"
+        size={limiter ? "preview" : "small"}
         left="0px"
         top="0px"
         icon={<>
-          {!autoPlayback && <motion.img 
-            src="/images/reverse.svg" 
-            alt="reverse" 
-            className={styles.icon2} 
+          {!autoPlayback && <motion.div 
+            className={styles.icon} 
             initial={{ rotate: 0, scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             whileHover={{ rotate: 180 }}
@@ -70,9 +71,11 @@ export function Settings() {
                 duration: .3
               }
             }}
-          />}
+          >
+            <Svg svgName="RotateRightTwoTone" size={{ xs: 27, sm: 27, md: 35, lg: 35 }} color={landingData.components[currentSection].color} />
+          </motion.div>}
           {autoPlayback && <motion.div 
-            className={styles.square}
+            className={styles.icon}
             initial={{ rotate: 0, scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             whileHover={{ rotate: 180 }}
@@ -90,25 +93,26 @@ export function Settings() {
                 duration: .3
               }
             }}
-          />}
+          >
+            <Svg svgName="StopOutlined" size={{ xs: 27, sm: 27, md: 35, lg: 35 }} color={landingData.components[currentSection].color} />
+          </motion.div>}
         </>}
-        bg={colors[currentSection]}
-        labelColor={colors[currentSection]}
+        labelColor={landingData.components[currentSection].color}
         labelText="Прокрутить автоматически"
-        disabled={currentSection === 6}
+        disabled={currentSection === landingData.components.length - 1}
         section={currentSection}
       />
       <Button
         onClick={() => setStartMusic(!startMusic)}
-        size="small"
-        borderColor="#FFF"
+        size={limiter ? "preview" : "small"}
         left="0px"
-        top={window.innerWidth <= 768 ? "60px" : "100px"}
+        top={limiter ? "60px" : "100px"}
         icon={<span 
           className={styles.soundIconWrap}
         >
           <motion.span 
             className={styles.line} 
+            style={{ background: landingData.components[currentSection].color }}
             initial={{ opacity: !startMusic ? 0 : 1, scale: !startMusic ? 0 : 1, rotate: -50 }}
             animate={{ opacity: !startMusic ? 1 : 0, scale: !startMusic ? 1 : 0, rotate: -50 }}
             transition={{
@@ -116,19 +120,18 @@ export function Settings() {
               ease: "easeInOut"
             }}
           />
-          <motion.img 
-            src="/images/sound.svg" 
-            alt="sound" 
+          <motion.div 
             className={styles.icon} 
             initial={{ rotate: 0 }}
             whileHover={{ rotate: 180 }}
             transition={{
               duration: .3
             }}
-          />
+          >
+            <Svg svgName="VolumeUp" size={{ xs: 27, sm: 27, md: 35, lg: 35 }} color={landingData.components[currentSection].color} />
+          </motion.div>
         </span>}
-        bg={colors[currentSection]}
-        labelColor={colors[currentSection]}
+        labelColor={landingData.components[currentSection].color}
         labelText="Просмотреть со звуком"
         section={currentSection}
       />

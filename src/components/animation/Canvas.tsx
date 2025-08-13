@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppStore } from "../../store/useAppStore";
+import { useConstructorStore } from "../../store/constructorStore";
 import { motion, useAnimation } from "framer-motion";
 
 import { clamp, parseColor, randomPhase } from "../../utils/utils";
 import type { TriangleData } from "../../types";
 import { getTrianglesData } from "../../utils/objects";
+import { getPositionConfig } from "../../utils/utils";
 
 import styles from "./Canvas.module.css";
 
@@ -17,265 +19,26 @@ export const Canvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const trianglesRef = useRef<TriangleData[]>([]);
   const canvasControls = useAnimation();
-  const { setIntro, setWindowWidth, currentSection, explore, windowWidth } = useAppStore();
+  const { setWindowWidth, currentSection, windowWidth, landingData } = useAppStore();
+  const { activePoint } = useConstructorStore();
 
-  const positionCanvas = (width: number, section: number, explore: boolean) => {
-    if (!explore) {
-      let s = .7;
+  const positionCanvas = (width: number, section: number) => {
+    const config = landingData.components[section].positionConfig || {};
 
-      if (width <= 1024) s = .5;
-      if (width <= 768) s = .4;
-      if (width <= 440) s = .3;
+    const { s, dist, left, top, rotate } = getPositionConfig(activePoint === 1281 ? width : activePoint, config, "canvas");
 
-      setScaleFactor(s);
+    setScaleFactor(s || 1);
+    setDistortion(dist || 3);
 
-      canvasControls.start({
-        translateX: window.innerWidth / 2 - 750,
-        translateY: window.innerHeight / 2 - 750,
-        transition: {
-          duration: .5,
-          ease: "easeInOut"
-        }
-      });
-    } else {
-      let s = 1;
-      let dist = 3;
-      let pos = {
-        left: window.innerWidth / 2 - 750,
-        top: window.innerHeight / 2 - 750,
-        rotate: 0
-      };
-
-      if (section === 0) {
-        s = .4;
-        dist = 1;
-        pos = {
-          left: window.innerWidth / 2 - 750,
-          top: -626,
-          rotate: 0
-        };
-
-        if (width >= 768) {
-          s = .8;
-
-          pos = {
-            left: -480,
-            top: -482,
-            rotate: 0
-          };
-        }
-
-        if (width >= 1150) {
-          s = 1.2;
-
-          pos = {
-            left: -445,
-            top: -490,
-            rotate: 0
-          };
-        }
-
-        if (width >= 1440) {
-          s = 1.5;
-
-          pos = {
-            left: -415,
-            top: -460,
-            rotate: 0
-          };
-        }
+    canvasControls.start({
+      translateX: left,
+      translateY: top,
+      rotate: rotate,
+      transition: {
+        duration: .5,
+        ease: "easeInOut"
       }
-
-      if (section === 1) {
-        s = .6;
-        dist = 2;
-          
-        pos = {
-          left: window.innerWidth - 835,
-          top: window.innerHeight - 1000,
-          rotate: 0
-        };
-
-        if (width >= 1150) {
-          s = 1.5;
-
-          pos = {
-            left: window.innerWidth - 955,
-            top: window.innerHeight - 1170,
-            rotate: 0
-          };
-        }
-      }
-
-      if (section === 2) {
-        s = .4;
-        dist = 5;
-
-        if (width >= 1150) {
-          s = .6;
-        }
-      }
-
-      if (section === 3) {
-        s = .5;
-        dist = 1;
-
-        pos = {
-          left: window.innerWidth / 2 - 750,
-          top: -670,
-          rotate: 25
-        };
-
-        if (width >= 440) {
-          s = .8;
-
-          pos = {
-            left: window.innerWidth / 2 - 750,
-            top: -600,
-            rotate: 25
-          };
-        }
-
-        if (width >= 768) {
-          s = 1;
-        }
-
-        if (width >= 1150) {
-          s = 1;
-
-          pos = {
-            left: -340,
-            top: -470,
-            rotate: 0
-          };
-        }
-      }
-
-      if (section === 4) {
-        dist = 1;
-        
-        s = .4;
-
-        pos = {
-          left: window.innerWidth - 865,
-          top: -615,
-          rotate: -90
-        };
-
-        if (width >= 440) {
-          s = .6;
-
-          pos = {
-            left: window.innerWidth - 920,
-            top: -550,
-            rotate: -90
-          };
-        }
-
-        if (width >= 768) {
-          s = .8;
-
-          pos = {
-            left: window.innerWidth - 975,
-            top: -485,
-            rotate: -90
-          };
-        }
-
-        if (width >= 1150) {
-          s = 1;
-
-          pos = {
-            left: window.innerWidth - 1025,
-            top: -425,
-            rotate: -90
-          };
-        }
-      }
-
-      if (section === 5) {
-        dist = 2;
-        
-        s = .4;
-
-        pos = {
-          left: window.innerWidth - 850,
-          top: window.innerHeight - 850,
-          rotate: 0
-        };
-
-        if (width >= 440) {
-          s = .6;
-
-          pos = {
-            left: window.innerWidth - 900,
-            top: window.innerHeight - 900,
-            rotate: 0
-          };
-        }
-
-        if (width >= 768) {
-          s = .8;
-
-          pos = {
-            left: window.innerWidth - 950,
-            top: window.innerHeight - 950,
-            rotate: 0
-          };
-        }
-
-        if (width >= 1150) {
-          s = 1;
-
-          pos = {
-            left: window.innerWidth - 1000,
-            top: window.innerHeight - 1000,
-            rotate: 0
-          };
-        }
-      }
-
-      if (section === 6) {
-        s = .2;
-
-        pos = {
-          left: window.innerWidth / 2 - 750,
-          top: -640,
-          rotate: 0
-        };
-
-        if (width >= 440) {
-          s = .3;
-
-          pos = {
-            left: window.innerWidth / 2 - 750,
-            top: -570,
-            rotate: 0
-          };
-        }
-
-        if (width >= 980) {
-          pos = {
-            left: window.innerWidth - 950,
-            top: -650,
-            rotate: 0
-          };
-        }
-      }
-
-      setScaleFactor(s);
-      setDistortion(dist);
-
-      canvasControls.start({
-        translateX: pos.left,
-        translateY: pos.top,
-        rotate: pos.rotate,
-        transition: {
-          duration: .5,
-          ease: "easeInOut"
-        }
-      });
-    }
+    });
   };
 
   useEffect(() => {
@@ -295,7 +58,7 @@ export const Canvas = () => {
       ctx.setTransform(1, 0, 0, 1, 0, 0); 
       ctx.scale(dpr, dpr);
 
-      positionCanvas(width, currentSection, explore);
+      positionCanvas(width, currentSection);
       setWindowWidth(window.innerWidth);
     }
 
@@ -376,16 +139,15 @@ export const Canvas = () => {
     }
 
     frameId = requestAnimationFrame(animate);
-    setTimeout(() => setIntro(false), 2000);
 
     return () => {
       cancelAnimationFrame(frameId);
       window.removeEventListener("resize", resize);
     };
-  }, [scaleFactor, currentSection, explore, distortion]);
+  }, [scaleFactor, currentSection, distortion, landingData.components[currentSection].positionConfig, activePoint]);
 
   useEffect(() => {
-    const { target } = getTrianglesData(currentSection, explore);
+    const { target } = getTrianglesData(landingData.components[currentSection].canvas);
 
     for (let i = 0; i < trianglesRef.current.length; i++) {
       const triangle = trianglesRef.current[i];
@@ -426,10 +188,10 @@ export const Canvas = () => {
         targetPoints: t.points,
       });
     }
-  }, [currentSection, explore, windowWidth]);
+  }, [currentSection, windowWidth, landingData.components[currentSection].canvas]);
 
   useEffect(() => {
-    const { mutated, target } = getTrianglesData(currentSection, explore);
+    const { mutated, target } = getTrianglesData(landingData.components[currentSection].canvas);
 
     trianglesRef.current = mutated.map((t, i) => {
       const targetTriangle = target[i];
