@@ -406,5 +406,7 @@ export const useAppStore = create<AppState>((set) => ({
   setStartMusic: (play) => set({ startMusic: play }),
   setAutoPlayback: (play) => set({ autoPlayback: play }),
   setWindowWidth: (width) => set({ windowWidth: width }),
-  setLandingData: (landingData) => set({ landingData: landingData }),
+  setLandingData: (landingData) => {
+    set({ landingData: landingData })
+  },
 }));

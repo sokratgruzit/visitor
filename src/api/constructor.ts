@@ -105,6 +105,7 @@ export async function getConstructorLanding(): Promise<{
 export async function saveLanding(landingData: any, slug: string): Promise<{
 	success: boolean;
 	message?: string;
+	data?: any;
 }> {
 	const response = await authFetch(`${apiBaseUrl}/api/constructor/save-landing`, {
 		method: "POST",
@@ -127,5 +128,39 @@ export async function saveLanding(landingData: any, slug: string): Promise<{
 	return {
 		success: true,
 		message: data.message || "Лендинг успешно сохранен",
+		data: data.data.components
+	};
+}
+
+/**
+ * Удаление компонента лендинга по ID.
+ * Возвращает success и message.
+ */
+export async function deleteLandingComponent(componentId: string): Promise<{
+	success: boolean;
+	message?: string;
+	data?: any;
+}> {
+	const response = await authFetch(`${apiBaseUrl}/api/constructor/delete-component/${encodeURIComponent(componentId)}`, {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${accessToken}`,
+		},
+	});
+
+	const data = await response.json().catch(() => ({}));
+
+	if (!response.ok) {
+		return {
+			success: false,
+			message: data.message || "Ошибка при удалении компонента",
+		};
+	}
+
+	return {
+		success: true,
+		message: data.message || "Компонент успешно удалён",
+		data: data.data
 	};
 }

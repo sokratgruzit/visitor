@@ -140,7 +140,7 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                 />
             </label>
 
-            {!["list", "iconiclist"].includes(component.type) && <label>
+            {!["list", "iconiclist", "image"].includes(component.type) && <label>
                 Текст 1:
                 <input
                     type="text"

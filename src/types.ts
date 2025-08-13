@@ -60,6 +60,8 @@ export interface LandingComponent {
   color?: string;
   canvas?: string;
   btn?: string;
+  fileUrl?: string;
+  fileBase64?: any;
   textColor?: string;
   titleColor?: string;
   navPosition?: "right" | "top" | "bottom";
@@ -73,6 +75,7 @@ export interface LandingComponent {
   circle1?: Circle[];
   circle2?: Circle[];
   textConfig?: Circle[];
+  imageConfig?: Circle[];
   positionConfig?: any;
   showSettings?: boolean;
   showNav?: boolean;

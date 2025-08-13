@@ -1,0 +1,42 @@
+.container {
+    font-family: "Bloc";
+    position: relative;
+    width: 100vw;
+    padding: 251px 150px 150px 120px;
+    height: 100dvh;
+    padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.descr1 {
+    width: 100%;
+    color: #787878;
+    word-break: break-all;
+}
+
+.descr2 {
+    width: 100%;
+    color: rgb(211, 47, 47);
+    word-break: break-all;
+}
+
+@media (max-width: 1440px) {
+    .container {
+        padding: 180px 150px 150px 120px;
+    }
+}
+
+@media (max-width: 1150px) {
+    .container {
+        padding: 150px 140px 30px 120px;
+        padding-bottom: calc(30px + env(safe-area-inset-bottom)) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 100px 69px 30px 69px;
+    }
+}

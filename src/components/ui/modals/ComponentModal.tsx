@@ -4,11 +4,12 @@ import { useState } from "react";
 import { useConstructorStore } from "../../../store/constructorStore";
 import { useNotificationStore } from "../../../store/notificationStore";
 import { useAppStore } from "../../../store/useAppStore";
-import { saveLanding } from "../../../api/constructor";
+import { saveLanding, deleteLandingComponent } from "../../../api/constructor";
 
 import { GeneralTab } from "./GeneralTab";
 import { AnimationTab } from "./AnimationTab";
 import { IconsTab } from "./IconsTab";
+import { ImageTab } from "./ImageTab";
 
 import styles from "./ComponentModal.module.css";
 
@@ -20,6 +21,7 @@ interface Props {
 
 export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
     const [saving, setSaving] = useState<boolean>(false);
+	const [deleting, setDeleting] = useState<boolean>(false);
 	const [leftMode, setLeftMode] = useState<"half" | "full" | null>(null);
 	const [topMode, setTopMode] = useState<"half" | "full" | null>(null);
 	const [leftPos, setLeftPos] = useState<number>(0);
@@ -29,7 +31,8 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 	const {
 		slug,
 		activePoint,
-		setActivePoint
+		setActivePoint,
+		setSelectedComponentId
 	} = useConstructorStore();
 
 	const { setLandingData, landingData } = useAppStore();
@@ -53,6 +56,7 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 	const handlePreview = () => {
         if (isPreviewPage) {
             navigate("/dashboard/constructor");
+			setSelectedComponentId(null);
         } else {
             navigate(`/preview/${slug}`);
         }
@@ -70,12 +74,32 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
                 notify({ type: "error", message: result.message || "Ошибка при сохранении" });
             } else {
                 notify({ type: "success", message: result.message || "Сохранено" });
-                setLandingData({ slug: landingData.slug, audio: landingData.audio, introBtn: landingData.introBtn, playMusic: landingData.playMusic, components: landingData.components });
+                setLandingData({ slug: landingData.slug, audio: landingData.audio, introBtn: landingData.introBtn, playMusic: landingData.playMusic, components: result.data });
             }
         } catch {
             notify({ type: "error", message: "Ошибка при сохранении лендинга" });
         } finally {
             setSaving(false);
+        }
+    };
+
+	const onDelete = async () => {
+        setDeleting(true);
+        try {
+            const result = await deleteLandingComponent(componentId);
+
+            if (!result.success) {
+                notify({ type: "error", message: result.message || "Ошибка при удалении" });
+            } else {
+                notify({ type: "success", message: result.message || "Компонент удален" });
+                setLandingData({ slug: landingData.slug, audio: landingData.audio, introBtn: landingData.introBtn, playMusic: landingData.playMusic, components: result.data.components });
+				navigate("/dashboard/constructor");
+				setSelectedComponentId(null);
+            }
+        } catch {
+            notify({ type: "error", message: "Ошибка при сохранении лендинга" });
+        } finally {
+            setDeleting(false);
         }
     };
 
@@ -181,6 +205,13 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 					>
 						иконки
 					</button>}
+					{["image"].includes(component.type) && <button
+						type="button"
+						onClick={() => setTab("image")}
+						className={`${styles.tabBtn} ${tab === "image" ? styles.activeTab : ""}`}
+					>
+						картинка
+					</button>}
 				</div>
 
 				<label>
@@ -247,6 +278,7 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 					update={updateList}
 					updateComponent={updateComponent}
 				/>}
+				{tab === "image" && <ImageTab updateComponent={updateComponent} component={component} />}
 			</div>
 		);
 	};
@@ -304,14 +336,24 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 						<div className={styles.content}>
 							{component.type && renderConfig()}
 						</div>
-                        <button
-                            type="button"
-                            onClick={onSave}
-                            disabled={!slug || saving}
-                            className={styles.saveButton}
-                        >
-                            {saving ? "Сохранение..." : "Сохранить изменения"}
-                        </button>
+						<div className={styles.btnsWrap}>
+							<button
+								type="button"
+								onClick={onSave}
+								disabled={!slug || saving}
+								className={styles.saveButton}
+							>
+								{saving ? "Сохранение..." : "Сохранить изменения"}
+							</button>
+							<button
+								type="button"
+								onClick={onDelete}
+								disabled={!slug || deleting}
+								className={styles.deleteButton}
+							>
+								{deleting ? "Удаление..." : "Удалить компонент"}
+							</button>
+						</div>
 					</motion.div>
 				</>
 			)}

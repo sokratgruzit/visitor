@@ -17,6 +17,7 @@ import Section3 from "../sections/Section3";
 import Section4 from "../sections/Section4";
 import Section5 from "../sections/Section5";
 import Section6 from "../sections/Section6";
+import Section7 from "../sections/Section7";
 import BackgroundMusic from "../music/BackgroundMusic";
 
 import styles from "./Preview.module.css";
@@ -42,8 +43,8 @@ export const Preview = () => {
     const isThrottledRef = useRef(false);
     const currentSectionRef = useRef(currentSection);
     const showCircles = landingData?.components[currentSection]?.showCircles;
-    const circleConf1 = landingData?.components[currentSection]?.circle1;
-    const circleConf2 = landingData?.components[currentSection]?.circle2;
+    const circleConf1 = landingData?.components[currentSection]?.circle1 || [];
+    const circleConf2 = landingData?.components[currentSection]?.circle2 || [];
     const c1Conf = getPositionConfig(activePoint === 1281 ? windowWidth : activePoint, circleConf1, "circle");
     const c2Conf = getPositionConfig(activePoint === 1281 ? windowWidth : activePoint, circleConf2, "circle");
     const circle1 = useAnimation();
@@ -63,6 +64,7 @@ export const Preview = () => {
         if (compType === "list") return <Section4 data={compData} key={compKey} />;
         if (compType === "iconiclist") return <Section5 data={compData} key={compKey} />;
         if (compType === "links") return <Section6 data={compData} key={compKey} />;
+        if (compType === "image") return <Section7 data={compData} key={compKey} />;
         
         return null;
     };

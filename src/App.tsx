@@ -18,6 +18,7 @@ import { Account } from "./components/dashboard/Account";
 import { Notification } from "./components/ui/notify/Notification";
 import { Preview } from "./components/preview/Preview";
 import { FullyVerifiedRoute } from "./components/layout/FullyVerifiedRoute";
+import { ProtectedRoute } from "./components/layout/ProtectedRoute";
 
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
@@ -34,7 +35,7 @@ export default function App() {
     const fetchConstructorData = async () => {
       try {
         const res = await getConstructorLanding();
-
+        
         if (res.success) {
           const landingData = {
             slug: res.slug,
@@ -95,13 +96,26 @@ export default function App() {
         <Route
           path="/dashboard"
           element={
-            <FullyVerifiedRoute>
+            <ProtectedRoute>
               <Dashboard />
-            </FullyVerifiedRoute>
+            </ProtectedRoute>
           }
         >
-          <Route path="constructor" element={<Constructor />} />
-          <Route path="account" element={<Account />} />
+          <Route 
+            path="constructor" element={
+              <FullyVerifiedRoute>
+                <Constructor />
+              </FullyVerifiedRoute>
+            } 
+          />
+          <Route 
+            path="account" 
+            element={
+              <FullyVerifiedRoute>
+                <Account />
+              </FullyVerifiedRoute>
+            } 
+          />
         </Route>
       </Routes>
       <Notification />

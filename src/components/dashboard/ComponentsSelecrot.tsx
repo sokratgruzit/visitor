@@ -13,14 +13,15 @@ interface selectProps {
 }
 
 const availableComponents: selectProps[] = [
-	{ label: "Intro", value: "intro" },
-	{ label: "Multitext", value: "multitext" },
+    { label: "Intro", value: "intro" },
 	{ label: "Text", value: "text" },
+	{ label: "Multitext", value: "multitext" },
+	{ label: "Multitext2", value: "multitext2" },
+	{ label: "IconicList", value: "iconiclist" },
 	{ label: "Iconic", value: "iconic" },
 	{ label: "List", value: "list" },
 	{ label: "Links", value: "links" },
-	{ label: "IconicList", value: "iconiclist" },
-	{ label: "Multitext2", value: "multitext2" },
+    { label: "Image", value: "image" },
 ];
 
 export const ComponentsSelector = () => {
@@ -74,6 +75,16 @@ export const ComponentsSelector = () => {
                 breakpoints
             }
         };
+
+        if (option.value === "image") {
+            defaultData = {
+                ...defaultData,
+                canvas: "super",
+                fileUrl: "",
+                fileBase64: "",
+                imageConfig: defaultCircle
+			};
+        }
 
         if (option.value === "iconic") {
 			defaultData = {

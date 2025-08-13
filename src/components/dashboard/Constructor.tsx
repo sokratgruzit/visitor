@@ -53,6 +53,7 @@ export const Constructor = () => {
 
 		try {
 			const result = await checkSlug(landingData.slug);
+			
 			if (!result.success || !result.available) {
 				notify({ type: "error", message: result.message || "Этот slug уже занят" });
 			} else {
@@ -129,12 +130,12 @@ export const Constructor = () => {
 							Slug:
 							<div style={{
 								display: "flex",
-								marginTop: 4,
 								border: "1px solid #ccc",
 								borderRadius: 8,
 								overflow: "hidden",
 								width: "100%",
-								maxWidth: 600
+								maxWidth: 600,
+								height: 35
 							}}>
 								<input
 									type="text"
@@ -168,6 +169,9 @@ export const Constructor = () => {
 											borderRadius: 0,
 											userSelect: "none",
 											outline: "none",
+											height: 35,
+											display: "flex",
+											alignItems: "center"
 										}}
 									>
 										{checkingSlug ? "Проверка..." : "Добавить"}
@@ -183,7 +187,7 @@ export const Constructor = () => {
 						<label style={{ marginTop: 20 }}>
 							Аудио:
 							<CustomSelect
-								value={audioOptions.find((opt) => opt.value === landingData.audio) ?? audioOptions[0]}
+								value={audioOptions.find((opt) => opt.value === landingData?.audio) ?? audioOptions[0]}
 								onChange={(option) => updateLanding(option.value, "audio")}
 								options={audioOptions}
 							/>
@@ -193,7 +197,7 @@ export const Constructor = () => {
 							Текст кнопки "Начать":
 							<input
 								type="text"
-								value={landingData.introBtn ?? ""}
+								value={landingData?.introBtn ?? ""}
 								onChange={(e) => updateLanding(e.target.value, "introBtn")}
 								className={styles.input}
 							/>
@@ -203,7 +207,7 @@ export const Constructor = () => {
 							Воспроизводить музыку автоматически:
 							<input
 								type="checkbox"
-								checked={landingData.playMusic ?? false}
+								checked={landingData?.playMusic ?? false}
 								onChange={(e) => updateLanding(e.target.checked, "playMusic")}
 								className={styles.checkboxInput}
 							/>

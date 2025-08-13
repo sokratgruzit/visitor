@@ -68,7 +68,7 @@ export function getPositionConfig(width: number, config: any, type: string): {
   const bpts = type === "circle" ? config : config.breakpoints;
 
   // Применяем брейкпоинты
-  if (bpts) {
+  if (bpts.length === 5) {
     let bp = bpts[4];
 
     if (width <= 440) bp = bpts[0];
