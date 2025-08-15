@@ -81,6 +81,35 @@ export interface LandingComponent {
   showNav?: boolean;
 }
 
+export interface PaymentData {
+  amount?: number; 
+  product?: string;
+}
+
+export interface PromoCodeResponse {
+  success: boolean;
+  message?: string;
+  promoCode?: {
+    id: number;
+    code: string;
+    description?: string;
+    discountPct?: number;
+    bonusDays?: number;
+    customType?: string;
+    usageLimit?: number;
+    usedCount?: number;
+    active?: boolean;
+    expiresAt?: string;
+  };
+}
+
+export interface PaymentResponse {
+  success: boolean;
+  confirmationUrl?: string;
+  message?: string;
+  status?: string;
+}
+
 export interface ConfProps {
   circle1: Circle[];
   circle2: Circle[];

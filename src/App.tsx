@@ -22,6 +22,7 @@ import { ProtectedRoute } from "./components/layout/ProtectedRoute";
 
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
+  const user = useAuthStore(state => state.user);
   const componentId = useConstructorStore((state) => state.selectedComponentId || "");
   const setSelectedComponentId = useConstructorStore((state) => state.setSelectedComponentId);
   const setSlug = useConstructorStore((state) => state.setSlug);
@@ -30,8 +31,6 @@ export default function App() {
   const location = useLocation();
 
   useEffect(() => {
-    if (!location.pathname.includes("dashboard") && !location.pathname.includes("preview")) return;
-
     const fetchConstructorData = async () => {
       try {
         const res = await getConstructorLanding();
@@ -65,9 +64,11 @@ export default function App() {
         notify({ type: "error", message: "Ошибка при загрузке данных конструктора" });
       }
     };
-
-    fetchConstructorData();
-  }, [location.pathname]);
+    
+    if ((location.pathname.includes("dashboard") || location.pathname.includes("preview")) && user?.subscriptionStatus === "active") {
+      fetchConstructorData();
+    }
+  }, [location.pathname, user]);
 
   useEffect(() => {
     initializeAuth();
@@ -81,7 +82,7 @@ export default function App() {
         onClose={() => setSelectedComponentId(null)}
       />
       <Routes>
-        <Route path="/:id" element={<UserLanding />} />
+        <Route path="/:slug" element={<UserLanding />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
@@ -111,9 +112,9 @@ export default function App() {
           <Route 
             path="account" 
             element={
-              <FullyVerifiedRoute>
+              <ProtectedRoute>
                 <Account />
-              </FullyVerifiedRoute>
+              </ProtectedRoute>
             } 
           />
         </Route>

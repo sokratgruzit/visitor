@@ -30,7 +30,7 @@ export const Dashboard = () => {
     };
 
     const onGoToPayment = () => {
-        navigate("/payment");
+        navigate("/dashboard/account");
     };
 
     const toggleDrawer = () => {
@@ -134,7 +134,7 @@ export const Dashboard = () => {
                                 </div>
                             )}
 
-                            {!user?.isActive && (
+                            {(user?.subscriptionStatus === "inactive" || !user?.subscriptionStatus) && (
                                 <div className={styles.warningBox}>
                                     <p>Подписка не оплачена.</p>
                                     <button
@@ -146,7 +146,7 @@ export const Dashboard = () => {
                                 </div>
                             )}
 
-                            {user?.emailVerified && user?.isActive && (
+                            {user?.emailVerified && user?.subscriptionStatus === "active" && (
                                 <div className={styles.sections}>
                                     <button
                                         className={styles.sectionButton}
