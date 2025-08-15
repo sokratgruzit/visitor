@@ -8,7 +8,7 @@ import { useNotificationStore } from "../../store/notificationStore";
 
 import styles from "./Register.module.css";
 
-type RegisterInput = z.infer<typeof registerSchema>;
+type RegisterInput = z.infer<typeof registerSchema> & { promoCode?: string };
 
 const landingUrl = import.meta.env.VITE_LANDING_URL;
 
@@ -17,6 +17,7 @@ export const Register: React.FC = () => {
     name: "",
     email: "",
     password: "",
+    promoCode: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -83,6 +84,14 @@ export const Register: React.FC = () => {
           className={styles.input}
           value={form.password}
           onChange={(e) => handleChange("password", e.target.value)}
+        />
+        {/* Поле для промокода */}
+        <input
+          type="text"
+          placeholder="Промокод (если есть)"
+          className={styles.input}
+          value={form.promoCode}
+          onChange={(e) => handleChange("promoCode", e.target.value)}
         />
         <button
           className={styles.button}

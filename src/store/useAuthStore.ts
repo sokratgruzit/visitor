@@ -7,8 +7,8 @@ interface UserType {
     id: number;
     email: string;
     name: string;
-    isActive: boolean;
     emailVerified: boolean;
+	subscriptionStatus: string,
 }
 
 interface AuthState {
@@ -39,6 +39,7 @@ export const useAuthStore = create<AuthState>((set) => ({
             if (!res.ok) throw new Error();
 
             const data = await res.json();
+            
             set({ user: data.user });
         } catch {
             localStorage.removeItem("accessToken");

@@ -175,12 +175,9 @@
 }
 
 .descr1 {
-    width: 30%;
+    width: 100%;
     color: #787878;
     word-break: break-all;
-    position: absolute;
-    left: 40px;
-    top: 40px;
 }
 
 @media (max-width: 1440px) {
@@ -201,13 +198,6 @@
         top: 140px;
         right: 0;
         padding: 8px;
-    }
-
-    .descr1 {
-        width: 90%;
-        left: 5%;
-        top: calc(100% - 230px);
-        text-align: center;
     }
 
     .labels {
@@ -296,11 +286,6 @@
 
     .popup {
         top: 15%;
-    }
-
-    .descr1 {
-        top: calc(100% - 180px);
-        text-align: center;
     }
 
     .icon2 {

@@ -24,6 +24,12 @@ export const Login: React.FC = () => {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            notify({ type: "error", message: "Некорректный формат email" });
+            return;
+        }
+
         setLoading(true);
 
         try {

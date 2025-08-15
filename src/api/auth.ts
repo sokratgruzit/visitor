@@ -76,7 +76,6 @@ export async function authFetch(input: RequestInfo, init?: RequestInit) {
             headers.set("Authorization", `Bearer ${newAccessToken}`);
             response = await fetch(input, { ...init, headers, credentials: "include" });
         } catch {
-            window.location.href = "/login";
             throw new Error("Необходимо залогиниться заново");
         }
     }

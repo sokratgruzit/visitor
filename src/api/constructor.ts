@@ -34,6 +34,29 @@ export async function checkSlug(slug: string): Promise<SlugResponse> {
     };
 }
 
+export async function getLandingBySlug(slug: string | null) {
+	const response = await fetch(`${apiBaseUrl}/api/constructor/landing/${slug}`, {
+		method: "GET",
+		credentials: "include",
+		headers: { "Content-Type": "application/json" },
+	});
+
+	const data = await response.json().catch(() => ({}));
+
+	if (!response.ok) {
+		return {
+			success: data.success,
+			message: data.message || "Лендинг не найден",
+		};
+	}
+
+	return {
+		success: data.success,
+		message: data.message || "Лендинг найден",
+		landing: data.data,
+	};
+}
+
 /**
  * Добавление слага.
  * Возвращает `true`, если успешно добавлен.

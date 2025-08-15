@@ -1,9 +1,11 @@
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 
 import { useAppStore } from "../../store/useAppStore";
-import type { Circle } from "../../types";
 import { getPositionConfig } from "../../utils/utils";
+import { getLandingBySlug } from "../../api/constructor";
+import { useNotificationStore } from "../../store/notificationStore";
 
 import { Navigation } from "../navigation/Navigation";
 import { Settings } from "../settings/Settings";
@@ -16,6 +18,7 @@ import Section3 from "../sections/Section3";
 import Section4 from "../sections/Section4";
 import Section5 from "../sections/Section5";
 import Section6 from "../sections/Section6";
+import Section7 from "../sections/Section7";
 import BackgroundMusic from "../music/BackgroundMusic";
 
 import styles from "./UserLanding.module.css";
@@ -26,35 +29,27 @@ export const UserLanding = () => {
         windowWidth,
         currentSection, 
         landingData,
-        setSection
+        setSection,
+        setLandingData
     } = useAppStore();
+    const notify = useNotificationStore((state) => state.showNotification);
 
     const isThrottledRef = useRef(false);
     const currentSectionRef = useRef(currentSection);
+    const showCircles = landingData?.components[currentSection]?.showCircles;
+    const circleConf1 = landingData?.components[currentSection]?.circle1 || [];
+    const circleConf2 = landingData?.components[currentSection]?.circle2 || [];
+    const c1Conf = getPositionConfig(windowWidth, circleConf1, "circle");
+    const c2Conf = getPositionConfig(windowWidth, circleConf2, "circle");
     const circle1 = useAnimation();
     const circle2 = useAnimation();
-    const [conf, setConf] = useState<{ circle1: Circle, circle2: Circle }>({
-        circle1: {
-            left: 0,
-            top: 0,
-            width: 400,
-            height: 400,
-            rotate: 0
-        },
-        circle2: {
-            left: 0,
-            top: 0,
-            width: 400,
-            height: 400,
-            rotate: 0
-        }
-    });
+    const { slug } = useParams();
 
     const renderSection = (section: number) => {
-        let compType = landingData?.components[section].type;
-        let compKey = landingData?.components[section].id;
+        let compType = landingData?.components[section]?.type;
+        let compKey = landingData?.components[section]?.id;
         let compData = landingData?.components[section];
-
+        
         if (compType === "intro") return <SectionIntro data={compData} key={compKey} />;
         if (compType === "multitext") return <Section0 data={compData} key={compKey} />;
         if (compType === "text") return <Section1 data={compData} key={compKey} />;
@@ -63,6 +58,8 @@ export const UserLanding = () => {
         if (compType === "list") return <Section4 data={compData} key={compKey} />;
         if (compType === "iconiclist") return <Section5 data={compData} key={compKey} />;
         if (compType === "links") return <Section6 data={compData} key={compKey} />;
+        if (compType === "image") return <Section7 data={compData} key={compKey} />;
+        
         return null;
     };
 
@@ -71,9 +68,23 @@ export const UserLanding = () => {
     }, [currentSection]);
 
     useEffect(() => {
+        const getLanging = async (slug: string | null) => {
+            const response = await getLandingBySlug(slug);
+
+            if (response.success) {
+                notify({ type: "success", message: response.message });
+                setLandingData(response.landing);
+            } else {
+                notify({ type: "error", message: response.message });
+            }
+        };
+
+        if (slug) getLanging(slug);
+    }, [slug]);
+
+    useEffect(() => {
         const changeSection = (direction: "up" | "down") => {
             if (isThrottledRef.current) return;
-            if (!explore) return;
 
             isThrottledRef.current = true;
 
@@ -82,7 +93,7 @@ export const UserLanding = () => {
                 clearTimeout(timeout);
             }, 1000); 
 
-            if (direction === "up" && currentSection < landingData.components.length - 1) {
+            if (direction === "up" && currentSection < landingData?.components?.length - 1) {
                 setSection(currentSection + 1);
             }
             
@@ -111,35 +122,23 @@ export const UserLanding = () => {
             }
         };
 
-        const showCircles = landingData?.components[currentSection].showCircles;
-
         if (showCircles) {
-            const circleConf1 = landingData?.components[currentSection].circle1;
-            const circleOne = getPositionConfig(windowWidth, circleConf1, "circle");
-            const circleConf2 = landingData?.components[currentSection].circle2;
-            const circleTwo = getPositionConfig(windowWidth, circleConf2, "circle");
-
             circle1.start({
-                translateX: circleOne.left,
-                translateY: circleOne.top,
-                rotate: circleOne.rotate,
+                translateX: c1Conf?.left,
+                translateY: c1Conf?.top,
+                rotate: c1Conf?.rotate,
                 transition: {
                     duration: .5
                 }
             });
 
             circle2.start({
-                translateX: circleTwo.left,
-                translateY: circleTwo.top,
-                rotate: circleTwo.rotate,
+                translateX: c2Conf?.left,
+                translateY: c2Conf?.top,
+                rotate: c2Conf?.rotate,
                 transition: {
                     duration: .5
                 }
-            });
-
-            setConf({
-                circle1: circleOne,
-                circle2: circleTwo
             });
         }
 
@@ -156,14 +155,14 @@ export const UserLanding = () => {
 
     return (
         <div className={styles.container} style={{ background: landingData?.components[currentSection].color }}>
-            {landingData?.components[currentSection].showCircles && <motion.div 
+            {landingData?.components[currentSection]?.showCircles && <motion.div 
                 className={styles.circle1} 
-                style={{ width: conf.circle1.width, height: conf.circle1.height }}
+                style={{ width: c1Conf.width, height: c1Conf.height }}
                 animate={circle1}
             />}
-            {landingData?.components[currentSection].showCircles && <motion.div 
+            {landingData?.components[currentSection]?.showCircles && <motion.div 
                 className={styles.circle2} 
-                style={{ width: conf.circle2.width, height: conf.circle2.height }}
+                style={{ width: c2Conf.width, height: c2Conf.height }}
                 animate={circle2}
             />}
             <BackgroundMusic src={landingData?.audio} />
