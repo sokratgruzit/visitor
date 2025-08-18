@@ -84,6 +84,7 @@ export interface LandingComponent {
 export interface PaymentData {
   amount?: number; 
   product?: string;
+  targetId?: number;
 }
 
 export interface PromoCodeResponse {
@@ -102,6 +103,18 @@ export interface PromoCodeResponse {
     expiresAt?: string;
   };
 }
+
+export interface Payment {
+  id: string;
+  amount: { value: string; currency: string };
+  income_amount: { value: string; currency: string };
+  status: string;
+  created_at: string;
+  description: string;
+  paid: boolean;
+  payment_method: { type: string; title: string };
+  captured_at: string;
+};
 
 export interface PaymentResponse {
   success: boolean;
@@ -166,4 +179,32 @@ export interface SlugResponse {
     message?: string;
     id?: string;
     available?: boolean;
+}
+
+export interface Voting {
+  id: number;
+  title: string;
+  description: string;
+  level: number;
+  status: string;
+  createdAt: string;
+  creatorId: number;
+}
+
+export interface VotingResponse {
+	success?: boolean;
+	message?: string;     
+	voting?: Voting;          
+	my?: {
+		votings: Voting[];
+		totalPages: number;
+		currentPage: number;
+		totalCount: number;
+	};
+	all?: {
+		votings: Voting[];
+		totalPages: number;
+		currentPage: number;
+		totalCount: number;
+	};
 }

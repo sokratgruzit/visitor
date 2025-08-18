@@ -8,7 +8,8 @@ interface UserType {
     email: string;
     name: string;
     emailVerified: boolean;
-	subscriptionStatus: string,
+	subscriptionStatus: string;
+    subscriptionEndAt: string | null;
 }
 
 interface AuthState {

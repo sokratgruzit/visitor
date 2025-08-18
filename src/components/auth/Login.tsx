@@ -4,6 +4,7 @@ import { loginUser } from "../../api/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { useNotificationStore } from "../../store/notificationStore";
 import { useAuthStore } from "../../store/useAuthStore";
+import Button from "../ui/button/Button";
 
 import styles from "./Login.module.css";
 
@@ -52,7 +53,7 @@ export const Login: React.FC = () => {
 
     return (
         <div className={styles.loginPage}>
-            <a href={landingUrl} className={styles.backButton}>
+            <a href={landingUrl} className="backButton">
                 ← Вернуться на лендинг
             </a>
             <motion.div 
@@ -64,8 +65,8 @@ export const Login: React.FC = () => {
                 <h1 className={styles.title}>Вход</h1>
                 <input
                     type="email"
-                    placeholder="Email"
-                    className={styles.input}
+                    placeholder="Почта"
+                    className="input"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
@@ -73,13 +74,13 @@ export const Login: React.FC = () => {
                 <input
                     type="password"
                     placeholder="Пароль"
-                    className={styles.input}
+                    className="input"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
                 />
                 <button
-                    className={styles.button}
+                    className="button"
                     onClick={handleLogin}
                     disabled={loading}
                 >

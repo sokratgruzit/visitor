@@ -80,3 +80,23 @@ export async function resumeSubscription(): Promise<PaymentResponse> {
         return { success: false, message: "Сетевая ошибка" };
     }
 }
+
+// Получение истории платежей пользователя
+export async function getUserPaymentHistory(): Promise<any> {
+    try {
+        const response = await authFetch(`${apiBaseUrl}/api/payment/yookassa/history`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        if (!response.ok) {
+            return { success: false, message: `HTTP error: ${response.status}` };
+        }
+
+        return await response.json();
+    } catch (err) {
+        console.error("Ошибка при получении истории платежей:", err);
+        return { success: false, message: "Сетевая ошибка" };
+    }
+}
+

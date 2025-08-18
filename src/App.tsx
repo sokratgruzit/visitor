@@ -19,6 +19,7 @@ import { Notification } from "./components/ui/notify/Notification";
 import { Preview } from "./components/preview/Preview";
 import { FullyVerifiedRoute } from "./components/layout/FullyVerifiedRoute";
 import { ProtectedRoute } from "./components/layout/ProtectedRoute";
+import { VotingManager } from "./components/dashboard/VotingManager";
 
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
@@ -106,6 +107,13 @@ export default function App() {
             path="constructor" element={
               <FullyVerifiedRoute>
                 <Constructor />
+              </FullyVerifiedRoute>
+            } 
+          />
+          <Route 
+            path="voting" element={
+              <FullyVerifiedRoute>
+                <VotingManager />
               </FullyVerifiedRoute>
             } 
           />

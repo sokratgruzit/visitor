@@ -92,6 +92,80 @@ input {
   position: relative !important;
 }
 
+.backButton {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  color: #000;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.input {
+  padding: 12px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input::placeholder {
+  color: #ccc;
+}
+
+.input:focus {
+  border-color: #63C5AB;
+}
+
+.button {
+  background: #63C5AB;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+  touch-action: manipulation; 
+  pointer-events: auto;
+}
+
+.button:disabled {
+  background-color: rgba(99, 197, 171, .5);
+  cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+  background: rgba(99, 197, 171, .5);
+  color: white;
+}
+
+.buttonLight {
+  color: #63C5AB;
+  background: transparent;
+  padding: 12px;
+  border: none;
+  border: 2px solid #63C5AB;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+  touch-action: manipulation; 
+  pointer-events: auto;
+}
+
+.buttonLight:disabled {
+  background: rgba(99, 197, 171, .5);
+  cursor: not-allowed;
+}
+
+.buttonLight:hover:not(:disabled) {
+  background: rgba(99, 197, 171, .5);
+  color: white;
+}
+
 @keyframes scratchy {
   0% {
     background-position: 0 0;

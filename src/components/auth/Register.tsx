@@ -54,7 +54,7 @@ export const Register: React.FC = () => {
 
   return (
     <div className={styles.registerPage}>
-      <a href={landingUrl} className={styles.backButton}>
+      <a href={landingUrl} className="backButton">
         ← Вернуться на лендинг
       </a>
       <motion.div 
@@ -67,21 +67,21 @@ export const Register: React.FC = () => {
         <input
           type="text"
           placeholder="Имя"
-          className={styles.input}
+          className="input"
           value={form.name}
           onChange={(e) => handleChange("name", e.target.value)}
         />
         <input
           type="email"
-          placeholder="Email"
-          className={styles.input}
+          placeholder="Почта"
+          className="input"
           value={form.email}
           onChange={(e) => handleChange("email", e.target.value)}
         />
         <input
           type="password"
           placeholder="Пароль"
-          className={styles.input}
+          className="input"
           value={form.password}
           onChange={(e) => handleChange("password", e.target.value)}
         />
@@ -89,12 +89,12 @@ export const Register: React.FC = () => {
         <input
           type="text"
           placeholder="Промокод (если есть)"
-          className={styles.input}
+          className="input"
           value={form.promoCode}
           onChange={(e) => handleChange("promoCode", e.target.value)}
         />
         <button
-          className={styles.button}
+          className="button"
           onClick={handleRegister}
           disabled={loading}
         >

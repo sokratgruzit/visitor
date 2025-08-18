@@ -4,6 +4,7 @@ import { useAuthStore } from "../../store/useAuthStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { authFetch, logoutUser } from "../../api/auth";
 import { useNotificationStore } from "../../store/notificationStore";
+import { Svg } from "../svgs/Svg.module";
 
 import styles from "./Dashboard.module.css";
 
@@ -72,8 +73,8 @@ export const Dashboard = () => {
 
     return (
         <div className={styles.dashboardPage}>
-            <button onClick={toggleDrawer} className={styles.drawerToggle}>
-                ☰ Меню
+            <button onClick={toggleDrawer} className={`button ${styles.drawerToggle}`}>
+                <Svg svgName="Menu" size={{ xs: 40, sm: 40, md: 40, lg: 40 }} color="#FFFFFF" />
             </button>
 
             <AnimatePresence>
@@ -96,9 +97,8 @@ export const Dashboard = () => {
                             <div className={styles.drawerHeading}>
                                 Здравствуй, {user?.name}
                                 <button
-									className={styles.close}
+									className={`${styles.close} buttonLight`}
 									onClick={toggleDrawer}
-									aria-label="Закрыть"
 								>
 									<svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +121,7 @@ export const Dashboard = () => {
                                 <div className={styles.warningBox}>
                                     <p>Email не подтвержден.</p>
                                     <button
-                                        className={styles.actionButton}
+                                        className="buttonLight"
                                         onClick={onResendVerification}
                                     >
                                         Отправить письмо повторно
@@ -134,11 +134,11 @@ export const Dashboard = () => {
                                 </div>
                             )}
 
-                            {(user?.subscriptionStatus === "inactive" || !user?.subscriptionStatus) && (
+                            {(user?.subscriptionStatus !== "active") && (
                                 <div className={styles.warningBox}>
                                     <p>Подписка не оплачена.</p>
                                     <button
-                                        className={styles.actionButton}
+                                        className="buttonLight"
                                         onClick={onGoToPayment}
                                     >
                                         Перейти к оплате
@@ -149,23 +149,30 @@ export const Dashboard = () => {
                             {user?.emailVerified && user?.subscriptionStatus === "active" && (
                                 <div className={styles.sections}>
                                     <button
-                                        className={styles.sectionButton}
+                                        className="buttonLight"
                                         onClick={() => navigate("/dashboard/constructor")}
                                     >
                                         Перейти в конструктор сайта
                                     </button>
 
                                     <button
-                                        className={styles.sectionButton}
+                                        className="buttonLight"
                                         onClick={() => navigate("/dashboard/account")}
                                     >
                                         Управление аккаунтом
+                                    </button>
+
+                                    <button
+                                        className="buttonLight"
+                                        onClick={() => navigate("/dashboard/voting")}
+                                    >
+                                        Предложения
                                     </button>
                                 </div>
                             )}
 
                             <button
-                                className={styles.actionButton}
+                                className="button"
                                 onClick={onLogout}
                             >
                                 Выйти
