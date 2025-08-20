@@ -1,0 +1,71 @@
+.container {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.v {
+    font-size: 120px;
+    position: absolute;
+    top: 0;
+    left: 5%;
+    line-height: 100px;
+    transform-origin: center;
+}
+
+.i {
+    font-size: 120px;
+    position: absolute;
+    top: 0;
+    left: 20%;
+    line-height: 100px;
+    transform-origin: center;
+}
+
+.s {
+    font-size: 120px;
+    position: absolute;
+    top: calc(50% - 60px);
+    left: 35%;
+    line-height: 100px;
+    transform-origin: center;
+}
+
+.i2 {
+    font-size: 120px;
+    position: absolute;
+    top: calc(50% - 60px);
+    left: 50%;
+    line-height: 100px;
+    transform-origin: center;
+}
+
+.t {
+    font-size: 120px;
+    position: absolute;
+    top: calc(50% - 60px);
+    left: 63%;
+    line-height: 100px;
+    transform-origin: center;
+}
+
+.o {
+    font-size: 120px;
+    position: absolute;
+    top: calc(50% - 60px);
+    left: 75%;
+    line-height: 100px;
+    transform-origin: center;
+}
+
+.r {
+    font-size: 120px;
+    position: absolute;
+    top: calc(50% - 60px);
+    left: 90%;
+    line-height: 100px;
+    transform-origin: center;
+}

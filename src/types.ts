@@ -128,10 +128,27 @@ export interface ConfProps {
   circle2: Circle[];
 }
 
+export interface TabProp {
+  key: string;
+  label: string;
+  disabled?: boolean;
+}
+
+export interface TabsProps {
+  tabs: TabProp[];
+  active: string;
+  onChange: (key: string) => void;
+  width?: string | number;
+  height?: string | number;
+  padding?: string;
+  fontSize?: string | number;
+}
+
 export interface ButtonProps {
+  fontSize?: string | number;
   text?: string;
   onClick?: () => void;
-  size?: 'small' | 'medium' | 'large' | 'regular' | 'preview';
+  size?: 'small' | 'medium' | 'large' | 'regular' | 'preview' | 'flex';
   className?: string;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
@@ -143,6 +160,9 @@ export interface ButtonProps {
   labelColor?: string;
   direction?: string;
   section?: number;
+  color?: string;
+  btnColor?: string;
+  limiter?: boolean;
 }
 
 export interface labelStyles {
@@ -181,12 +201,20 @@ export interface SlugResponse {
     available?: boolean;
 }
 
+export interface Creator {
+  name: string;
+  id: number;
+  email: string;
+}
+
 export interface Voting {
   id: number;
   title: string;
   description: string;
   level: number;
   status: string;
+  amount: number;
+  creator: Creator;
   createdAt: string;
   creatorId: number;
 }

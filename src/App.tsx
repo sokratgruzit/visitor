@@ -104,14 +104,16 @@ export default function App() {
           }
         >
           <Route 
-            path="constructor" element={
+            path="constructor" 
+            element={
               <FullyVerifiedRoute>
                 <Constructor />
               </FullyVerifiedRoute>
             } 
           />
           <Route 
-            path="voting" element={
+            path="voting" 
+            element={
               <FullyVerifiedRoute>
                 <VotingManager />
               </FullyVerifiedRoute>

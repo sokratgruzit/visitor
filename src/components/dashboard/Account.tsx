@@ -4,6 +4,7 @@ import { useNotificationStore } from "../../store/notificationStore";
 import { useAuthStore } from "../../store/useAuthStore";
 import { authFetch } from "../../api/auth";
 import type { PaymentResponse, Payment } from "../../types";
+import Button from "../ui/button/Button";
 
 import styles from "./Account.module.css";
 
@@ -48,7 +49,7 @@ export const Account: React.FC = () => {
 
 	const handlePayment = async () => {
 		setLoading(true);
-		const res: PaymentResponse = await makePayment({ product: "subscription", amount: 299 });
+		const res: PaymentResponse = await makePayment({ product: "subscription", amount: 800 });
 		if (res.success && res.confirmationUrl) {
 			setSubscriptionStatus("pending");
 			window.location.href = res.confirmationUrl;
@@ -72,28 +73,51 @@ export const Account: React.FC = () => {
 
 	return (
 		<div className={styles.container}>
-			<h1 className={styles.title}>Аккаунт</h1>
-			<p className={styles.status}>
-				Статус подписки: <span className={styles[subscriptionStatus]}>{subscriptionStatus || "Не активирована"}</span>
-			</p>
+            <div className={styles.topSection}>
+                <div className={styles.fields}>
+                    <p className={styles.status}>
+                        Статус подписки: <span className={styles[subscriptionStatus]}>{subscriptionStatus || "Не активирована"}</span>
+                    </p>
 
-            {user?.subscriptionEndAt && subscriptionStatus === "active" && (
-				<p className={styles.status}>
-					Действует до: <span>{new Date(user?.subscriptionEndAt).toLocaleString()}</span>
-				</p>
-			)}
+                    {user?.subscriptionEndAt && subscriptionStatus === "active" && (
+                        <p className={styles.status}>
+                            Действует до: <span>{new Date(user?.subscriptionEndAt).toLocaleString()}</span>
+                        </p>
+                    )}
+                </div>
 
-			<div className={styles.fields}>
-				{(subscriptionStatus !== "active" || !subscriptionStatus) && (
-					<button className={styles.payButton} onClick={handlePayment} disabled={loading}>
-						{loading ? "Подготовка..." : subscriptionStatus === "pending" ? "В процессе..." : "Оплатить / Подписаться"}
-					</button>
-				)}
+                <div className={styles.fields}>
+                    {(subscriptionStatus !== "active" || !subscriptionStatus || true) && (
+                        <div className={styles.btnsWrap}>
+                            <Button
+                                text={loading ? "Подготовка..." : subscriptionStatus === "pending" ? "В процессе..." : "Оплатить / Подписаться"}
+                                onClick={handlePayment}
+                                disabled={loading}
+                                size="flex"
+                                delay={1}
+                                limiter={window.innerWidth <= 768}
+                                color="#FFFFFF"
+                                btnColor="#E05353"
+                                fontSize="1rem"
+                            />
+                        </div>
+                    )}
 
-				<button className={styles.payButton} onClick={handleCheckStatus} disabled={loading}>
-					Проверить статус
-				</button>
-			</div>
+                    <div className={styles.btnsWrap}>
+                        <Button
+                            text="Проверить статус"
+                            onClick={handleCheckStatus}
+                            disabled={loading}
+                            size="flex"
+                            delay={1}
+                            limiter={window.innerWidth <= 768}
+                            color="#FFFFFF"
+                            btnColor="#E05353"
+                            fontSize="1rem"
+                        />
+                    </div>
+                </div>
+            </div>
 
 			<div className={styles.infoBlock}>
 				<h2>История платежей</h2>

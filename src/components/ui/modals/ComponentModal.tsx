@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useConstructorStore } from "../../../store/constructorStore";
 import { useNotificationStore } from "../../../store/notificationStore";
 import { useAppStore } from "../../../store/useAppStore";
@@ -10,6 +10,9 @@ import { GeneralTab } from "./GeneralTab";
 import { AnimationTab } from "./AnimationTab";
 import { IconsTab } from "./IconsTab";
 import { ImageTab } from "./ImageTab";
+import { Svg } from "../../svgs/Svg.module";
+import { Tabs } from "../tabs/Tabs";
+import Button from "../button/Button";
 
 import styles from "./ComponentModal.module.css";
 
@@ -27,10 +30,12 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 	const [leftPos, setLeftPos] = useState<number>(0);
 	const [topPos, setTopPos] = useState<number>(0);
 	const [tab, setTab] = useState<string>("general");
+	const [aPoint, setAPoint] = useState<string>("1281");
 
 	const {
 		slug,
 		activePoint,
+		selectedComponentId,
 		setActivePoint,
 		setSelectedComponentId
 	} = useConstructorStore();
@@ -50,6 +55,14 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 
 		setLandingData({ ...landingData, components: updated });
 	};
+
+	useEffect(() => {
+		setActivePoint(Number(aPoint));
+	}, [aPoint]);
+
+	useEffect(() => {
+		setTab("general");
+	}, [selectedComponentId]);
 
 	if (!component) return null;
 
@@ -184,74 +197,40 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 		return (
 			<div className={styles.fields}>
 				<div className={styles.toggleButtons}>
-					<button
-						type="button"
-						onClick={() => setTab("general")}
-						className={`${styles.tabBtn} ${tab === "general" ? styles.activeTab : ""}`}
-					>
-						общие
-					</button>
-					<button
-						type="button"
-						onClick={() => setTab("animation")}
-						className={`${styles.tabBtn} ${tab === "animation" ? styles.activeTab : ""}`}
-					>
-						анимация
-					</button>
-					{["iconic", "iconiclist", "links"].includes(component.type) && <button
-						type="button"
-						onClick={() => setTab("icons")}
-						className={`${styles.tabBtn} ${tab === "icons" ? styles.activeTab : ""}`}
-					>
-						иконки
-					</button>}
-					{["image"].includes(component.type) && <button
-						type="button"
-						onClick={() => setTab("image")}
-						className={`${styles.tabBtn} ${tab === "image" ? styles.activeTab : ""}`}
-					>
-						картинка
-					</button>}
+					<Tabs
+						active={tab}
+						onChange={setTab}
+						tabs={[
+							{ key: "general", label: "общие" },
+							{ key: "animation", label: "анимация" },
+							{ key: "icons", label: "иконки", disabled: !["iconic", "iconiclist", "links"].includes(component.type) },
+							{ key: "image", label: "картинка", disabled: !["image"].includes(component.type) }
+						]}
+						width="25%"
+						height={20}
+						padding="0 5px"
+						fontSize={14}
+					/>
 				</div>
 
 				<label>
                     Ширина экрана (px) {activePoint === 1281 ? "> 1280" : `до ${activePoint}`}
                     <div className={styles.toggleButtons}>
-                        <button
-                            type="button"
-                            onClick={() => setActivePoint(440)}
-                            className={`${styles.posBtn} ${activePoint === 440 ? styles.active : ""}`}
-                        >
-                            мобильные
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setActivePoint(768)}
-                            className={`${styles.posBtn} ${activePoint === 768 ? styles.active : ""}`}
-                        >
-                            планшеты
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setActivePoint(1150)}
-                            className={`${styles.posBtn} ${activePoint === 1150 ? styles.active : ""}`}
-                        >
-                            м-ноут
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setActivePoint(1280)}
-                            className={`${styles.posBtn} ${activePoint === 1280 ? styles.active : ""}`}
-                        >
-                            б-ноут
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setActivePoint(1281)}
-                            className={`${styles.posBtn} ${activePoint === 1281 ? styles.active : ""}`}
-                        >
-                            дефолт
-                        </button>
+						<Tabs
+							active={aPoint}
+							onChange={setAPoint}
+							tabs={[
+								{ key: "440", label: "мобильные" },
+								{ key: "768", label: "планшеты" },
+								{ key: "1150", label: "м-ноут" },
+								{ key: "1280", label: "б-ноут" },
+								{ key: "1281", label: "дефолт" }
+							]}
+							width="25%"
+							height={20}
+							padding="0px 0px"
+							fontSize={14}
+						/>
                     </div>
                 </label>
 
@@ -305,54 +284,62 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 						<div className={styles.header}>
 							<h2 className={styles.title}>Настройка: {component.type}</h2>
 							<div className={styles.headerActions}>
-								<button
-									className={styles.button}
-									onClick={handlePreview}
-								>
-									{isPreviewPage ? "Вернуться" : "Предпросмотр"}
-								</button>
-								<button
-									className={styles.close}
-									onClick={onClose}
-									aria-label="Закрыть"
-								>
-									<svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#000"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <line x1="18" y1="6" x2="6" y2="18" />
-                                        <line x1="6" y1="6" x2="18" y2="18" />
-                                    </svg>
-								</button>
+								<div style={{ height: 40, width: 40 }}>
+									<Button
+										icon={isPreviewPage ? <Svg svgName="ArrowBack" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" /> : <Svg svgName="Preview" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />}
+										onClick={handlePreview}
+										size="flex"
+										delay={.8}
+										limiter={window.innerWidth <= 768}
+										color="#FFFFFF"
+										btnColor="#63C5AB"
+										fontSize=".75rem"
+									/>
+								</div>
+								<div style={{ height: 40, width: 40 }}>
+									<Button
+										icon={<Svg svgName="Close" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />}
+										onClick={onClose}
+										size="flex"
+										delay={1}
+										limiter={window.innerWidth <= 768}
+										color="#FFFFFF"
+										btnColor="#000000"
+										fontSize=".75rem"
+									/>
+								</div>
 							</div>
 						</div>
 						<div className={styles.content}>
 							{component.type && renderConfig()}
 						</div>
 						<div className={styles.btnsWrap}>
-							<button
-								type="button"
-								onClick={onSave}
-								disabled={!slug || saving}
-								className={styles.saveButton}
-							>
-								{saving ? "Сохранение..." : "Сохранить изменения"}
-							</button>
-							<button
-								type="button"
-								onClick={onDelete}
-								disabled={!slug || deleting}
-								className={styles.deleteButton}
-							>
-								{deleting ? "Удаление..." : "Удалить компонент"}
-							</button>
+							<div style={{ height: 50, width: "50%" }}>
+								<Button
+									text={saving ? "Сохранение..." : "Сохранить изменения"}
+									onClick={onSave}
+									size="flex"
+									delay={.8}
+									limiter={window.innerWidth <= 768}
+									color="#FFFFFF"
+									btnColor="#63C5AB"
+									fontSize="1rem"
+									disabled={!slug || saving}
+								/>
+							</div>
+							<div style={{ height: 50, width: "50%" }}>
+								<Button
+									text={deleting ? "Удаление..." : "Удалить компонент"}
+									onClick={onDelete}
+									size="flex"
+									delay={.8}
+									limiter={window.innerWidth <= 768}
+									color="#FFFFFF"
+									btnColor="#c56363"
+									fontSize="1rem"
+									disabled={!slug || deleting}
+								/>
+							</div>
 						</div>
 					</motion.div>
 				</>

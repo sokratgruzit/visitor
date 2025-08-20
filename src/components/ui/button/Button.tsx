@@ -2,8 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-import { useAppStore } from '../../../store/useAppStore';
-import { useConstructorStore } from '../../../store/constructorStore';
 import type { ButtonProps } from '../../../types';
 import Label from '../label/Label';
 
@@ -23,19 +21,19 @@ const Button: React.FC<ButtonProps> = ({
     labelColor,
     labelText,
     direction = "left",
-    section = 0
+    section = 0,
+    color = "#FFFFFF",
+    btnColor = "#FFFFFF",
+    limiter = false,
+    fontSize = "2rem"
 }) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
-
-    const { landingData } = useAppStore();
-    const { activePoint } = useConstructorStore();
-    const limiter = activePoint === 768 || activePoint === 440 || window.innerWidth <= 768;
 
     const handleClick = () => {
         let timeout = setTimeout(() => {
             if (onClick) onClick();
             clearTimeout(timeout);
-        }, 1000);
+        }, 300);
     };
 
     const handleTouchStart = () => setIsHovered(true);
@@ -43,7 +41,7 @@ const Button: React.FC<ButtonProps> = ({
         let timeout = setTimeout(() => {
             setIsHovered(false);
             clearTimeout(timeout);
-        }, 1000);
+        }, 300);
     };
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
@@ -101,9 +99,9 @@ const Button: React.FC<ButtonProps> = ({
                     duration: .7
                 }}
                 style={{ 
-                    color: landingData.components[section].color, 
-                    fontSize: "2rem",
-                    backgroundColor: landingData.components[section].btn
+                    color: color, 
+                    fontSize: fontSize,
+                    backgroundColor: btnColor
                 }}
             >
                 {text && text}

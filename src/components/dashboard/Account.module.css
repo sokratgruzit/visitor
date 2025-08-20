@@ -2,23 +2,27 @@
 	max-width: 900px;
 	margin: 20px auto;
 	padding: 20px;
-	background: #fff;
-	border-radius: 12px;
-	box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
 }
 
-.title {
-	font-size: 28px;
-	font-weight: 600;
-	color: #333;
+.btnsWrap {
+    height: 50px;
+    width: 200px;
+    position: relative;
+}
+
+.topSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
 }
 
 .status {
 	font-size: 16px;
-	color: #555;
+	color: #000;
 }
 
 .inactive {
@@ -40,28 +44,11 @@
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-}
-
-.payButton {
-	background-color: #63c5ab;
-	color: white;
-	border: none;
-	padding: 12px 20px;
-	border-radius: 8px;
-	font-size: 16px;
-	cursor: pointer;
-	transition: background 0.3s ease;
-}
-
-.payButton:disabled {
-	background-color: #b3e0d3;
-	cursor: not-allowed;
+    justify-content: space-between;
+    height: auto;
 }
 
 .infoBlock {
-	background: #f9f9f9;
-	padding: 16px;
-	border-radius: 8px;
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
@@ -70,7 +57,6 @@
 
 .infoBlock h2 {
 	font-size: 20px;
-	margin-bottom: 8px;
 }
 
 .tableWrapper {
@@ -86,7 +72,7 @@
 
 .paymentsTable th, .paymentsTable td {
 	padding: 10px 12px;
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid black;
 	text-align: left;
 	white-space: nowrap;
 	overflow: hidden;
@@ -94,12 +80,30 @@
 }
 
 .paymentsTable th {
-	background-color: #f5f5f5;
-	font-weight: 600;
+	-webkit-mask-image: url("/images/repeat-white.png");
+    -webkit-mask-repeat: repeat;
+    -webkit-mask-size: contain;
+    mask-image: url("/images/repeat-white.png");
+    mask-repeat: repeat;
+    mask-size: contain;
+    background: rgba(0, 0, 0, 1);
+    color: white;
+    font-size: 16px;
+}
+
+.paymentsTable tr {
+    -webkit-mask-image: url("/images/repeat-white.png");
+    -webkit-mask-repeat: repeat;
+    -webkit-mask-size: contain;
+    mask-image: url("/images/repeat-white.png");
+    mask-repeat: repeat;
+    mask-size: contain;
+    cursor: pointer;
+    transition: .5s;
 }
 
 .paymentsTable tr:hover {
-	background-color: #f0f9f8;
+    background: rgba(0, 0, 0, .1);
 }
 
 @media (max-width: 768px) {
@@ -107,30 +111,32 @@
 		padding: 16px;
 		margin: 10px;
 	}
-	.title {
-		font-size: 24px;
-	}
-	.payButton {
-		font-size: 14px;
-		padding: 10px 16px;
-	}
+
 	.paymentsTable {
 		font-size: 13px;
 	}
+
+    .topSection {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .btnsWrap,
+    .fields {
+        width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
 	.container {
 		padding: 12px;
 	}
-	.title {
-		font-size: 20px;
-	}
-	.payButton {
-		font-size: 14px;
-		padding: 8px 12px;
-	}
+
 	.paymentsTable {
 		font-size: 12px;
 	}
+
+    .status {
+        font-size: 14px;
+    }
 }

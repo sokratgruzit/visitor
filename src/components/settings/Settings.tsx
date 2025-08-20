@@ -101,6 +101,9 @@ export function Settings() {
         labelText="Прокрутить автоматически"
         disabled={currentSection === landingData.components.length - 1}
         section={currentSection}
+        color={landingData.components[currentSection].color}
+        btnColor={landingData.components[currentSection].btn}
+        limiter={limiter}
       />
       <Button
         onClick={() => setStartMusic(!startMusic)}
@@ -134,6 +137,9 @@ export function Settings() {
         labelColor={landingData.components[currentSection].color}
         labelText="Просмотреть со звуком"
         section={currentSection}
+        color={landingData.components[currentSection].color}
+        btnColor={landingData.components[currentSection].btn}
+        limiter={limiter}
       />
     </div>
   );

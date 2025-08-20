@@ -5,6 +5,8 @@ import { registerSchema } from "../../validation/register";
 import type { z } from "zod";
 import { Link } from "react-router-dom";
 import { useNotificationStore } from "../../store/notificationStore";
+import Button from "../ui/button/Button";
+import { FuturisticMorph } from "../ui/futuristic/FuturisticMorph";
 
 import styles from "./Register.module.css";
 
@@ -54,6 +56,7 @@ export const Register: React.FC = () => {
 
   return (
     <div className={styles.registerPage}>
+      <FuturisticMorph />
       <a href={landingUrl} className="backButton">
         ← Вернуться на лендинг
       </a>
@@ -61,7 +64,7 @@ export const Register: React.FC = () => {
         className={styles.registerWrapper}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 2 }}
       >
         <h1 className={styles.title}>Регистрация</h1>
         <input
@@ -93,13 +96,18 @@ export const Register: React.FC = () => {
           value={form.promoCode}
           onChange={(e) => handleChange("promoCode", e.target.value)}
         />
-        <button
-          className="button"
-          onClick={handleRegister}
-          disabled={loading}
-        >
-          {loading ? "Загрузка..." : "Зарегистрироваться"}
-        </button>
+        <div style={{ height: 50 }}>
+          <Button
+            text={loading ? "Загрузка..." : "Зарегистрироваться"}
+            onClick={handleRegister}
+            size="flex"
+            delay={1}
+            limiter={window.innerWidth <= 768}
+            disabled={loading}
+            color="#FFFFFF"
+            btnColor="#000000"
+          />
+        </div>
         <div className={styles.switchAuth}>
           Есть аккаунт? <Link to="/login">Вход</Link>
         </div>

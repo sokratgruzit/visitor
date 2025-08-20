@@ -3,6 +3,8 @@ import { useConstructorStore } from "../../../store/constructorStore";
 import type { Circle } from "../../../types";
 
 import { CustomSelect } from "../select/CustomSelect";
+import Button from "../button/Button";
+import { Svg } from "../../svgs/Svg.module";
 
 import styles from "./ComponentModal.module.css";
 
@@ -137,6 +139,7 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                     type="text"
                     value={component.title || ""}
                     onChange={(e) => updateComponent({ title: e.target.value })}
+                    className="input"
                 />
             </label>
 
@@ -146,6 +149,7 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                     type="text"
                     value={component.text1 || ""}
                     onChange={(e) => updateComponent({ text1: e.target.value })}
+                    className="input"
                 />
             </label>}
 
@@ -155,6 +159,7 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                     type="text"
                     value={component.text2 || ""}
                     onChange={(e) => updateComponent({ text2: e.target.value })}
+                    className="input"
                 />
             </label>}
 
@@ -164,6 +169,7 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                     type="text"
                     value={component.text3 || ""}
                     onChange={(e) => updateComponent({ text3: e.target.value })}
+                    className="input"
                 />
             </label>}
 
@@ -177,6 +183,8 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                         max={1000}
                         step={1}
                         value={tbp?.top}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.textConfig;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -195,6 +203,8 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                         max={100}
                         step={0.5}
                         value={tbp?.left}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.textConfig;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -213,6 +223,8 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                         max={1000}
                         step={1}
                         value={tbp?.width}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.textConfig;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -231,6 +243,8 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                         max={1000}
                         step={1}
                         value={tbp?.height}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.textConfig;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -256,29 +270,40 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                                 updateComponent({ list: newList });
                             }}
                             style={{ flex: 1 }}
+                            className="input"
                         />
-                        <button
-                            type="button"
-                            className={styles.button}
-                            onClick={() => {
-                                const newList = [...(component.list || [])];
-                                newList.splice(index, 1);
-                                updateComponent({ list: newList });
-                            }}
-                        >
-                            Удалить пункт
-                        </button>
+                        <div style={{ height: 50, width: 50 }}>
+                            <Button
+                                icon={<Svg svgName="Delete" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />}
+                                onClick={() => {
+                                    const newList = [...(component.list || [])];
+                                    newList.splice(index, 1);
+                                    updateComponent({ list: newList });
+                                }}
+                                size="flex"
+                                delay={1}
+                                limiter={window.innerWidth <= 768}
+                                color="#FFFFFF"
+                                btnColor="#c56363"
+                                fontSize="1rem"
+                            />
+                        </div>
                     </div>
                 ))}
-                <button
-                    type="button"
-                    className={styles.button}
-                    onClick={() => {
-                        updateComponent({ list: [...(component.list || []), ""] });
-                    }}
-                >
-                    Добавить пункт
-                </button>
+                <div style={{ height: 50 }}>
+                    <Button
+                        text="Добавить пункт"
+                        onClick={() => {
+                            updateComponent({ list: [...(component.list || []), ""] });
+                        }}
+                        size="flex"
+                        delay={1}
+                        limiter={window.innerWidth <= 768}
+                        color="#FFFFFF"
+                        btnColor="#000000"
+                        fontSize="1rem"
+                    />
+                </div>
             </label>}
 
             <label style={{ flexDirection: "row" }}>
@@ -286,6 +311,8 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                     type="checkbox"
                     checked={component?.showSettings || false}
                     onChange={(e) => updateComponent({ showSettings: e.target.checked })}
+                    className="input"
+                    style={{ accentColor: "#000", width: 30 }}
                 />
                 Показать настройки
             </label>
@@ -295,6 +322,8 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
                     type="checkbox"
                     checked={component?.showNav || false}
                     onChange={(e) => updateComponent({ showNav: e.target.checked })}
+                    className="input"
+                    style={{ accentColor: "#000", width: 30 }}
                 />
                 Показать навигацию
             </label>

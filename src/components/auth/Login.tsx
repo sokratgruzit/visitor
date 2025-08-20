@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useNotificationStore } from "../../store/notificationStore";
 import { useAuthStore } from "../../store/useAuthStore";
 import Button from "../ui/button/Button";
+import { FuturisticMorph } from "../ui/futuristic/FuturisticMorph";
 
 import styles from "./Login.module.css";
 
@@ -53,6 +54,7 @@ export const Login: React.FC = () => {
 
     return (
         <div className={styles.loginPage}>
+            <FuturisticMorph />
             <a href={landingUrl} className="backButton">
                 ← Вернуться на лендинг
             </a>
@@ -60,7 +62,7 @@ export const Login: React.FC = () => {
                 className={styles.loginWrapper}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: 2 }}
             >
                 <h1 className={styles.title}>Вход</h1>
                 <input
@@ -79,13 +81,18 @@ export const Login: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
                 />
-                <button
-                    className="button"
-                    onClick={handleLogin}
-                    disabled={loading}
-                >
-                    {loading ? "Загрузка..." : "Войти"}
-                </button>
+                <div style={{ height: 50 }}>
+                    <Button
+                        text={loading ? "Загрузка..." : "Войти"}
+                        onClick={handleLogin}
+                        size="flex"
+                        delay={1}
+                        limiter={window.innerWidth <= 768}
+                        disabled={loading}
+                        color="#FFFFFF"
+                        btnColor="#000000"
+                    />
+                </div>
                 <div className={styles.switchAuth}>
                     Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
                 </div>

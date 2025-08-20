@@ -3,6 +3,8 @@ import { useConstructorStore } from "../../../store/constructorStore";
 
 import type { Circle } from "../../../types";
 
+import Button from "../button/Button";
+
 import styles from "./ComponentModal.module.css";
 
 interface Props {
@@ -53,6 +55,8 @@ export const AnimationTab = ({
 						type="checkbox"
 						checked={component?.showCircles || false}
 						onChange={(e) => updateComponent({ showCircles: e.target.checked })}
+                        className="input"
+                        style={{ accentColor: "#000", width: 30 }}
 					/>
 					Показать круги
 				</label>
@@ -65,6 +69,8 @@ export const AnimationTab = ({
                         max={3}
                         step={0.1}
                         value={bp.s ?? 0}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => updateScale(parseFloat(e.target.value))}
                     />
                 </label>
@@ -77,6 +83,8 @@ export const AnimationTab = ({
                         max={10}
                         step={0.1}
                         value={bp.dist ?? 0}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => updateDist(parseFloat(e.target.value))}
                     />
                 </label>
@@ -89,39 +97,56 @@ export const AnimationTab = ({
                         max={1000}
                         step={1}
                         value={leftPos}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => updatePos("left", parseInt(e.target.value), leftMode)}
                     />
                     <div className={styles.toggleButtons}>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setLeftMode("full");
-                                updatePos("left", leftPos, "full");
-                            }}
-                            className={`${styles.posBtn} ${leftMode === "full" ? styles.active : ""}`}
-                        >
-                            full
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setLeftMode("half");
-                                updatePos("left", leftPos, "half");
-                            }}
-                            className={`${styles.posBtn} ${leftMode === "half" ? styles.active : ""}`}
-                        >
-                            half
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setLeftMode(null);
-                                updatePos("left", leftPos, null);
-                            }}
-                            className={styles.posBtn} 
-                        >
-                            Обнулить
-                        </button>
+                        <div style={{ height: 20, width: "20%" }}>
+                            <Button
+                                text="full"
+                                onClick={() => {
+                                    setLeftMode("full");
+                                    updatePos("left", leftPos, "full");
+                                }}
+                                size="flex"
+                                delay={.8}
+                                limiter={window.innerWidth <= 768}
+                                color="#FFFFFF"
+                                btnColor={leftMode === "full" ? "#63C5AB" : "#000000"}
+                                fontSize=".75rem"
+                            />
+                        </div>
+                        <div style={{ height: 20, width: "20%" }}>
+                            <Button
+                                text="half"
+                                onClick={() => {
+                                    setLeftMode("half");
+                                    updatePos("left", leftPos, "half");
+                                }}
+                                size="flex"
+                                delay={.8}
+                                limiter={window.innerWidth <= 768}
+                                color="#FFFFFF"
+                                btnColor={leftMode === "half" ? "#63C5AB" : "#000000"}
+                                fontSize=".75rem"
+                            />
+                        </div>
+                        <div style={{ height: 20, width: "20%" }}>
+                            <Button
+                                text="reset"
+                                onClick={() => {
+                                    setLeftMode(null);
+                                    updatePos("left", leftPos, null);
+                                }}
+                                size="flex"
+                                delay={.8}
+                                limiter={window.innerWidth <= 768}
+                                color="#FFFFFF"
+                                btnColor={"#000000"}
+                                fontSize=".75rem"
+                            />
+                        </div>
                     </div>
                 </label>
 
@@ -133,39 +158,56 @@ export const AnimationTab = ({
                         max={1000}
                         step={1}
                         value={topPos}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => updatePos("top", parseInt(e.target.value), topMode)}
                     />
                     <div className={styles.toggleButtons}>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setTopMode("full");
-                                updatePos("top", topPos, "full");
-                            }}
-                            className={`${styles.posBtn} ${topMode === "full" ? styles.active : ""}`}
-                        >
-                            full
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setTopMode("half");
-                                updatePos("top", topPos, "half");
-                            }}
-                            className={`${styles.posBtn} ${topMode === "half" ? styles.active : ""}`}
-                        >
-                            half
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setTopMode(null);
-                                updatePos("top", topPos, null);
-                            }}
-                            className={styles.posBtn}
-                        >
-                            Обнулить
-                        </button>
+                        <div style={{ height: 20, width: "20%" }}>
+                            <Button
+                                text="full"
+                                onClick={() => {
+                                    setTopMode("full");
+                                    updatePos("top", topPos, "full");
+                                }}
+                                size="flex"
+                                delay={.8}
+                                limiter={window.innerWidth <= 768}
+                                color="#FFFFFF"
+                                btnColor={topMode === "full" ? "#63C5AB" : "#000000"}
+                                fontSize=".75rem"
+                            />
+                        </div>
+                        <div style={{ height: 20, width: "20%" }}>
+                            <Button
+                                text="half"
+                                onClick={() => {
+                                    setTopMode("half");
+                                    updatePos("top", topPos, "half");
+                                }}
+                                size="flex"
+                                delay={.8}
+                                limiter={window.innerWidth <= 768}
+                                color="#FFFFFF"
+                                btnColor={topMode === "half" ? "#63C5AB" : "#000000"}
+                                fontSize=".75rem"
+                            />
+                        </div>
+                        <div style={{ height: 20, width: "20%" }}>
+                            <Button
+                                text="reset"
+                                onClick={() => {
+                                    setTopMode(null);
+                                    updatePos("top", topPos, null);
+                                }}
+                                size="flex"
+                                delay={.8}
+                                limiter={window.innerWidth <= 768}
+                                color="#FFFFFF"
+                                btnColor={"#000000"}
+                                fontSize=".75rem"
+                            />
+                        </div>
                     </div>
                 </label>
 
@@ -177,6 +219,8 @@ export const AnimationTab = ({
                         max={360}
                         step={1}
                         value={bp.rotate ?? 0}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => updateRotate(parseInt(e.target.value))}
                     />
                 </label>
@@ -192,6 +236,8 @@ export const AnimationTab = ({
                         max={1000}
                         step={1}
                         value={c1bp.top}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.circle1;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -210,6 +256,8 @@ export const AnimationTab = ({
                         max={1000}
                         step={1}
                         value={c1bp?.left}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.circle1;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -228,6 +276,8 @@ export const AnimationTab = ({
                         max={1000}
                         step={1}
                         value={c1bp.width}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.circle1;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -246,6 +296,8 @@ export const AnimationTab = ({
                         max={1000}
                         step={1}
                         value={c1bp?.height}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.circle1;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -264,6 +316,8 @@ export const AnimationTab = ({
                         max={360}
                         step={1}
                         value={c1bp?.rotate}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.circle1;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -284,6 +338,8 @@ export const AnimationTab = ({
                         max={1000}
                         step={1}
                         value={c2bp?.top}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.circle2;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -302,6 +358,8 @@ export const AnimationTab = ({
                         max={1000}
                         step={1}
                         value={c2bp?.left}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.circle2;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -320,6 +378,8 @@ export const AnimationTab = ({
                         max={1000}
                         step={1}
                         value={c2bp?.width}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.circle2;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -338,6 +398,8 @@ export const AnimationTab = ({
                         max={1000}
                         step={1}
                         value={c2bp?.height}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.circle2;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);
@@ -356,6 +418,8 @@ export const AnimationTab = ({
                         max={360}
                         step={1}
                         value={c2bp?.rotate}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             let bps = component?.circle2;
                             const bpIndex = bps.findIndex((b: any) => b.minWidth === activePoint);

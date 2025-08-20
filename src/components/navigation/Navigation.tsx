@@ -163,6 +163,9 @@ export function Navigation() {
         direction={navPosition !== "right" ? "right" : "right-rotate"}
         disabled={currentSection === 0}
         section={currentSection}
+        color={landingData.components[currentSection].color}
+        btnColor={landingData.components[currentSection].btn}
+        limiter={limiter}
       />
       <div 
         style={{ 
@@ -193,6 +196,9 @@ export function Navigation() {
         direction={navPosition !== "right" ? "left" : "right-rotate"}
         disabled={currentSection === landingData.components.length - 1}
         section={currentSection}
+        color={landingData.components[currentSection].color}
+        btnColor={landingData.components[currentSection].btn}
+        limiter={limiter}
       />
     </motion.div>
   );

@@ -9,7 +9,7 @@ export const Notification = () => {
 
 	useEffect(() => {
 		notifications.forEach(({ id }) => {
-			const timer = setTimeout(() => removeNotification(id), 5000);
+			const timer = setTimeout(() => removeNotification(id), 2000);
 			return () => clearTimeout(timer);
 		});
 	}, [notifications, removeNotification]);
