@@ -5,7 +5,7 @@ import styles from "./CustomSelect.module.css";
 
 interface Option {
     label: string;
-    value: string | null;
+    value: string | null | number;
 }
 
 interface Props {

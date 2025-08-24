@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import { useAppStore } from "../../../store/useAppStore";
 import { useConstructorStore } from "../../../store/constructorStore";
+import { useNotificationStore } from "../../../store/notificationStore";
+import { getMyAnimations } from "../../../api/animations";
 import type { Circle } from "../../../types";
 
 import { CustomSelect } from "../select/CustomSelect";
@@ -15,17 +18,6 @@ interface Props {
 }
 
 export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
-    const canvasOptions = [
-        { label: "sober", value: "sober" },
-        { label: "laptop", value: "laptop" },
-        { label: "panic", value: "panic" },
-        { label: "super", value: "super" },
-        { label: "chain", value: "chain" },
-        { label: "umbrella", value: "umbrella" },
-        { label: "ai", value: "ai" },
-        { label: "no animation", value: null }
-    ];
-
     const navPositionOptions = [
         { label: "Сверху", value: "top" },
         { label: "Справа", value: "right" },
@@ -46,10 +38,41 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
         { label: "Снизу справа", value: "title-bottom-right" },
     ];
 
+    const [canvasOptions, setCanvasOptions] = useState<{ label: string, value: number }[]>([]);
+
     const { landingData } = useAppStore();
     const { activePoint } = useConstructorStore();
+    const notify = useNotificationStore((state) => state.showNotification);
 
     const component = landingData?.components?.find((c: any) => c.id === componentId) || {};
+
+    useEffect(() => {
+        const fetchAnimations = async () => {
+            try {
+                const res = await getMyAnimations();
+                if (!res.success) {
+                    notify({ type: "error", message: res.message || "Не удалось загрузить анимации" });
+                    return;
+                }
+
+                let opts: { label: string, value: number }[] = [];
+
+                res?.animations?.map(o => {
+                    opts.push({
+                        label: o.name,
+                        value: o.id
+                    });
+                    return;
+                });
+
+                setCanvasOptions(opts);
+            } catch {
+                notify({ type: "error", message: "Сетевая ошибка при загрузке анимаций" });
+            }
+        };
+
+        fetchAnimations();
+    }, []);
 
     return (
         <>
@@ -117,11 +140,11 @@ export const GeneralTab = ({ updateComponent, componentId, tbp }: Props) => {
 
             <label>
                 Анимация:
-                <CustomSelect
+                {canvasOptions.length > 0 && <CustomSelect
                     value={canvasOptions.find((opt) => opt.value === component.canvas) ?? canvasOptions[0]}
                     options={canvasOptions}
                     onChange={(opt) => updateComponent({ canvas: opt.value })}
-                />
+                />}
             </label>
 
             <label>

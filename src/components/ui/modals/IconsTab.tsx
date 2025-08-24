@@ -13,7 +13,7 @@ import styles from "./ComponentModal.module.css";
 
 interface Props {
     componentId: string;
-    update: (index: number, key: string, value: string | null) => void;
+    update: (index: number, key: string, value: string | null | number) => void;
     updateComponent: (newData: any) => void;
 }
 

@@ -87,7 +87,7 @@ export const Account: React.FC = () => {
                 </div>
 
                 <div className={styles.fields}>
-                    {(subscriptionStatus !== "active" || !subscriptionStatus || true) && (
+                    {(subscriptionStatus !== "active" || !subscriptionStatus) && (
                         <div className={styles.btnsWrap}>
                             <Button
                                 text={loading ? "Подготовка..." : subscriptionStatus === "pending" ? "В процессе..." : "Оплатить / Подписаться"}

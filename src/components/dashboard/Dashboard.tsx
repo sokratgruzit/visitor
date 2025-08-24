@@ -186,6 +186,19 @@ export const Dashboard = () => {
                                 </div>
                             )}
 
+                            <div style={{ height: 50 }}>
+                                <Button
+                                    text="Дашборд"
+                                    onClick={() => navigate("/dashboard")}
+                                    size="flex"
+                                    delay={.2}
+                                    limiter={window.innerWidth <= 768}
+                                    color="#FFFFFF"
+                                    btnColor={lastSegment === "dashboard" ? "rgba(0,0,0,1)" : "rgba(0,0,0,.65)"}
+                                    fontSize="1rem"
+                                />
+                            </div>
+
                             {user?.emailVerified && user?.subscriptionStatus === "active" && (
                                 <div className={styles.sections}>
                                     <div style={{ height: 50 }}>

@@ -224,7 +224,7 @@ export const VotingManager: React.FC = () => {
                                 <Button icon={<Svg svgName="Delete" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />} onClick={() => confirmDelete(deleteConfirmId)} size="flex" delay={1} limiter={window.innerWidth <= 768} color="#FFFFFF" btnColor="#E05353" fontSize="1rem" />
                             </div>
                             <div style={{ height: 50, width: 50 }}>
-                                <Button icon={<Svg svgName="Cancel" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />} onClick={() => setDeleteConfirmId(null)} size="flex" delay={1} limiter={window.innerWidth <= 768} color="#FFFFFF" btnColor="#ccc" fontSize="1rem" />
+                                <Button icon={<Svg svgName="Cancel" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />} onClick={() => setDeleteConfirmId(null)} size="flex" delay={1} limiter={window.innerWidth <= 768} color="#FFFFFF" btnColor="#000" fontSize="1rem" />
                             </div>
                         </div>
                     </div>
@@ -252,7 +252,7 @@ export const VotingManager: React.FC = () => {
                                 <Button icon={<Svg svgName="Check" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />} onClick={confirmVote} size="flex" delay={1} limiter={window.innerWidth <= 768} color="#FFFFFF" btnColor="#63C5AB" fontSize="1rem" />
                             </div>
                             <div style={{ height: 50, width: 50 }}>
-                                <Button icon={<Svg svgName="Close" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />} onClick={() => setVoteModal({ open: false, id: null })} size="flex" delay={1} limiter={window.innerWidth <= 768} color="#FFFFFF" btnColor="#000" fontSize="1rem" />
+                                <Button icon={<Svg svgName="Cancel" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />} onClick={() => setVoteModal({ open: false, id: null })} size="flex" delay={1} limiter={window.innerWidth <= 768} color="#FFFFFF" btnColor="#000" fontSize="1rem" />
                             </div>
                         </div>
                     </div>

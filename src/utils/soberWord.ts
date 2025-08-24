@@ -1,7 +1,6 @@
 import type { TriangleData } from "../types";
 
 export const soberWord: Omit<TriangleData, "phase">[] = [
-    //S - start
     {
         x: 0,
         y: 0,
@@ -326,8 +325,6 @@ export const soberWord: Omit<TriangleData, "phase">[] = [
         scale: 3,
         z: -3
     },
-    // // S - end
-    // // o - start
     {
         x: 0,
         y: 0,
@@ -562,7 +559,6 @@ export const soberWord: Omit<TriangleData, "phase">[] = [
         scale: 3,
         z: -3
     },
-    // // b - start
     {
         x: 0,
         y: 0,
@@ -797,7 +793,6 @@ export const soberWord: Omit<TriangleData, "phase">[] = [
         scale: 3,
         z: -3
     },
-    // // e - start
     {
         x: 0,
         y: 0,
@@ -1014,7 +1009,6 @@ export const soberWord: Omit<TriangleData, "phase">[] = [
         scale: 3,
         z: -3
     },
-    // // r - start
     {
         x: 0,
         y: 0,
@@ -1177,8 +1171,6 @@ export const soberWord: Omit<TriangleData, "phase">[] = [
         scale: 3,
         z: -3
     },
-    // Man - start
-    // m - start
     {
         x: 0,
         y: 0,
@@ -1395,7 +1387,6 @@ export const soberWord: Omit<TriangleData, "phase">[] = [
         scale: 3,
         z: -3
     },
-    // a - start
     {
         x: 0,
         y: 0,
@@ -1612,7 +1603,6 @@ export const soberWord: Omit<TriangleData, "phase">[] = [
         scale: 3,
         z: -3
     },
-    // n - start
     {
         x: 0,
         y: 0,

@@ -56,9 +56,9 @@ export interface ListItemProps {
 
 export interface LandingComponent {
 	id: string;
-	type: string | null;
+	type: string | null | number;
   color?: string;
-  canvas?: string;
+  canvas?: string | number;
   btn?: string;
   fileUrl?: string;
   fileBase64?: any;
@@ -195,10 +195,20 @@ export interface LoginData {
 }
 
 export interface SlugResponse {
-    success: boolean;
-    message?: string;
-    id?: string;
-    available?: boolean;
+  success: boolean;
+  message?: string;
+  id?: string;
+  available?: boolean;
+}
+
+export interface AnimationMeta {
+  id: number;
+  name: string;
+  status: string;
+  fileUrl?: string;
+  userId?: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Creator {

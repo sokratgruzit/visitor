@@ -1,19 +1,20 @@
 import type { TriangleData } from "../types";
 
-import { soberWord } from "./soberWord";
-import { laptop } from "./laptop";
-import { panic } from "./panic";
-import { superMan } from "./superMan";
-import { bridge } from "./bridge";
-import { umbrella } from "./umbrella";
+// import { soberWord } from "./soberWord";
+// import { laptop } from "./laptop";
+// import { panic } from "./panic";
+// import { superMan } from "./superMan";
+// import { bridge } from "./bridge";
+// import { umbrella } from "./umbrella";
 import { micro, addSolidRingToMicro } from "./micro";
+import { getAnimationById } from "../api/animations";
 
 let initializedMicro = false;
 
-export function getTrianglesData(canvasType: string): {
+export async function getTrianglesData(canvasType: string | number): Promise<{
   mutated: Omit<TriangleData, "phase">[];
   target: Omit<TriangleData, "phase">[];
-} {
+}> {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
@@ -22,33 +23,35 @@ export function getTrianglesData(canvasType: string): {
   }
 
   const distance = 1500;
-  let base = soberWord;
+  let res = await getAnimationById(canvasType);
+  if (!res.success) return { mutated: [], target: [] };
+  let base = res.animation.data;
 
-  if (canvasType === "sober") {
-    base = soberWord;
-  }
+  // if (canvasType === "sober") {
+  //   base = soberWord;
+  // }
 
-  if (canvasType === "laptop") {
-    base = laptop;
-  }
+  // if (canvasType === "laptop") {
+  //   base = laptop;
+  // }
 
-  if (canvasType === "panic") {
-    base = panic;
-  }
+  // if (canvasType === "panic") {
+  //   base = panic;
+  // }
 
-  if (canvasType === "super") {
-    base = superMan;
-  }
+  // if (canvasType === "super") {
+  //   base = superMan;
+  // }
 
-  if (canvasType === "chain") {
-    base = bridge;
-  }
+  // if (canvasType === "chain") {
+  //   base = bridge;
+  // }
 
-  if (canvasType === "umbrella") {
-    base = umbrella;
-  }
+  // if (canvasType === "umbrella") {
+  //   base = umbrella;
+  // }
 
-  if (canvasType === "ai") {
+  if (canvasType === 5) {
     if (!initializedMicro) {
       initializedMicro = true;
       addSolidRingToMicro(4, 4, 114, 8, "#03A9F4", 0.7, 3, -3, 16);
@@ -96,10 +99,10 @@ export function getTrianglesData(canvasType: string): {
       (a.color === "#03A9F4" ? -1 : 1) - (b.color === "#03A9F4" ? -1 : 1)
     );
 
-    base = micro;
+    base = [...base, ...micro];
   }
 
-  const target = base.map((triangle) => {
+  const target = base.map((triangle: any) => {
     const x = triangle.x;
     const y = triangle.y;
     const size = triangle.size;
@@ -125,7 +128,7 @@ export function getTrianglesData(canvasType: string): {
     };
   });
 
-  const mutated = target.map((t) => ({
+  const mutated = target.map((t: any) => ({
     ...t,
     x: (Math.random() - 0.5) * width * 2,
     y: (Math.random() - 0.5) * height * 2,

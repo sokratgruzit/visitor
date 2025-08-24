@@ -20,6 +20,8 @@ import { Preview } from "./components/preview/Preview";
 import { FullyVerifiedRoute } from "./components/layout/FullyVerifiedRoute";
 import { ProtectedRoute } from "./components/layout/ProtectedRoute";
 import { VotingManager } from "./components/dashboard/VotingManager";
+import { MyAnimations } from "./components/dashboard/MyAnimations";
+import { AnimationPreview } from "./components/dashboard/AnimationPreview";
 
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
@@ -88,6 +90,14 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
         <Route 
+          path="animation/:id"
+          element={
+            <FullyVerifiedRoute>
+              <AnimationPreview />
+            </FullyVerifiedRoute>
+          }
+        />
+        <Route 
           path="preview/:slug"
           element={
             <FullyVerifiedRoute>
@@ -103,6 +113,14 @@ export default function App() {
             </ProtectedRoute>
           }
         >
+          <Route 
+            index 
+            element={
+              <FullyVerifiedRoute>
+                <MyAnimations />
+              </FullyVerifiedRoute>
+            } 
+          />
           <Route 
             path="constructor" 
             element={

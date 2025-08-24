@@ -1,7 +1,6 @@
 import type { TriangleData } from "../types";
 
 export const laptop: Omit<TriangleData, "phase">[] = [
-    //S - start
     {
         x: 0,
         y: 0,

@@ -188,7 +188,7 @@ export const ComponentModal = ({ isOpen, onClose, componentId }: Props) => {
 			});
 		};
 
-		const updateList = (index: number, key: string, value: string | null) => {
+		const updateList = (index: number, key: string, value: string | null | number) => {
 			const updatedList = [...component?.list];
 			updatedList[index] = { ...updatedList[index], [key]: value };
 			updateComponent({ list: updatedList });
