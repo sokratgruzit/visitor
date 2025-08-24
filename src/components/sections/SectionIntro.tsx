@@ -111,7 +111,10 @@ export default function SectionIntro({ data }: any) {
         left={limiter ? "calc(50% - 100px)" : "calc(50% - 120px)"}
         top="calc(100% - 100px)"
         delay={4}
+        limiter={limiter}
         disabled={landingData.components.length < 2}
+        color={landingData.components[currentSection].color}
+        btnColor={landingData.components[currentSection].btn}
       />
     </div>
   );

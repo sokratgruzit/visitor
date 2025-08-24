@@ -92,6 +92,90 @@ input {
   position: relative !important;
 }
 
+.backButton {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  color: #000;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.input {
+  padding: 12px;
+  border-radius: 30px;
+  max-height: 50px;
+  border: 2px solid transparent;
+  font-size: 16px;
+  outline: none;
+  -webkit-mask-image: url("/images/repeat-white.png");
+  -webkit-mask-repeat: repeat;
+  -webkit-mask-size: contain;
+  mask-image: url("/images/repeat-white.png");
+  mask-repeat: repeat;
+  mask-size: contain;
+  background: rgba(0, 0, 0, .2);
+  width: 100%;
+  height: 100%;
+  transition: border 0.3s;
+}
+
+.input::placeholder {
+  color: #000;
+}
+
+.input:focus {
+  border: 2px solid #000;
+}
+
+.button {
+  background: #63C5AB;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+  touch-action: manipulation; 
+  pointer-events: auto;
+}
+
+.button:disabled {
+  background-color: rgba(99, 197, 171, .5);
+  cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+  background: rgba(99, 197, 171, .5);
+  color: white;
+}
+
+.buttonLight {
+  color: #63C5AB;
+  background: transparent;
+  padding: 12px;
+  border: none;
+  border: 2px solid #63C5AB;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+  touch-action: manipulation; 
+  pointer-events: auto;
+}
+
+.buttonLight:disabled {
+  background: rgba(99, 197, 171, .5);
+  cursor: not-allowed;
+}
+
+.buttonLight:hover:not(:disabled) {
+  background: rgba(99, 197, 171, .5);
+  color: white;
+}
+
 @keyframes scratchy {
   0% {
     background-position: 0 0;

@@ -6,12 +6,14 @@ import type { ListItemProps } from "../../../types";
 
 import { CustomSelect } from "../select/CustomSelect";
 import { IconPicker } from "./IconPicker";
+import Button from "../button/Button";
+import { Svg } from "../../svgs/Svg.module";
 
 import styles from "./ComponentModal.module.css";
 
 interface Props {
     componentId: string;
-    update: (index: number, key: string, value: string | null) => void;
+    update: (index: number, key: string, value: string | null | number) => void;
     updateComponent: (newData: any) => void;
 }
 
@@ -57,17 +59,24 @@ export const IconsTab = ({ update, componentId, updateComponent }: Props) => {
                                 type="text"
                                 value={item.content}
                                 onChange={(e) => update(idx, "content", e.target.value)}
+                                className="input"
                             />
                         ) : (
-                            <button
-                                className={styles.button}
-                                onClick={() => {
-                                    setActiveLabelIndex(idx);
-                                    setIsPopupOpen(true);
-                                }}
-                            >
-                                Выбрать иконку
-                            </button>
+                            <div style={{ height: 50 }}>
+                                <Button
+                                    text="Выбрать иконку"
+                                    onClick={() => {
+                                        setActiveLabelIndex(idx);
+                                        setIsPopupOpen(true);
+                                    }}
+                                    size="flex"
+                                    delay={1}
+                                    limiter={window.innerWidth <= 768}
+                                    color="#FFFFFF"
+                                    btnColor="#63C5AB"
+                                    fontSize="1rem"
+                                />
+                            </div>
                         )}
 
                         {/* <p>Размер:</p>
@@ -82,6 +91,7 @@ export const IconsTab = ({ update, componentId, updateComponent }: Props) => {
                             type="text"
                             value={item.text}
                             onChange={(e) => update(idx, "text", e.target.value)}
+                            className="input"
                         />
                     </div>
                 ))}
@@ -94,22 +104,12 @@ export const IconsTab = ({ update, componentId, updateComponent }: Props) => {
                         <p>#{idx + 1}:</p>
                         <div className={styles.delimiter} />
                     
-                        <p>Иконка: {item.icon}</p>
-                        <button
-                            className={styles.button}
-                            onClick={() => {
-                                setActiveLabelIndex(idx);
-                                setIsPopupOpen(true);
-                            }}
-                        >
-                            Выбрать иконку
-                        </button>
-
                         <p>Текст пункта:</p>
                         <input
                             type="text"
                             value={item.text}
                             onChange={(e) => update(idx, "text", e.target.value)}
+                            className="input"
                         />
 
                         {component.type === "links" && <p>Адрес:</p>}
@@ -117,36 +117,64 @@ export const IconsTab = ({ update, componentId, updateComponent }: Props) => {
                             type="text"
                             value={item.link}
                             onChange={(e) => update(idx, "link", e.target.value)}
+                            className="input"
                         />}
 
-                        <button
-                            type="button"
-                            className={styles.button}
-                            onClick={() => {
-                                const newList = [...(component.list || [])];
-                                newList.splice(idx, 1);
-                                updateComponent({ list: newList });
-                            }}
-                        >
-                            Удалить пункт
-                        </button>
+                        <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
+                            <div style={{ height: 50, width: 50 }}>
+                                <Button
+                                    icon={<Svg svgName="Add" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />}
+                                    onClick={() => {
+                                        setActiveLabelIndex(idx);
+                                        setIsPopupOpen(true);
+                                    }}
+                                    size="flex"
+                                    delay={1}
+                                    limiter={window.innerWidth <= 768}
+                                    color="#FFFFFF"
+                                    btnColor="#63C5AB"
+                                    fontSize="1rem"
+                                />
+                            </div>
+                            <div style={{ height: 50, width: 50 }}>
+                                <Button
+                                    icon={<Svg svgName="Delete" size={{ xs: 30, sm: 30, md: 30, lg: 30 }} color="#FFFFFF" />}
+                                    onClick={() => {
+                                        const newList = [...(component.list || [])];
+                                        newList.splice(idx, 1);
+                                        updateComponent({ list: newList });
+                                    }}
+                                    size="flex"
+                                    delay={1}
+                                    limiter={window.innerWidth <= 768}
+                                    color="#FFFFFF"
+                                    btnColor="#c56363"
+                                    fontSize="1rem"
+                                />
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>}
 
-            <button
-                type="button"
-                className={styles.button}
-                onClick={() => {
-                    let defaultItem: ListItemProps = { icon: "", classId: "", text: "" };
+            <div style={{ height: 50 }}>
+                <Button
+                    text="Добавить пункт"
+                    onClick={() => {
+                        let defaultItem: ListItemProps = { icon: "", classId: "", text: "" };
 
-                    if (component.type === "links") defaultItem = { icon: "", classId: "", text: "", link: "" };
+                        if (component.type === "links") defaultItem = { icon: "", classId: "", text: "", link: "" };
 
-                    updateComponent({ list: [...(component.list || []), defaultItem] });
-                }}
-            >
-                Добавить пункт
-            </button>
+                        updateComponent({ list: [...(component.list || []), defaultItem] });
+                    }}
+                    size="flex"
+                    delay={1}
+                    limiter={window.innerWidth <= 768}
+                    color="#FFFFFF"
+                    btnColor="#000000"
+                    fontSize="1rem"
+                />
+            </div>
 
             <IconPicker
                 isOpen={isPopupOpen}

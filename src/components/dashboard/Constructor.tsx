@@ -5,8 +5,11 @@ import { useAppStore } from "../../store/useAppStore";
 
 import { CustomSelect } from "../ui/select/CustomSelect";
 import { ComponentsSelector } from "./ComponentsSelecrot";
-
 import { checkSlug, addSlug, saveLanding } from "../../api/constructor";
+
+import { Tabs } from "../ui/tabs/Tabs";
+import { Svg } from "../svgs/Svg.module";
+import Button from "../ui/button/Button";
 
 import styles from "./Constructor.module.css";
 
@@ -17,7 +20,7 @@ const audioOptions = [
 ];
 
 export const Constructor = () => {
-	const [tab, setTab] = useState<"general" | "components">("general");
+	const [tab, setTab] = useState<string>("general");
 	const [checkingSlug, setCheckingSlug] = useState(false);
 	const [slugLocked, setSlugLocked] = useState(false);
 	const [saving, setSaving] = useState(false);
@@ -103,52 +106,42 @@ export const Constructor = () => {
 
 	return (
 		<div className={styles.pageWrapper}>
-			<h1 className={styles.pageTitle}>Конструктор сайта</h1>
 			<div className={styles.container}>
-				<div className={styles.tabs}>
-					<button
-						className={tab === "general" ? styles.activeTab : ""}
-						onClick={() => setTab("general")}
-						type="button"
-					>
-						Общие настройки
-					</button>
-					<button
-						className={tab === "components" ? styles.activeTab : ""}
-						onClick={() => slug.trim() && setTab("components")}
-						disabled={!slug.trim()}
-						type="button"
-						style={{ opacity: !slug.trim() ? 0.5 : 1 }}
-					>
-						Компоненты
-					</button>
-				</div>
+				<Tabs
+					active={tab}
+					onChange={setTab}
+					tabs={[
+						{ key: "general", label: "Общие настройки" },
+						{ key: "components", label: "Компоненты", disabled: !slug.trim() }
+					]}
+				/>
 
 				{tab === "general" && (
 					<form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+						<div className={styles.helpText}>
+							<Svg svgName="Warning" size={{ xs: 24, sm: 24, md: 24, lg: 24 }} color="#d7bb3b" />
+							<p>Slug — это уникальный идентификатор вашей презентации в ссылке. Можно использовать только латинские буквы (a–z), цифры и дефис (-). Изменить slug после сохранения невозможно.</p>
+						</div>
 						<label>
 							Slug:
 							<div style={{
 								display: "flex",
-								border: "1px solid #ccc",
-								borderRadius: 8,
+								borderRadius: 30,
 								overflow: "hidden",
 								width: "100%",
 								maxWidth: 600,
-								height: 35
+								height: 50
 							}}>
 								<input
 									type="text"
 									value={landingData?.slug ?? ""}
 									onChange={(e) => onChangeInput(e.target.value)}
-									className={styles.input}
+									className="input"
 									disabled={slugLocked || checkingSlug}
 									style={{
 										border: "none",
 										borderRadius: 0,
 										flexGrow: 1,
-										padding: "12px",
-										fontSize: 16,
 										outline: "none",
 										boxSizing: "border-box",
 									}}
@@ -159,32 +152,31 @@ export const Constructor = () => {
 										type="button"
 										onClick={onAddSlug}
 										disabled={checkingSlug}
+										className={styles.button}
 										style={{
 											border: "none",
 											backgroundColor: "#63C5AB",
 											color: "#fff",
 											cursor: checkingSlug ? "not-allowed" : "pointer",
 											padding: "12px 20px",
-											fontSize: 16,
+											fontSize: 18,
 											borderRadius: 0,
 											userSelect: "none",
 											outline: "none",
-											height: 35,
+											width: 150,
+											height: 50,
 											display: "flex",
-											alignItems: "center"
+											alignItems: "center",
+											justifyContent: "center"
 										}}
 									>
 										{checkingSlug ? "Проверка..." : "Добавить"}
 									</button>
 								)}
 							</div>
-							<p className={styles.helpText}>
-								Slug — это уникальный идентификатор вашей презентации в ссылке. Можно использовать только
-								латинские буквы (a–z), цифры и дефис (-). Изменить slug после сохранения невозможно.
-							</p>
 						</label>
 
-						<label style={{ marginTop: 20 }}>
+						<label>
 							Аудио:
 							<CustomSelect
 								value={audioOptions.find((opt) => opt.value === landingData?.audio) ?? audioOptions[0]}
@@ -199,7 +191,7 @@ export const Constructor = () => {
 								type="text"
 								value={landingData?.introBtn ?? ""}
 								onChange={(e) => updateLanding(e.target.value, "introBtn")}
-								className={styles.input}
+								className="input"
 							/>
 						</label>
 
@@ -213,14 +205,17 @@ export const Constructor = () => {
 							/>
 						</label>
                         
-                        <button
-                            type="button"
-                            onClick={onSave}
-                            disabled={!slug || saving}
-                            className={styles.saveButton}
-                        >
-                            {saving ? "Сохранение..." : "Сохранить изменения"}
-                        </button>
+						<div style={{ height: 50 }}>
+							<Button
+								text={saving ? "Сохранение..." : "Сохранить изменения"}
+								onClick={onSave}
+								size="flex"
+								delay={.8}
+								limiter={window.innerWidth <= 768}
+								color="#FFFFFF"
+								btnColor="#63C5AB"
+							/>
+						</div>
 					</form>
 				)}
 

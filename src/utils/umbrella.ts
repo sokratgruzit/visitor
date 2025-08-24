@@ -1,7 +1,6 @@
 import type { TriangleData } from "../types";
 
 export const umbrella: Omit<TriangleData, "phase">[] = [
-    //bg
     {
         x: 0,
         y: 0,
@@ -506,7 +505,6 @@ export const umbrella: Omit<TriangleData, "phase">[] = [
         scale: 3,
         z: -3
     },
-    //end bg
     {
         x: 0,
         y: 0,

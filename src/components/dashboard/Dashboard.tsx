@@ -1,15 +1,31 @@
 import { useEffect, useRef, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { authFetch, logoutUser } from "../../api/auth";
 import { useNotificationStore } from "../../store/notificationStore";
+import { Svg } from "../svgs/Svg.module";
+import Button from "../ui/button/Button";
+import Typing from "../typing/Typing";
 
 import styles from "./Dashboard.module.css";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export const Dashboard = () => {
+    const titles = {
+        dashboard: "Дашборд",
+        account: "Управление аккаунтом",
+        constructor: "Конструктор",
+        voting: "Управление голосованием"
+    };
+
+    const location = useLocation();
+    const pathSegments = location.pathname.split("/").filter(Boolean); // убираем пустые сегменты
+    const lastSegment = pathSegments[pathSegments.length - 1];
+
+    const pageTitle = titles[lastSegment as keyof typeof titles] || "По умолчанию";
+
     const navigate = useNavigate();
     const { user, clearAuth } = useAuthStore();
 
@@ -72,11 +88,26 @@ export const Dashboard = () => {
 
     return (
         <div className={styles.dashboardPage}>
-            <button onClick={toggleDrawer} className={styles.drawerToggle}>
-                ☰ Меню
-            </button>
+            <Button
+                icon={<Svg svgName="Menu" size={{ xs: 40, sm: 40, md: 40, lg: 40 }} color="#FFFFFF" />}
+                onClick={toggleDrawer}
+                size="small"
+                left={"20px"}
+                top={"20px"}
+                delay={0}
+                limiter={window.innerWidth <= 768}
+                color="#FFFFFF"
+                btnColor="#000000"
+            />
 
-            <AnimatePresence>
+            <Typing
+                text={pageTitle}
+                className={`${styles.title} texturedType2`}
+                showCursor={false}
+                color="#000"
+            />
+
+            <AnimatePresence mode="wait">
                 {drawerOpen && (
                     <>
                         <motion.div
@@ -88,44 +119,44 @@ export const Dashboard = () => {
                         <motion.div
                             ref={drawerRef}
                             className={styles.drawer}
-                            initial={{ x: -300 }}
+                            initial={{ x: window.innerWidth <= 440 ? "-100%" : -300 }}
                             animate={{ x: 0 }}
-                            exit={{ x: -300 }}
+                            exit={{ x: window.innerWidth <= 440 ? "-100%" : -300 }}
                             transition={{ type: "tween", duration: 0.3 }}
                         >
                             <div className={styles.drawerHeading}>
                                 Здравствуй, {user?.name}
-                                <button
-									className={styles.close}
-									onClick={toggleDrawer}
-									aria-label="Закрыть"
-								>
-									<svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#000"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <line x1="18" y1="6" x2="6" y2="18" />
-                                        <line x1="6" y1="6" x2="18" y2="18" />
-                                    </svg>
-								</button>
+                                <div style={{ width: 40, height: 40 }}>
+                                    <Button
+                                        icon={<Svg svgName="Close" size={{ xs: 40, sm: 40, md: 40, lg: 40 }} color="#FFFFFF" />}
+                                        onClick={toggleDrawer}
+                                        size="flex"
+                                        delay={0}
+                                        limiter={window.innerWidth <= 768}
+                                        color="#FFFFFF"
+                                        btnColor="#000000"
+                                    />
+                                </div>
                             </div>
 
                             {!user?.emailVerified && (
                                 <div className={styles.warningBox}>
-                                    <p>Email не подтвержден.</p>
-                                    <button
-                                        className={styles.actionButton}
-                                        onClick={onResendVerification}
-                                    >
-                                        Отправить письмо повторно
-                                    </button>
+                                    <div className={styles.message}>
+                                        <Svg svgName="Warning" size={{ xs: 24, sm: 24, md: 24, lg: 24 }} color="#E05353" />
+                                        <p>Email не подтвержден.</p>
+                                    </div>
+                                    <div style={{ height: 50 }}>
+                                        <Button
+                                            text="Отправить письмо повторно"
+                                            onClick={onResendVerification}
+                                            size="flex"
+                                            delay={1}
+                                            limiter={window.innerWidth <= 768}
+                                            color="#FFFFFF"
+                                            btnColor="#E05353"
+                                            fontSize="1rem"
+                                        />
+                                    </div>
                                     {resendSuccess && (
                                         <div className={styles.successBox}>
                                             Письмо отправлено повторно
@@ -134,42 +165,95 @@ export const Dashboard = () => {
                                 </div>
                             )}
 
-                            {(user?.subscriptionStatus === "inactive" || !user?.subscriptionStatus) && (
+                            {(user?.subscriptionStatus !== "active") && (
                                 <div className={styles.warningBox}>
-                                    <p>Подписка не оплачена.</p>
-                                    <button
-                                        className={styles.actionButton}
-                                        onClick={onGoToPayment}
-                                    >
-                                        Перейти к оплате
-                                    </button>
+                                    <div className={styles.message}>
+                                        <Svg svgName="Warning" size={{ xs: 24, sm: 24, md: 24, lg: 24 }} color="#E05353" />
+                                        <p>Подписка не оплачена.</p>
+                                    </div>
+                                    <div style={{ height: 50 }}>
+                                        <Button
+                                            text="Отправить письмо повторно"
+                                            onClick={onGoToPayment}
+                                            size="flex"
+                                            delay={1}
+                                            limiter={window.innerWidth <= 768}
+                                            color="#FFFFFF"
+                                            btnColor="#E05353"
+                                            fontSize="1rem"
+                                        />
+                                    </div>
                                 </div>
                             )}
+
+                            <div style={{ height: 50 }}>
+                                <Button
+                                    text="Дашборд"
+                                    onClick={() => navigate("/dashboard")}
+                                    size="flex"
+                                    delay={.2}
+                                    limiter={window.innerWidth <= 768}
+                                    color="#FFFFFF"
+                                    btnColor={lastSegment === "dashboard" ? "rgba(0,0,0,1)" : "rgba(0,0,0,.65)"}
+                                    fontSize="1rem"
+                                />
+                            </div>
 
                             {user?.emailVerified && user?.subscriptionStatus === "active" && (
                                 <div className={styles.sections}>
-                                    <button
-                                        className={styles.sectionButton}
-                                        onClick={() => navigate("/dashboard/constructor")}
-                                    >
-                                        Перейти в конструктор сайта
-                                    </button>
+                                    <div style={{ height: 50 }}>
+                                        <Button
+                                            text="Перейти в конструктор сайта"
+                                            onClick={() => navigate("/dashboard/constructor")}
+                                            size="flex"
+                                            delay={.2}
+                                            limiter={window.innerWidth <= 768}
+                                            color="#FFFFFF"
+                                            btnColor={lastSegment === "constructor" ? "rgba(0,0,0,1)" : "rgba(0,0,0,.65)"}
+                                            fontSize="1rem"
+                                        />
+                                    </div>
 
-                                    <button
-                                        className={styles.sectionButton}
-                                        onClick={() => navigate("/dashboard/account")}
-                                    >
-                                        Управление аккаунтом
-                                    </button>
+                                    <div style={{ height: 50 }}>
+                                        <Button
+                                            text="Управление аккаунтом"
+                                            onClick={() => navigate("/dashboard/account")}
+                                            size="flex"
+                                            delay={.4}
+                                            limiter={window.innerWidth <= 768}
+                                            color="#FFFFFF"
+                                            btnColor={lastSegment === "account" ? "rgba(0,0,0,1)" : "rgba(0,0,0,.65)"}
+                                            fontSize="1rem"
+                                        />
+                                    </div>
+
+                                    <div style={{ height: 50 }}>
+                                        <Button
+                                            text="Предложения"
+                                            onClick={() => navigate("/dashboard/voting")}
+                                            size="flex"
+                                            delay={.6}
+                                            limiter={window.innerWidth <= 768}
+                                            color="#FFFFFF"
+                                            btnColor={lastSegment === "voting" ? "rgba(0,0,0,1)" : "rgba(0,0,0,.65)"}
+                                            fontSize="1rem"
+                                        />
+                                    </div>
                                 </div>
                             )}
 
-                            <button
-                                className={styles.actionButton}
-                                onClick={onLogout}
-                            >
-                                Выйти
-                            </button>
+                            <div style={{ height: 50 }}>
+                                <Button
+                                    text="Выйти"
+                                    onClick={onLogout}
+                                    size="flex"
+                                    delay={.8}
+                                    limiter={window.innerWidth <= 768}
+                                    color="#FFFFFF"
+                                    btnColor="#63C5AB"
+                                    fontSize="1rem"
+                                />
+                            </div>
                         </motion.div>
                     </>
                 )}

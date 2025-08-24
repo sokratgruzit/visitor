@@ -62,6 +62,8 @@ export const ImageTab = ({ updateComponent, component }: Props) => {
                         max={1000}
                         step={1}
                         value={bp?.top}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             if (bps) bps[bpIndex || 0].top = parseInt(e.target.value);
 
@@ -77,6 +79,8 @@ export const ImageTab = ({ updateComponent, component }: Props) => {
                         max={100}
                         step={0.5}
                         value={bp?.left}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             if (bps) bps[bpIndex || 0].left = parseInt(e.target.value);
 
@@ -92,6 +96,8 @@ export const ImageTab = ({ updateComponent, component }: Props) => {
                         max={1000}
                         step={1}
                         value={bp?.width}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             if (bps) bps[bpIndex || 0].width = parseInt(e.target.value);
 
@@ -107,6 +113,8 @@ export const ImageTab = ({ updateComponent, component }: Props) => {
                         max={1000}
                         step={1}
                         value={bp?.height}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             if (bps) bps[bpIndex || 0].height = parseInt(e.target.value);
 
@@ -122,6 +130,8 @@ export const ImageTab = ({ updateComponent, component }: Props) => {
                         max={360}
                         step={1}
                         value={bp?.rotate}
+                        className="input"
+                        style={{ accentColor: "#000" }}
                         onChange={(e) => {
                             if (bps) bps[bpIndex || 0].rotate = parseInt(e.target.value);
 

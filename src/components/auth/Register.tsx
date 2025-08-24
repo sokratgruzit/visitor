@@ -5,6 +5,8 @@ import { registerSchema } from "../../validation/register";
 import type { z } from "zod";
 import { Link } from "react-router-dom";
 import { useNotificationStore } from "../../store/notificationStore";
+import Button from "../ui/button/Button";
+import { FuturisticMorph } from "../ui/futuristic/FuturisticMorph";
 
 import styles from "./Register.module.css";
 
@@ -54,34 +56,35 @@ export const Register: React.FC = () => {
 
   return (
     <div className={styles.registerPage}>
-      <a href={landingUrl} className={styles.backButton}>
+      <FuturisticMorph />
+      <a href={landingUrl} className="backButton">
         ← Вернуться на лендинг
       </a>
       <motion.div 
         className={styles.registerWrapper}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 2 }}
       >
         <h1 className={styles.title}>Регистрация</h1>
         <input
           type="text"
           placeholder="Имя"
-          className={styles.input}
+          className="input"
           value={form.name}
           onChange={(e) => handleChange("name", e.target.value)}
         />
         <input
           type="email"
-          placeholder="Email"
-          className={styles.input}
+          placeholder="Почта"
+          className="input"
           value={form.email}
           onChange={(e) => handleChange("email", e.target.value)}
         />
         <input
           type="password"
           placeholder="Пароль"
-          className={styles.input}
+          className="input"
           value={form.password}
           onChange={(e) => handleChange("password", e.target.value)}
         />
@@ -89,17 +92,22 @@ export const Register: React.FC = () => {
         <input
           type="text"
           placeholder="Промокод (если есть)"
-          className={styles.input}
+          className="input"
           value={form.promoCode}
           onChange={(e) => handleChange("promoCode", e.target.value)}
         />
-        <button
-          className={styles.button}
-          onClick={handleRegister}
-          disabled={loading}
-        >
-          {loading ? "Загрузка..." : "Зарегистрироваться"}
-        </button>
+        <div style={{ height: 50 }}>
+          <Button
+            text={loading ? "Загрузка..." : "Зарегистрироваться"}
+            onClick={handleRegister}
+            size="flex"
+            delay={1}
+            limiter={window.innerWidth <= 768}
+            disabled={loading}
+            color="#FFFFFF"
+            btnColor="#000000"
+          />
+        </div>
         <div className={styles.switchAuth}>
           Есть аккаунт? <Link to="/login">Вход</Link>
         </div>

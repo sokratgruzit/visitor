@@ -12,20 +12,18 @@ import styles from "./Canvas.module.css";
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-export const Canvas = () => {
+export const Canvas = ({ positionConfig, canvas }: { positionConfig: any, canvas: string | number | undefined }) => {
   const [scaleFactor, setScaleFactor] = useState<number>(1);
   const [distortion, setDistortion] = useState<number>(3);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const trianglesRef = useRef<TriangleData[]>([]);
   const canvasControls = useAnimation();
-  const { setWindowWidth, currentSection, windowWidth, landingData } = useAppStore();
+  const { setWindowWidth, currentSection, windowWidth } = useAppStore();
   const { activePoint } = useConstructorStore();
 
-  const positionCanvas = (width: number, section: number) => {
-    const config = landingData.components[section].positionConfig || {};
-
-    const { s, dist, left, top, rotate } = getPositionConfig(activePoint === 1281 ? width : activePoint, config, "canvas");
+  const positionCanvas = (width: number) => {
+    const { s, dist, left, top, rotate } = getPositionConfig(activePoint === 1281 ? width : activePoint, positionConfig, "canvas");
 
     setScaleFactor(s || 1);
     setDistortion(dist || 3);
@@ -58,7 +56,7 @@ export const Canvas = () => {
       ctx.setTransform(1, 0, 0, 1, 0, 0); 
       ctx.scale(dpr, dpr);
 
-      positionCanvas(width, currentSection);
+      positionCanvas(width);
       setWindowWidth(window.innerWidth);
     }
 
@@ -144,67 +142,75 @@ export const Canvas = () => {
       cancelAnimationFrame(frameId);
       window.removeEventListener("resize", resize);
     };
-  }, [scaleFactor, currentSection, distortion, landingData.components[currentSection].positionConfig, activePoint]);
+  }, [scaleFactor, currentSection, distortion, positionConfig, activePoint]);
 
   useEffect(() => {
-    const { target } = getTrianglesData(landingData.components[currentSection].canvas);
-
-    for (let i = 0; i < trianglesRef.current.length; i++) {
-      const triangle = trianglesRef.current[i];
-      const targetTriangle = target[i];
-
-      if (targetTriangle) {
-        triangle.inactive = false;
-        triangle.targetX = targetTriangle.x;
-        triangle.targetY = targetTriangle.y;
-        triangle.targetRotation = targetTriangle.rotation;
-        triangle.targetColor = targetTriangle.color;
-        triangle.targetPoints = targetTriangle.points;
-      } else {
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
-        const dx = triangle.x - cx;
-        const dy = triangle.y - cy;
-        const orbitRadius = Math.sqrt(dx * dx + dy * dy);
-        const angle = Math.atan2(dy, dx);
-
-        triangle.inactive = true;
-        triangle.orbitRadius = orbitRadius;
-        triangle.orbitAngle = angle;
-        triangle.orbitSpeed = (Math.random() * 0.005) + 0.001; 
-        triangle.alpha = 0.15;
+    const manageTriangles = async () => {
+      const { target } = await getTrianglesData(canvas || 0);
+  
+      for (let i = 0; i < trianglesRef.current.length; i++) {
+        const triangle = trianglesRef.current[i];
+        const targetTriangle = target[i];
+  
+        if (targetTriangle) {
+          triangle.inactive = false;
+          triangle.targetX = targetTriangle.x;
+          triangle.targetY = targetTriangle.y;
+          triangle.targetRotation = targetTriangle.rotation;
+          triangle.targetColor = targetTriangle.color;
+          triangle.targetPoints = targetTriangle.points;
+        } else {
+          const cx = window.innerWidth / 2;
+          const cy = window.innerHeight / 2;
+          const dx = triangle.x - cx;
+          const dy = triangle.y - cy;
+          const orbitRadius = Math.sqrt(dx * dx + dy * dy);
+          const angle = Math.atan2(dy, dx);
+  
+          triangle.inactive = true;
+          triangle.orbitRadius = orbitRadius;
+          triangle.orbitAngle = angle;
+          triangle.orbitSpeed = (Math.random() * 0.005) + 0.001; 
+          triangle.alpha = 0.15;
+        }
       }
-    }
+  
+      for (let i = trianglesRef.current.length; i < target.length; i++) {
+        const t = target[i];
+        trianglesRef.current.push({
+          ...t,
+          phase: randomPhase(),
+          targetX: (Math.random() - 0.5) * window.innerWidth / 2,
+          targetY: (Math.random() - 0.5) * window.innerHeight / 2,
+          targetRotation: Math.random() * 100,
+          targetColor: t.color,
+          targetPoints: t.points,
+        });
+      }
+    };
 
-    for (let i = trianglesRef.current.length; i < target.length; i++) {
-      const t = target[i];
-      trianglesRef.current.push({
-        ...t,
-        phase: randomPhase(),
-        targetX: (Math.random() - 0.5) * window.innerWidth / 2,
-        targetY: (Math.random() - 0.5) * window.innerHeight / 2,
-        targetRotation: Math.random() * 100,
-        targetColor: t.color,
-        targetPoints: t.points,
-      });
-    }
-  }, [currentSection, windowWidth, landingData.components[currentSection].canvas]);
+    manageTriangles();
+  }, [currentSection, windowWidth, canvas]);
 
   useEffect(() => {
-    const { mutated, target } = getTrianglesData(landingData.components[currentSection].canvas);
+    const manageTriangles = async () => {
+      const { mutated, target } = await getTrianglesData(canvas || 0);
+  
+      trianglesRef.current = mutated.map((t, i) => {
+        const targetTriangle = target[i];
+        return {
+          ...t,
+          phase: randomPhase(),
+          targetX: targetTriangle.x,
+          targetY: targetTriangle.y,
+          targetRotation: targetTriangle.rotation,
+          targetColor: targetTriangle.color,
+          targetPoints: targetTriangle.points,
+        };
+      });
+    };
 
-    trianglesRef.current = mutated.map((t, i) => {
-      const targetTriangle = target[i];
-      return {
-        ...t,
-        phase: randomPhase(),
-        targetX: targetTriangle.x,
-        targetY: targetTriangle.y,
-        targetRotation: targetTriangle.rotation,
-        targetColor: targetTriangle.color,
-        targetPoints: targetTriangle.points,
-      };
-    });
+    manageTriangles();
   }, []);
 
   return <motion.canvas 

@@ -9,7 +9,7 @@ import styles from "./ComponentsSelector.module.css";
 
 interface selectProps {
     label: string;
-    value: string | null;
+    value: string | null | number;
 }
 
 const availableComponents: selectProps[] = [
@@ -32,7 +32,7 @@ export const ComponentsSelector = () => {
     const setSelectedComponentId = useConstructorStore((state) => state.setSelectedComponentId);
     const components = landingData.components || [];
 
-	const addComponent = async (option: { label: string; value: string | null }) => {
+	const addComponent = async (option: { label: string; value: string | null | number }) => {
 		const newId = slug + components.length;
         const defaultCircle = [
             { minWidth: 440, height: 400, width: 400, left: 0, top: 0, rotate: 0 },

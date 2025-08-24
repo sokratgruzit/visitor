@@ -56,9 +56,9 @@ export interface ListItemProps {
 
 export interface LandingComponent {
 	id: string;
-	type: string | null;
+	type: string | null | number;
   color?: string;
-  canvas?: string;
+  canvas?: string | number;
   btn?: string;
   fileUrl?: string;
   fileBase64?: any;
@@ -84,6 +84,7 @@ export interface LandingComponent {
 export interface PaymentData {
   amount?: number; 
   product?: string;
+  targetId?: number;
 }
 
 export interface PromoCodeResponse {
@@ -103,6 +104,18 @@ export interface PromoCodeResponse {
   };
 }
 
+export interface Payment {
+  id: string;
+  amount: { value: string; currency: string };
+  income_amount: { value: string; currency: string };
+  status: string;
+  created_at: string;
+  description: string;
+  paid: boolean;
+  payment_method: { type: string; title: string };
+  captured_at: string;
+};
+
 export interface PaymentResponse {
   success: boolean;
   confirmationUrl?: string;
@@ -115,10 +128,27 @@ export interface ConfProps {
   circle2: Circle[];
 }
 
+export interface TabProp {
+  key: string;
+  label: string;
+  disabled?: boolean;
+}
+
+export interface TabsProps {
+  tabs: TabProp[];
+  active: string;
+  onChange: (key: string) => void;
+  width?: string | number;
+  height?: string | number;
+  padding?: string;
+  fontSize?: string | number;
+}
+
 export interface ButtonProps {
+  fontSize?: string | number;
   text?: string;
   onClick?: () => void;
-  size?: 'small' | 'medium' | 'large' | 'regular' | 'preview';
+  size?: 'small' | 'medium' | 'large' | 'regular' | 'preview' | 'flex';
   className?: string;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
@@ -130,6 +160,9 @@ export interface ButtonProps {
   labelColor?: string;
   direction?: string;
   section?: number;
+  color?: string;
+  btnColor?: string;
+  limiter?: boolean;
 }
 
 export interface labelStyles {
@@ -162,8 +195,54 @@ export interface LoginData {
 }
 
 export interface SlugResponse {
-    success: boolean;
-    message?: string;
-    id?: string;
-    available?: boolean;
+  success: boolean;
+  message?: string;
+  id?: string;
+  available?: boolean;
+}
+
+export interface AnimationMeta {
+  id: number;
+  name: string;
+  status: string;
+  fileUrl?: string;
+  userId?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Creator {
+  name: string;
+  id: number;
+  email: string;
+}
+
+export interface Voting {
+  id: number;
+  title: string;
+  description: string;
+  level: number;
+  status: string;
+  amount: number;
+  creator: Creator;
+  createdAt: string;
+  creatorId: number;
+}
+
+export interface VotingResponse {
+	success?: boolean;
+	message?: string;     
+	voting?: Voting;          
+	my?: {
+		votings: Voting[];
+		totalPages: number;
+		currentPage: number;
+		totalCount: number;
+	};
+	all?: {
+		votings: Voting[];
+		totalPages: number;
+		currentPage: number;
+		totalCount: number;
+	};
 }

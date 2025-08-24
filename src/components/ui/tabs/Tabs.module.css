@@ -1,0 +1,32 @@
+.tabs {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  width: 100%;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  border: none;
+  width: 150px;
+  height: 50px;
+  background-color: rgba(0,0,0,.65);
+  -webkit-mask-image: url("/images/repeat-white.png");
+  -webkit-mask-repeat: repeat;
+  -webkit-mask-size: contain;
+  mask-image: url("/images/repeat-white.png");
+  mask-repeat: repeat;
+  mask-size: contain;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tabs button:hover {
+  background-color: rgba(0,0,0,.75);
+}
+
+.activeTab {
+  background-color: rgba(0,0,0,1) !important;
+}

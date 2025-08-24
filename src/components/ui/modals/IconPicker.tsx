@@ -3,6 +3,7 @@ import { icons } from "../../../utils/icons";
 import type { IconName } from "../../../utils/icons";
 
 import { Svg } from "../../svgs/Svg.module";
+import Button from "../button/Button";
 
 import styles from "./ComponentModal.module.css";
 
@@ -72,19 +73,12 @@ export const IconPicker = ({ isOpen, onClose, onSelect }: IconPickerProps) => {
                     placeholder="Поиск иконок..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{
-                        width: "100%",
-                        padding: "8px",
-                        marginBottom: "16px",
-                        borderRadius: "6px",
-                        border: "1px solid #ccc",
-                        fontSize: "14px",
-                    }}
+                    className="input"
                     autoFocus
                 />
                 <div className={styles.iconGrid}>
                     {filteredIcons.length === 0 && (
-                        <p style={{ width: "100%", textAlign: "center" }}>Иконки не найдены</p>
+                        <p style={{ width: "100%", textAlign: "center", alignSelf: "center", color: "black" }}>Иконки не найдены</p>
                     )}
                     {filteredIcons.map((iconName) => (
                         <div
@@ -99,15 +93,24 @@ export const IconPicker = ({ isOpen, onClose, onSelect }: IconPickerProps) => {
                         >
                             <Svg
                                 svgName={iconName}
-                                size={{ xs: 20, sm: 28, md: 36, lg: 48 }}
+                                size={{ xs: 30, sm: 30, md: 30, lg: 30 }}
                                 color="#000"
                             />
                         </div>
                     ))}
                 </div>
-                <button className={styles.button} onClick={() => { setSearchTerm(""); onClose(); }}>
-                    Закрыть
-                </button>
+                <div style={{ height: 50, position: "relative" }}>
+                    <Button
+                        text="Закрыть"
+                        onClick={() => { setSearchTerm(""); onClose(); }}
+                        size="flex"
+                        delay={1}
+                        limiter={window.innerWidth <= 768}
+                        color="#FFFFFF"
+                        btnColor="#000000"
+                        fontSize="1rem"
+                    />
+                </div>
             </div>
         </div>
     );

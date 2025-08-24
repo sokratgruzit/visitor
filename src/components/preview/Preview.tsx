@@ -218,7 +218,10 @@ export const Preview = () => {
             </motion.div>
             <BackgroundMusic src={landingData?.audio} />
             {/* <img src="sober5.webp" alt="proto" className={styles.img} /> */}
-            {landingData?.components[currentSection]?.canvas && <Canvas />}
+            {landingData?.components[currentSection]?.canvas && <Canvas
+                positionConfig={landingData.components[currentSection].positionConfig || {}} 
+                canvas={landingData.components[currentSection].canvas}
+            />}
             {landingData?.components[currentSection]?.showNav && <Navigation />}
             {landingData?.components[currentSection]?.showSettings && <Settings />}
             <AnimatePresence mode="wait">
