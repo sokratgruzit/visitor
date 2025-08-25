@@ -116,9 +116,9 @@ export default function App() {
           <Route 
             index 
             element={
-              <FullyVerifiedRoute>
+              <ProtectedRoute>
                 <MyAnimations />
-              </FullyVerifiedRoute>
+              </ProtectedRoute>
             } 
           />
           <Route 
