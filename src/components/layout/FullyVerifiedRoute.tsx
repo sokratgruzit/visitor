@@ -15,7 +15,7 @@ export function FullyVerifiedRoute({ children }: FullyVerifiedRouteProps) {
 
   if (!isAuthLoaded) return null;
   if (!accessToken || !user) return <Navigate to="/login" replace />;
-  if (!user.emailVerified) return <Navigate to="/login" replace />;
+  // if (!user.emailVerified) return <Navigate to="/login" replace />;
   if (user.subscriptionStatus === "inactive") return <Navigate to="/login" replace />;
   // if (landingData?.components?.length === 0 && location.pathname.includes("preview")) return <Navigate to="/dashboard/constructor" replace />;
 
