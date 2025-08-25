@@ -10,11 +10,16 @@ import { micro, addSolidRingToMicro } from "./micro";
 import { getAnimationById } from "../api/animations";
 
 let initializedMicro = false;
+const trianglesCache: Record<string | number, { mutated: any[]; target: any[] }> = {};
 
 export async function getTrianglesData(canvasType: string | number): Promise<{
   mutated: Omit<TriangleData, "phase">[];
   target: Omit<TriangleData, "phase">[];
 }> {
+  if (trianglesCache[canvasType]) {
+    return trianglesCache[canvasType];
+  }
+
   const width = window.innerWidth;
   const height = window.innerHeight;
 
@@ -135,5 +140,8 @@ export async function getTrianglesData(canvasType: string | number): Promise<{
     rotation: Math.random() * 360,
   }));
 
-  return { mutated, target };
+  const result = { mutated, target };
+  trianglesCache[canvasType] = result;
+
+  return result;
 }
