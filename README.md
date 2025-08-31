@@ -14,7 +14,7 @@ Designed with **React, TypeScript, and Node.js**, it combines modern UI/UX with 
 
 - 🎨 **Drag-and-drop website constructor**
 - ⚡ Built with **React + TypeScript**
-- 🎭 Smooth animations powered by **Framer Motion**
+- 🎭 Smooth animations powered by **Framer Motion and Canvas**
 - 📱 Fully responsive design with **CSS Modules**
 - 🔑 **Authentication system** with JWT & cookies
 - 💳 Integrated **Tinkoff Payments API**
