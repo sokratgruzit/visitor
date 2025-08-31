@@ -33,6 +33,14 @@ Designed with **React, TypeScript, and Node.js**, it combines modern UI/UX with 
 
 ---
 
+## 🌐 Live Demo
+
+Try the **Visitor Platform** in action:
+
+[🚀 Visit Demo](https://visitor-ten.vercel.app/register)
+
+> Note: This is the public demo link for testing registration, authentication, and landing page features.
+
 ## 🚀 Quick Start
 
 ```bash
